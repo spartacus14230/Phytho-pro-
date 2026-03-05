@@ -1,0 +1,1803 @@
+
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EquiPhyto Pro — Nutrition Équine de Précision Complète</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0a0e17;--surface:#111827;--surface2:#1a2332;--surface3:#243044;
+--accent:#10b981;--accent2:#059669;--accent3:#34d399;
+--warn:#f59e0b;--danger:#ef4444;--info:#3b82f6;
+--text:#e5e7eb;--text2:#9ca3af;--text3:#6b7280;
+--border:#1e3a5f;--glow:rgba(16,185,129,.15)
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.app{max-width:1440px;margin:0 auto;padding:12px}
+.header{text-align:center;padding:28px 20px;background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid var(--border);border-radius:16px;margin-bottom:20px;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,var(--glow) 0%,transparent 50%);animation:pulse 4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:.7}}
+.header h1{font-size:2em;color:var(--accent);position:relative;z-index:1}
+.header p{color:var(--text2);margin-top:6px;position:relative;z-index:1;font-size:.9em}
+.tabs{display:flex;gap:4px;margin-bottom:20px;overflow-x:auto;padding-bottom:6px;flex-wrap:wrap}
+.tab{padding:9px 15px;background:var(--surface);border:1px solid var(--border);border-radius:10px;cursor:pointer;color:var(--text2);font-size:.82em;transition:.3s;white-space:nowrap;user-select:none}
+.tab:hover{border-color:var(--accent);color:var(--text)}
+.tab.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
+.panel{display:none;animation:fadeIn .3s}.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px}
+.card h2{color:var(--accent);font-size:1.25em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card h3{color:var(--accent3);font-size:1em;margin:14px 0 8px}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group label{font-size:.82em;color:var(--text2);font-weight:600}
+.form-group input,.form-group select{padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.88em;transition:.3s}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
+.chk{display:flex;align-items:center;gap:9px;padding:6px 0}
+.chk input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent)}
+.chk label{font-size:.88em;color:var(--text)}
+.btn{padding:11px 24px;border:none;border-radius:10px;font-size:.92em;font-weight:700;cursor:pointer;transition:.3s;display:inline-flex;align-items:center;gap:7px}
+.btn-p{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(16,185,129,.3)}
+.tbl-wrap{overflow-x:auto;margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:.83em}
+th{background:var(--surface3);color:var(--accent);padding:10px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--text)}
+tr:hover td{background:var(--surface2)}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.73em;font-weight:700}
+.tag-safe{background:#064e3b;color:#34d399}.tag-warn{background:#78350f;color:#fbbf24}
+.tag-danger{background:#7f1d1d;color:#fca5a5}.tag-info{background:#1e3a5f;color:#93c5fd}
+.tag-doping{background:#581c87;color:#c084fc}
+.pbar{height:7px;background:var(--surface3);border-radius:4px;overflow:hidden;margin:5px 0}
+.pfill{height:100%;border-radius:4px;transition:width .5s}
+.pok{background:var(--accent)}.pwarn{background:var(--warn)}.pdng{background:var(--danger)}
+.alert{padding:12px 16px;border-radius:10px;margin:10px 0;font-size:.86em;display:flex;align-items:flex-start;gap:8px}
+.alert-d{background:#7f1d1d33;border:1px solid #991b1b;color:#fca5a5}
+.alert-w{background:#78350f33;border:1px solid #92400e;color:#fcd34d}
+.alert-i{background:#1e3a5f33;border:1px solid #1e40af;color:#93c5fd}
+.alert-s{background:#064e3b33;border:1px solid #065f46;color:#6ee7b7}
+.rbox{background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);border:2px solid var(--accent);border-radius:16px;padding:24px;margin:18px 0}
+.rbox h2{color:var(--accent3);text-align:center;margin-bottom:18px}
+.rx{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--surface);border-radius:10px;margin:6px 0;border-left:4px solid var(--accent)}
+.rx .pn{font-weight:700;color:var(--text)}.rx .dose{color:var(--accent);font-weight:700}
+.rx .tm{font-size:.78em;color:var(--text2)}
+.rxs{margin:14px 0}.rxs h3{color:var(--warn);margin-bottom:8px;font-size:.95em}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.pc{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;transition:.3s;cursor:pointer}
+.pc:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.pc h4{color:var(--accent);margin-bottom:3px}.pc .lt{color:var(--text3);font-style:italic;font-size:.78em}
+.pc .us{color:var(--text2);font-size:.8em;margin-top:6px}.pc .pr{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.sbox{position:relative;margin-bottom:16px}
+.sbox input{width:100%;padding:12px 16px 12px 44px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:.95em}
+.sbox::before{content:'🔍';position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:1.1em}
+.sbox input:focus{outline:none;border-color:var(--accent)}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.pill{padding:5px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;font-size:.78em;cursor:pointer;color:var(--text2);transition:.2s}
+.pill.active{background:var(--accent);color:#000;border-color:var(--accent)}
+.cvg{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}
+.cvc{background:var(--surface2);padding:14px;border-radius:10px;text-align:center}
+.cvc .v{font-size:1.7em;color:var(--accent);font-weight:700}.cvc .u{color:var(--text2);font-size:.82em;margin-top:3px}
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center;padding:16px}
+.mo.show{display:flex}
+.md{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;max-width:750px;width:100%;max-height:85vh;overflow-y:auto}
+.md h2{color:var(--accent);margin-bottom:14px}
+.mc{float:right;background:none;border:none;color:var(--text2);font-size:1.4em;cursor:pointer}
+.tl{position:relative;padding-left:28px;margin:14px 0}
+.tl::before{content:'';position:absolute;left:9px;top:0;bottom:0;width:2px;background:var(--border)}
+.tli{position:relative;padding:10px 0 10px 22px;margin:6px 0}
+.tli::before{content:'';position:absolute;left:-22px;top:16px;width:12px;height:12px;border-radius:50%;border:3px solid var(--accent);background:var(--bg)}
+.tli .tt{color:var(--accent);font-weight:700;font-size:.88em}.tli .tc{color:var(--text);font-size:.85em;margin-top:3px}
+.print-header,.print-footer{display:none}
+.print-watermark{display:none}
+@media print{
+*{color:#000!important;background:#fff!important;box-shadow:none!important;text-shadow:none!important}
+body{font-family:Arial,Helvetica,sans-serif!important;font-size:11pt!important;margin:0!important;padding:0!important}
+.app{padding:0!important;max-width:100%!important}
+.header,.tabs,.tab,.mo,.footer{display:none!important}
+.panel{display:none!important}
+#p-ration{display:block!important;position:relative!important}
+#p-ration>.card{display:block!important;border:none!important;box-shadow:none!important;padding:0!important;margin:0!important;background:#fff!important}
+#p-ration>.card>h2{display:none!important}
+#ratOut{display:block!important;position:relative!important}
+.rbox{display:block!important;border:2px solid #333!important;border-radius:0!important;padding:20px!important;margin:0!important;background:#fff!important}
+.rbox h2{color:#000!important;font-size:16pt!important;text-align:center!important;border-bottom:2px solid #333!important;padding-bottom:8px!important;margin-bottom:12px!important}
+.rbox h3{color:#333!important;font-size:12pt!important;border-bottom:1px solid #999!important;padding-bottom:4px!important;margin:16px 0 8px!important;page-break-after:avoid}
+.rxs{margin:8px 0!important;page-break-inside:avoid}
+.rx{display:flex!important;justify-content:space-between!important;align-items:center!important;padding:6px 8px!important;margin:3px 0!important;border:1px solid #ccc!important;border-radius:4px!important;background:#f8f8f8!important;page-break-inside:avoid}
+.rx .pn{font-weight:700!important;color:#000!important;font-size:10pt!important}
+.rx .tm{color:#555!important;font-size:8.5pt!important}
+.rx .dose{font-weight:700!important;color:#000!important;font-size:11pt!important;min-width:60px!important;text-align:right!important;white-space:nowrap!important}
+.alert{border:1px solid #999!important;border-radius:4px!important;padding:6px 10px!important;margin:4px 0!important;font-size:9pt!important;page-break-inside:avoid;background:#f5f5f5!important;color:#333!important}
+.tag{border:1px solid #666!important;padding:1px 6px!important;border-radius:3px!important;font-size:8pt!important;color:#333!important;background:#eee!important}
+.pbar{height:10px!important;background:#ddd!important;border-radius:5px!important;overflow:hidden!important}
+.pfill{height:10px!important}
+.pdng{background:#d00!important}.pwarn{background:#e80!important}.pok{background:#090!important}
+.btn{display:none!important}
+.print-watermark{display:block!important;position:fixed!important;top:50%!important;left:50%!important;transform:translate(-50%,-50%) rotate(-30deg)!important;opacity:.06!important;z-index:0!important;pointer-events:none!important;width:400px!important;height:auto!important}
+.print-header{display:block!important;text-align:center!important;margin-bottom:16px!important;padding-bottom:12px!important;border-bottom:3px solid #333!important;position:relative!important;z-index:1!important}
+.print-header img.print-logo{width:80px!important;height:auto!important;margin-bottom:6px!important;display:block!important;margin-left:auto!important;margin-right:auto!important}
+.print-header h1{font-size:15pt!important;margin:0 0 2px!important;color:#000!important;letter-spacing:1px!important}
+.print-header .print-sub{font-size:9pt!important;color:#555!important;margin:2px 0!important}
+.print-header .print-sig{font-size:8.5pt!important;color:#333!important;margin-top:6px!important;font-style:italic!important}
+.print-footer{display:block!important;margin-top:20px!important;padding-top:10px!important;border-top:2px solid #333!important;font-size:8pt!important;color:#555!important;text-align:center!important;position:relative!important;z-index:1!important}
+.print-footer .pf-copy{font-weight:700!important;font-size:8.5pt!important;color:#333!important}
+.print-footer .pf-disc{font-style:italic!important;color:#777!important;margin-top:3px!important}
+.print-footer .pf-contact{margin-top:4px!important;color:#555!important}
+@page{margin:15mm 12mm;size:A4}
+}
+@media(max-width:640px){.header h1{font-size:1.4em}.form-grid{grid-template-columns:1fr}.tabs{gap:3px}.tab{padding:7px 10px;font-size:.75em}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="header">
+<h1>🐴 EquiPhyto Pro</h1>
+<p>Nutrition Équine de Précision — 103 Plantes · 22 Protocoles · Zéro Céréale · 100% Organiques</p>
+<p style="font-size:.78em;color:var(--text3);margin-top:3px">Étudié par plusieurs vétérinaires mondiaux : Dr Eleanor Kellon (VMD) · Dr Joyce Harman (DVM) · Dr Juliet Getty (PhD) · Dr Chris Pollitt · Dr Robert Bowker</p>
+</div>
+<div class="tabs" id="tabs">
+<div class="tab active" data-t="profile">🐎 Profil</div>
+<div class="tab" data-t="checkup">🩺 Check-up</div>
+<div class="tab" data-t="analysis">🔬 Analyse</div>
+<div class="tab" data-t="ration">⚗️ Ration</div>
+<div class="tab" data-t="plants">🌿 Plantes</div>
+<div class="tab" data-t="minerals">⚙️ Minéraux</div>
+<div class="tab" data-t="patho">💊 Pathologies</div>
+<div class="tab" data-t="safety">🛡️ Sécurité</div>
+<div class="tab" data-t="chrono">⏰ Chrono</div>
+<div class="tab" data-t="convert">⚖️ Conversion</div>
+</div>
+
+<!-- PROFILE -->
+<div class="panel active" id="p-profile">
+<div class="card">
+<h2>🐎 Identité Équine</h2>
+<div class="form-grid">
+<div class="form-group"><label>Nom</label><input id="hName" placeholder="Spirit"></div>
+<div class="form-group"><label>Âge (ans)</label><input type="number" id="hAge" min="0" max="45" value="10"></div>
+<div class="form-group"><label>Race</label><select id="hBreed"><option>Selle Français</option><option>Pur-Sang</option><option>Arabe</option><option>Quarter Horse</option><option>Frison</option><option>Lusitanien</option><option>Haflinger</option><option>Fjord</option><option>Poney</option><option>Trait</option><option>Autre</option></select></div>
+<div class="form-group"><label>Sexe</label><select id="hSex"><option>Hongre</option><option>Jument</option><option>Étalon</option></select></div>
+</div>
+</div>
+<div class="card">
+<h2>⚖️ Poids & Besoins</h2>
+<div class="form-grid">
+<div class="form-group"><label>Poids connu (kg) — 0 = auto-calcul</label><input type="number" id="kW" min="0" max="1200" value="0"></div>
+<div class="form-group"><label>Périmètre thoracique (cm)</label><input type="number" id="pt" min="100" max="260" value="185"></div>
+<div class="form-group"><label>Hauteur au garrot (cm)</label><input type="number" id="hg" min="80" max="200" value="160"></div>
+<div class="form-group"><label>Poids calculé</label><input id="cW" readonly style="background:var(--surface3);font-weight:700;color:var(--accent)"></div>
+</div>
+<div class="form-group" style="margin-top:10px">
+<label>État corporel (NEC) — Glissez pour évaluer</label>
+<div style="display:flex;align-items:center;gap:12px;margin:8px 0">
+<input type="range" id="bcs" min="1" max="5" step=".5" value="3" style="accent-color:var(--accent);flex:1">
+<span id="bcsV" style="color:var(--accent);font-weight:700;font-size:1.3em;min-width:30px;text-align:center">3</span>
+</div>
+<div id="bcsDesc" style="padding:12px;background:var(--surface2);border-radius:10px;border:1px solid var(--border);margin-top:6px">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+<span style="font-size:1.5em" id="bcsEmoji">✅</span>
+<strong id="bcsLabel" style="color:var(--accent);font-size:1em">Correct — Poids idéal</strong>
+</div>
+<p id="bcsText" style="color:var(--text2);font-size:.85em;line-height:1.5;margin:0">Les côtes se sentent facilement sous une fine couche. Le dos est plat, la croupe arrondie sans excès. C'est l'état optimal pour la santé du cheval.</p>
+</div>
+<div style="display:flex;justify-content:space-between;margin-top:6px;padding:0 4px">
+<span style="font-size:.72em;color:var(--danger)">Émacié</span>
+<span style="font-size:.72em;color:var(--warn)">Maigre</span>
+<span style="font-size:.72em;color:var(--accent)">Idéal</span>
+<span style="font-size:.72em;color:var(--warn)">Gras</span>
+<span style="font-size:.72em;color:var(--danger)">Obèse</span>
+</div>
+</div>
+<div class="form-grid" style="margin-top:10px">
+<div class="form-group"><label>Activité</label><select id="act"><option value="rest">Repos / Retraite</option><option value="light" selected>Travail léger</option><option value="mod">Travail modéré</option><option value="intense">Sport intensif</option><option value="breed">Reproduction / Lactation</option></select></div>
+<div class="form-group"><label>Fourrage principal</label><select id="forage"><option value="prairie">Foin de prairie</option><option value="crau">Foin de Crau (AOP)</option><option value="luzerne">Foin de luzerne</option><option value="enrub">Enrubanné</option><option value="herbe">Herbe (pâturage)</option></select></div>
+</div>
+<div style="margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+<div class="chk"><input type="checkbox" id="foinVol" checked><label for="foinVol">🌾 Foin à volonté (ad libitum)</label></div>
+<span id="foinVolInfo" style="font-size:.78em;color:var(--text3)">≈ 2 à 2.5% du poids vif en MS</span>
+</div>
+
+<!-- ANALYSE FOURRAGE / PÂTURE -->
+<div style="margin-top:16px;border:2px solid var(--border);border-radius:12px;padding:14px">
+<h3 style="margin:0 0 8px">🔬 Source des données fourrage</h3>
+<p style="font-size:.8em;color:var(--text2);margin-bottom:10px">Par défaut, les profils génériques INRA sont utilisés. Si vous avez une analyse labo de votre foin ou pâture, entrez les valeurs réelles pour un calcul de précision.</p>
+
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+<button class="btn btn-p" id="btnFoSrc0" onclick="switchFoSrc('generic')" style="flex:1;min-width:120px;font-size:.8em">📊 Profil générique</button>
+<button class="btn" id="btnFoSrc1" onclick="switchFoSrc('labfoin')" style="flex:1;min-width:120px;font-size:.8em;background:var(--surface2);color:var(--text)">🧪 Analyse labo foin</button>
+<button class="btn" id="btnFoSrc2" onclick="switchFoSrc('labpat')" style="flex:1;min-width:120px;font-size:.8em;background:var(--surface2);color:var(--text)">🌱 Analyse labo pâture</button>
+<button class="btn" id="btnFoSrc3" onclick="switchFoSrc('region')" style="flex:1;min-width:120px;font-size:.8em;background:var(--surface2);color:var(--text)">📍 Pâture par région</button>
+</div>
+<input type="hidden" id="foSrc" value="generic">
+
+<div id="foSrcGeneric">
+<div class="alert alert-i">📊 Profil générique INRA sélectionné ci-dessus. Les valeurs moyennes par type de foin seront utilisées. Pour plus de précision, faites analyser votre fourrage (labo Reverdy, Harmonie, etc.).</div>
+</div>
+
+<div id="foSrcLabFoin" style="display:none">
+<div class="alert alert-i" style="margin-bottom:10px">🧪 Entrez les résultats de votre <strong>analyse de foin</strong> en mg/kg de matière sèche (ppm). Labos : Reverdy, Harmonie Nutrition Équine, INRA, etc. Laissez vide = valeur générique.</div>
+<h4 style="font-size:.88em">Constituants analytiques</h4>
+<div class="form-grid">
+<div class="form-group"><label>Matière sèche (%)</label><input type="number" step=".1" id="lf_ms" placeholder="Ex: 88"></div>
+<div class="form-group"><label>UFC /kg MS</label><input type="number" step=".01" id="lf_ufc" placeholder="Ex: 0.55"></div>
+<div class="form-group"><label>MADC (g/kg MS)</label><input type="number" step="1" id="lf_madc" placeholder="Ex: 40"></div>
+<div class="form-group"><label>WSC (% MS)</label><input type="number" step=".1" id="lf_wsc" placeholder="Ex: 8.5"></div>
+<div class="form-group"><label>Amidon (% MS)</label><input type="number" step=".1" id="lf_amidon" placeholder="Ex: 1.2"></div>
+<div class="form-group"><label>ESC (% MS)</label><input type="number" step=".1" id="lf_esc" placeholder="Ex: 5.0"></div>
+</div>
+<h4 style="font-size:.88em;margin-top:10px">Macrominéraux (mg/kg MS = ppm)</h4>
+<div class="form-grid">
+<div class="form-group"><label>Calcium</label><input type="number" step="1" id="lf_ca" placeholder="Ex: 4500"></div>
+<div class="form-group"><label>Phosphore</label><input type="number" step="1" id="lf_p" placeholder="Ex: 2500"></div>
+<div class="form-group"><label>Magnésium</label><input type="number" step="1" id="lf_mg" placeholder="Ex: 1500"></div>
+<div class="form-group"><label>Potassium</label><input type="number" step="1" id="lf_k" placeholder="Ex: 15000"></div>
+<div class="form-group"><label>Sodium</label><input type="number" step="1" id="lf_na" placeholder="Ex: 300"></div>
+</div>
+<h4 style="font-size:.88em;margin-top:10px">Oligo-éléments (mg/kg MS = ppm)</h4>
+<div class="form-grid">
+<div class="form-group"><label>Zinc</label><input type="number" step=".1" id="lf_zn" placeholder="Ex: 25"></div>
+<div class="form-group"><label>Cuivre</label><input type="number" step=".1" id="lf_cu" placeholder="Ex: 5"></div>
+<div class="form-group"><label>Sélénium</label><input type="number" step=".001" id="lf_se" placeholder="Ex: 0.05"></div>
+<div class="form-group"><label>Manganèse</label><input type="number" step="1" id="lf_mn" placeholder="Ex: 80"></div>
+<div class="form-group"><label>Fer</label><input type="number" step="1" id="lf_fe" placeholder="Ex: 200"></div>
+<div class="form-group"><label>Iode</label><input type="number" step=".01" id="lf_io" placeholder="Ex: 0.2"></div>
+<div class="form-group"><label>Cobalt</label><input type="number" step=".01" id="lf_co" placeholder="Ex: 0.05"></div>
+<div class="form-group"><label>Molybdène</label><input type="number" step=".01" id="lf_mo" placeholder="Ex: 1.5"></div>
+</div>
+</div>
+
+<div id="foSrcLabPat" style="display:none">
+<div class="alert alert-i" style="margin-bottom:10px">🌱 Entrez les résultats de votre <strong>analyse de pâture</strong> en mg/kg de matière sèche (ppm). Attention : la MS de l'herbe fraîche est ~18-25% contre ~88% pour le foin.</div>
+<h4 style="font-size:.88em">Constituants analytiques</h4>
+<div class="form-grid">
+<div class="form-group"><label>Matière sèche (%)</label><input type="number" step=".1" id="lp_ms" placeholder="Ex: 20"></div>
+<div class="form-group"><label>UFC /kg MS</label><input type="number" step=".01" id="lp_ufc" placeholder="Ex: 0.80"></div>
+<div class="form-group"><label>MADC (g/kg MS)</label><input type="number" step="1" id="lp_madc" placeholder="Ex: 75"></div>
+<div class="form-group"><label>WSC (% MS)</label><input type="number" step=".1" id="lp_wsc" placeholder="Ex: 12"></div>
+<div class="form-group"><label>ESC (% MS)</label><input type="number" step=".1" id="lp_esc" placeholder="Ex: 7"></div>
+<div class="form-group"><label>ESC + Amidon (% MS)</label><input type="number" step=".1" id="lp_escst" placeholder="Ex: 8.5"></div>
+</div>
+<h4 style="font-size:.88em;margin-top:10px">Macrominéraux (mg/kg MS = ppm)</h4>
+<div class="form-grid">
+<div class="form-group"><label>Calcium</label><input type="number" step="1" id="lp_ca" placeholder="Ex: 4000"></div>
+<div class="form-group"><label>Phosphore</label><input type="number" step="1" id="lp_p" placeholder="Ex: 3500"></div>
+<div class="form-group"><label>Magnésium</label><input type="number" step="1" id="lp_mg" placeholder="Ex: 2000"></div>
+<div class="form-group"><label>Potassium</label><input type="number" step="1" id="lp_k" placeholder="Ex: 25000"></div>
+<div class="form-group"><label>Sodium</label><input type="number" step="1" id="lp_na" placeholder="Ex: 500"></div>
+</div>
+<h4 style="font-size:.88em;margin-top:10px">Oligo-éléments (mg/kg MS = ppm)</h4>
+<div class="form-grid">
+<div class="form-group"><label>Zinc</label><input type="number" step=".1" id="lp_zn" placeholder="Ex: 30"></div>
+<div class="form-group"><label>Cuivre</label><input type="number" step=".1" id="lp_cu" placeholder="Ex: 7"></div>
+<div class="form-group"><label>Sélénium</label><input type="number" step=".001" id="lp_se" placeholder="Ex: 0.04"></div>
+<div class="form-group"><label>Manganèse</label><input type="number" step="1" id="lp_mn" placeholder="Ex: 80"></div>
+<div class="form-group"><label>Fer</label><input type="number" step="1" id="lp_fe" placeholder="Ex: 200"></div>
+<div class="form-group"><label>Iode</label><input type="number" step=".01" id="lp_io" placeholder="Ex: 0.15"></div>
+<div class="form-group"><label>Cobalt</label><input type="number" step=".01" id="lp_co" placeholder="Ex: 0.05"></div>
+</div>
+<div class="alert alert-w" style="margin-top:10px">⚠️ <strong>SME/Fourbure</strong> : vérifiez ESC + Amidon < 10% MS. Si > 12%, cette pâture est DANGEREUSE pour les chevaux métaboliques.</div>
+</div>
+
+<div id="foSrcRegion" style="display:none">
+<div class="alert alert-i" style="margin-bottom:10px">📍 Sélectionnez votre <strong>région / type de sol</strong>. Les valeurs typiques de la pâture locale seront utilisées. Basé sur les données pédogéochimiques INRA/BRGM et les analyses de terrain.</div>
+<div class="form-grid">
+<div class="form-group"><label>Région / Sol</label><select id="regSel" onchange="fillRegion()">
+<option value="">— Choisir —</option>
+<option value="grand_est">Grand Est (Alsace, Lorraine, Champagne) — Loess/alluvions</option>
+<option value="normandie">Normandie — Calcaire/argilo-calcaire, côtier</option>
+<option value="bretagne">Bretagne — Granitique/acide, côtier</option>
+<option value="nord">Nord / Hauts-de-France — Loess/craie</option>
+<option value="idf">Île-de-France — Limon/calcaire</option>
+<option value="centre">Centre-Val de Loire — Calcaire/argile</option>
+<option value="bourgogne">Bourgogne-Franche-Comté — Calcaire/marno-calcaire</option>
+<option value="massif_central">Massif Central (Auvergne) — Volcanique/acide</option>
+<option value="nouvelle_aquitaine">Nouvelle-Aquitaine — Variable (calcaire/sableux)</option>
+<option value="occitanie">Occitanie — Calcaire/schiste</option>
+<option value="paca">PACA / Méditerranée — Calcaire sec</option>
+<option value="rhone_alpes">Rhône-Alpes / Savoie — Alpin/alluvial</option>
+<option value="pays_loire">Pays de la Loire — Schiste/argile</option>
+<option value="corse">Corse — Granitique/schisteux</option>
+</select></div>
+</div>
+<div id="regInfo" style="margin-top:10px"></div>
+</div>
+</div>
+<button class="btn btn-p" style="margin-top:14px" onclick="calcW()">Calculer poids & besoins</button>
+<div id="nR"></div>
+</div>
+</div>
+
+<!-- CHECKUP -->
+<div class="panel" id="p-checkup">
+<div class="card">
+<h2>🩺 Check-up — Anamnèse</h2>
+<h3>Profil Métabolique</h3>
+<div class="chk"><input type="checkbox" id="c_sme"><label for="c_sme">SME (Syndrome Métabolique Équin)</label></div>
+<div class="chk"><input type="checkbox" id="c_cush"><label for="c_cush">PPID (Cushing)</label></div>
+<div class="chk"><input type="checkbox" id="c_fourb"><label for="c_fourb">Historique Fourbure</label></div>
+<h3>Système Digestif</h3>
+<div class="chk"><input type="checkbox" id="c_ulc"><label for="c_ulc">Ulcères gastriques (EGUS)</label></div>
+<div class="form-group" style="max-width:280px"><label>Crottins</label><select id="crot"><option value="ok">Normaux</option><option value="mous">Mous</option><option value="liq">Liquides</option></select></div>
+<h3>Foie & Reins</h3>
+<div class="form-group" style="max-width:350px"><label>Dernier drainage</label><select id="drain"><option value="recent">< 3 mois</option><option value="old">> 6 mois</option><option value="never">Jamais</option></select></div>
+<div class="chk"><input type="checkbox" id="c_chim" onchange="document.getElementById('chimDetails').style.display=this.checked?'block':'none'"><label for="c_chim">Traitement chimique récent (< 30j)</label></div>
+<div id="chimDetails" style="display:none;margin:6px 0 12px 26px;padding:12px;background:var(--surface2);border-radius:10px;border:1px solid var(--border)">
+<p style="font-size:.82em;color:var(--text2);margin-bottom:8px">💊 Cochez le(s) type(s) de traitement administré(s) :</p>
+<div class="chk"><input type="checkbox" id="ch_atb"><label for="ch_atb">💉 Antibiotiques (ex: Excenel, Gentamicine, Sulfamides…)</label></div>
+<div class="chk"><input type="checkbox" id="ch_ains"><label for="ch_ains">💊 Anti-inflammatoires AINS (ex: Équipalazone/Phénylbutazone, Finadyne, Métacam…)</label></div>
+<div class="chk"><input type="checkbox" id="ch_corti"><label for="ch_corti">💉 Corticoïdes (ex: Dexaméthasone, Prednisolone, infiltrations…)</label></div>
+<div class="chk"><input type="checkbox" id="ch_seda"><label for="ch_seda">💤 Sédatifs / Anesthésie (ex: Domosedan, Sédaline, anesthésie générale…)</label></div>
+<div class="chk"><input type="checkbox" id="ch_verm"><label for="ch_verm">🐛 Vermifuge chimique (ex: Equest, Eqvalan, Panacur, Strongid…)</label></div>
+<div class="chk"><input type="checkbox" id="ch_vacc"><label for="ch_vacc">🛡️ Vaccin récent (grippe, tétanos, rhino…)</label></div>
+<div class="chk"><input type="checkbox" id="ch_gastro"><label for="ch_gastro">🫃 Anti-ulcéreux (ex: GastroGard/Oméprazole…)</label></div>
+<div class="chk"><input type="checkbox" id="ch_autre"><label for="ch_autre">📋 Autre traitement</label></div>
+<div class="form-group" style="margin-top:8px"><label style="font-size:.8em">Précisions (produit, durée, dosage…)</label><input id="ch_notes" placeholder="Ex: Excenel 5j, arrêt il y a 10j" style="font-size:.85em"></div>
+</div>
+<h3>Locomoteur</h3>
+<div class="chk"><input type="checkbox" id="c_arth"><label for="c_arth">Arthrose / Molettes</label></div>
+<div class="chk"><input type="checkbox" id="c_tend"><label for="c_tend">Fragilité tendineuse</label></div>
+<h3>Respiratoire</h3>
+<div class="chk"><input type="checkbox" id="c_emph"><label for="c_emph">Emphysème / Asthme (IAD/RAO)</label></div>
+<h3>Reproduction</h3>
+<div class="chk"><input type="checkbox" id="c_gest"><label for="c_gest">Jument gestante</label></div>
+<div class="chk"><input type="checkbox" id="c_lact"><label for="c_lact">Jument en lactation</label></div>
+<h3>Compétition</h3>
+<div class="chk"><input type="checkbox" id="c_comp"><label for="c_comp">Compétition (anti-dopage)</label></div>
+<h3>Autres</h3>
+<div class="chk"><input type="checkbox" id="c_derm"><label for="c_derm">Dermite / Problèmes cutanés</label></div>
+<div class="chk"><input type="checkbox" id="c_sab"><label for="c_sab">Sabots fragiles</label></div>
+<div class="chk"><input type="checkbox" id="c_para" onchange="document.getElementById('paraDetails').style.display=this.checked?'block':'none'"><label for="c_para">Parasitisme</label></div>
+<div id="paraDetails" style="display:none;margin:6px 0 12px 26px;padding:12px;background:var(--surface2);border-radius:10px;border:1px solid var(--border)">
+<p style="font-size:.82em;color:var(--text2);margin-bottom:8px">🐛 Informations vermifugation et parasitisme :</p>
+<div class="form-group" style="max-width:300px;margin-bottom:8px"><label style="font-size:.8em">Dernier vermifuge</label><select id="pa_last"><option value="none">Jamais / Ne sait pas</option><option value="1m">< 1 mois</option><option value="3m">1 à 3 mois</option><option value="6m">3 à 6 mois</option><option value="12m">6 à 12 mois</option><option value="plus">+ de 12 mois</option></select></div>
+<div class="form-group" style="max-width:300px;margin-bottom:8px"><label style="font-size:.8em">Produit utilisé</label><select id="pa_prod"><option value="unknown">Ne sait pas</option><option value="iver">Ivermectine (Eqvalan, Furexel, Bimectin…)</option><option value="iver_prazi">Ivermectine + Praziquantel (Eqvalan Duo, Equimax…)</option><option value="moxi">Moxidectine (Equest)</option><option value="moxi_prazi">Moxidectine + Praziquantel (Equest Pramox)</option><option value="fenbend">Fenbendazole (Panacur)</option><option value="pyrantel">Pyrantel (Strongid)</option><option value="naturel">Vermifuge naturel (ail, courge…)</option></select></div>
+<div class="form-group" style="max-width:300px;margin-bottom:8px"><label style="font-size:.8em">Coproscopie (examen crottins)</label><select id="pa_copro"><option value="none">Pas faite</option><option value="neg">Négative (0 œuf)</option><option value="low">Faible (< 200 OPG)</option><option value="mod">Modérée (200-500 OPG)</option><option value="high">Forte (> 500 OPG)</option><option value="tape">Ténia détecté</option></select></div>
+<div class="chk"><input type="checkbox" id="pa_gast"><label for="pa_gast">🔴 Gastérophiles (larves dans l'estomac)</label></div>
+<div class="chk"><input type="checkbox" id="pa_ext"><label for="pa_ext">🪳 Parasites externes (poux, teigne, gale…)</label></div>
+<div class="form-group" style="margin-top:8px"><label style="font-size:.8em">Précisions (symptômes, historique…)</label><input id="pa_notes" placeholder="Ex: ventre gonflé, poil piqué, diarrhées…" style="font-size:.85em"></div>
+</div>
+<div class="chk"><input type="checkbox" id="c_stress"><label for="c_stress">Stress / Nervosité</label></div>
+<div class="chk"><input type="checkbox" id="c_myo"><label for="c_myo">Myosite / Coup de sang</label></div>
+<div class="chk"><input type="checkbox" id="c_hypp"><label for="c_hypp">HYPP (Quarter Horse)</label></div>
+<button class="btn btn-p" style="margin-top:16px" onclick="saveCk()">Enregistrer</button>
+<div id="ckA"></div>
+</div>
+</div>
+
+<!-- ANALYSIS -->
+<div class="panel" id="p-analysis">
+<div class="card">
+<h2>🔬 Complémentation Phyto</h2>
+<p style="color:var(--text2);margin-bottom:14px">Choisissez votre mode : sans analyse pour un complément terrain, ou avec résultats labo pour un protocole de précision.</p>
+
+<div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+<button class="btn" id="btnNolab" onclick="switchAType('nolab')" style="flex:1;min-width:140px;background:var(--surface2);color:var(--text)">🌿 Sans Analyse</button>
+<button class="btn btn-p" id="btnBlood" onclick="switchAType('blood')" style="flex:1;min-width:140px">🩸 Prise de Sang</button>
+<button class="btn" id="btnHair" onclick="switchAType('hair')" style="flex:1;min-width:140px;background:var(--surface2);color:var(--text)">💇 Analyse de Crin</button>
+</div>
+<input type="hidden" id="aType" value="blood">
+
+<div id="aTypeInfo" style="padding:10px;background:var(--surface2);border-radius:10px;border:1px solid var(--border);margin-bottom:14px">
+<p style="font-size:.82em;color:var(--text2);margin:0">🩸 <strong>Prise de sang</strong> — Reflète le statut <strong>actuel</strong> du cheval (instantané). Idéal pour urgences et bilans ponctuels.</p>
+</div>
+
+<div id="aFormNolab" style="display:none">
+<div class="alert alert-i" style="margin-bottom:14px">🌿 <strong>Mode sans analyse</strong> — Le protocole sera basé sur les <strong>carences typiques du fourrage</strong> (calculées dans l'onglet Profil) et les <strong>pathologies cochées</strong> dans le Check-up. Pas besoin de résultats labo !</div>
+
+<h3>🎯 Objectifs de votre complément</h3>
+<p style="font-size:.82em;color:var(--text2);margin-bottom:10px">Cochez ce que vous souhaitez cibler (en plus des carences fourrage détectées automatiquement) :</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px">
+<div class="chk"><input type="checkbox" id="nl_base" checked><label for="nl_base">🧱 Base terrain (drainage + minéraux essentiels)</label></div>
+<div class="chk"><input type="checkbox" id="nl_sabots"><label for="nl_sabots">🦶 Sabots & Corne</label></div>
+<div class="chk"><input type="checkbox" id="nl_peau"><label for="nl_peau">✨ Peau & Poil</label></div>
+<div class="chk"><input type="checkbox" id="nl_muscle"><label for="nl_muscle">💪 Muscles & Récupération</label></div>
+<div class="chk"><input type="checkbox" id="nl_articu"><label for="nl_articu">🦴 Articulations & Souplesse</label></div>
+<div class="chk"><input type="checkbox" id="nl_calme"><label for="nl_calme">🧘 Calme & Anti-stress</label></div>
+<div class="chk"><input type="checkbox" id="nl_immun"><label for="nl_immun">🛡️ Immunité & Vitalité</label></div>
+<div class="chk"><input type="checkbox" id="nl_digest"><label for="nl_digest">🫃 Digestion & Flore</label></div>
+<div class="chk"><input type="checkbox" id="nl_respi"><label for="nl_respi">🫁 Respiratoire</label></div>
+<div class="chk"><input type="checkbox" id="nl_senior"><label for="nl_senior">👴 Senior (20+ ans)</label></div>
+<div class="chk"><input type="checkbox" id="nl_detox"><label for="nl_detox">♻️ Détox & Drainage profond</label></div>
+</div>
+
+<h3 style="margin-top:16px">⚠️ Précautions</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px">
+<div class="chk"><input type="checkbox" id="nl_sme"><label for="nl_sme">🔶 SME / Fourbure / Cushing</label></div>
+<div class="chk"><input type="checkbox" id="nl_gest"><label for="nl_gest">🫃 Jument gestante</label></div>
+<div class="chk"><input type="checkbox" id="nl_comp"><label for="nl_comp">🏇 Compétition (anti-dopage)</label></div>
+</div>
+
+<div class="alert alert-w" style="margin-top:14px">⚠️ Ce mode donne un <strong>protocole estimé</strong> basé sur les carences connues des fourrages français. Pour un protocole de <strong>précision</strong>, faites une prise de sang ou un minéralogramme (crin).</div>
+</div>
+
+<div id="aFormBlood">
+<h3>Macrominéraux</h3>
+<div class="form-grid">
+<div class="form-group"><label>Calcium (mg/L) — <span style="color:var(--accent)">N: 110–135</span></label><input type="number" step="1" id="a_ca" placeholder="Ex: 95"></div>
+<div class="form-group"><label>Phosphore (mg/L) — <span style="color:var(--accent)">N: 25–55</span></label><input type="number" step="1" id="a_p" placeholder="Ex: 60"></div>
+<div class="form-group"><label>Magnésium (mg/L) — <span style="color:var(--accent)">N: 18–28</span></label><input type="number" step=".1" id="a_mg" placeholder="Ex: 14"></div>
+<div class="form-group"><label>Potassium (mmol/L) — <span style="color:var(--accent)">N: 2.5–5</span></label><input type="number" step=".1" id="a_k" placeholder="Ex: 3.2"></div>
+<div class="form-group"><label>Sodium (mmol/L) — <span style="color:var(--accent)">N: 132–146</span></label><input type="number" step="1" id="a_na" placeholder="Ex: 138"></div>
+</div>
+<h3>Oligo-éléments</h3>
+<div class="form-grid">
+<div class="form-group"><label>Zinc (mg/L) — <span style="color:var(--accent)">N: 0.6–1.2</span></label><input type="number" step=".01" id="a_zn" placeholder="Ex: 0.45"></div>
+<div class="form-group"><label>Cuivre (mg/L) — <span style="color:var(--accent)">N: 0.5–1.5</span></label><input type="number" step=".01" id="a_cu" placeholder="Ex: 0.38"></div>
+<div class="form-group"><label>Sélénium (µg/L) — <span style="color:var(--accent)">N: 80–200</span></label><input type="number" step="1" id="a_se" placeholder="Ex: 45"></div>
+<div class="form-group"><label>Fer (µmol/L) — <span style="color:var(--accent)">N: 15–35</span></label><input type="number" step=".1" id="a_fe" placeholder="Ex: 42"></div>
+<div class="form-group"><label>Manganèse (µg/L) — <span style="color:var(--accent)">N: 1–3</span></label><input type="number" step=".1" id="a_mn" placeholder="Ex: 0.8"></div>
+<div class="form-group"><label>Iode (µg/L) — <span style="color:var(--accent)">N: 50–200</span></label><input type="number" step="1" id="a_io" placeholder="Optionnel"></div>
+<div class="form-group"><label>Cobalt (µg/L) — <span style="color:var(--accent)">N: 0.5–2</span></label><input type="number" step=".1" id="a_co" placeholder="Optionnel"></div>
+<div class="form-group"><label>Chrome (µg/L) — <span style="color:var(--accent)">N: 1–5</span></label><input type="number" step=".1" id="a_cr" placeholder="Optionnel"></div>
+</div>
+<h3>Vitamines</h3>
+<div class="form-grid">
+<div class="form-group"><label>Vitamine E (mg/L) — <span style="color:var(--accent)">N: 2–5</span></label><input type="number" step=".1" id="a_ve" placeholder="Ex: 1.2"></div>
+<div class="form-group"><label>Vitamine A (µg/L) — <span style="color:var(--accent)">N: 200–500</span></label><input type="number" step="1" id="a_va" placeholder="Ex: 150"></div>
+<div class="form-group"><label>Vitamine D (nmol/L) — <span style="color:var(--accent)">N: 20–50</span></label><input type="number" step="1" id="a_vd" placeholder="Optionnel"></div>
+</div>
+<h3>Marqueurs Hépatiques</h3>
+<div class="form-grid">
+<div class="form-group"><label>GGT (UI/L) — <span style="color:var(--accent)">N: 5–25</span></label><input type="number" step="1" id="a_ggt" placeholder="Ex: 38"></div>
+<div class="form-group"><label>ASAT (UI/L) — <span style="color:var(--accent)">N: 150–400</span></label><input type="number" step="1" id="a_asat" placeholder="Ex: 520"></div>
+</div>
+</div>
+
+<div id="aFormHair" style="display:none">
+<h3>Macrominéraux (crin µg/g = ppm)</h3>
+<div class="form-grid">
+<div class="form-group"><label>Calcium (µg/g) — <span style="color:var(--accent)">N: 500–2000</span></label><input type="number" step="1" id="h_ca" placeholder="Ex: 380"></div>
+<div class="form-group"><label>Phosphore (µg/g) — <span style="color:var(--accent)">N: 100–200</span></label><input type="number" step="1" id="h_p" placeholder="Ex: 85"></div>
+<div class="form-group"><label>Magnésium (µg/g) — <span style="color:var(--accent)">N: 200–800</span></label><input type="number" step="1" id="h_mg" placeholder="Ex: 150"></div>
+<div class="form-group"><label>Potassium (µg/g) — <span style="color:var(--accent)">N: 200–2000</span></label><input type="number" step="1" id="h_k" placeholder="Ex: 450"></div>
+<div class="form-group"><label>Sodium (µg/g) — <span style="color:var(--accent)">N: 100–800</span></label><input type="number" step="1" id="h_na" placeholder="Ex: 250"></div>
+</div>
+<h3>Oligo-éléments (crin µg/g = ppm)</h3>
+<div class="form-grid">
+<div class="form-group"><label>Zinc (µg/g) — <span style="color:var(--accent)">N: 120–200</span></label><input type="number" step="1" id="h_zn" placeholder="Ex: 85"></div>
+<div class="form-group"><label>Cuivre (µg/g) — <span style="color:var(--accent)">N: 8–16</span></label><input type="number" step=".1" id="h_cu" placeholder="Ex: 5.2"></div>
+<div class="form-group"><label>Sélénium (µg/g) — <span style="color:var(--accent)">N: 0.5–1.2</span></label><input type="number" step=".01" id="h_se" placeholder="Ex: 0.28"></div>
+<div class="form-group"><label>Fer (µg/g) — <span style="color:var(--accent)">N: 8–30</span></label><input type="number" step=".1" id="h_fe" placeholder="Ex: 45"></div>
+<div class="form-group"><label>Manganèse (µg/g) — <span style="color:var(--accent)">N: 2–10</span></label><input type="number" step=".1" id="h_mn" placeholder="Ex: 1.5"></div>
+<div class="form-group"><label>Iode (µg/g) — <span style="color:var(--accent)">N: 0.2–2</span></label><input type="number" step=".01" id="h_io" placeholder="Optionnel"></div>
+<div class="form-group"><label>Cobalt (µg/g) — <span style="color:var(--accent)">N: 0.02–0.1</span></label><input type="number" step=".001" id="h_co" placeholder="Optionnel"></div>
+<div class="form-group"><label>Chrome (µg/g) — <span style="color:var(--accent)">N: 0.1–0.5</span></label><input type="number" step=".01" id="h_cr" placeholder="Optionnel"></div>
+</div>
+<h3>Métaux Lourds & Toxiques (crin µg/g)</h3>
+<div class="form-grid">
+<div class="form-group"><label>Aluminium (µg/g) — <span style="color:var(--danger)">Seuil: < 10</span></label><input type="number" step=".1" id="h_al" placeholder="Ex: 12.5"></div>
+<div class="form-group"><label>Plomb (µg/g) — <span style="color:var(--danger)">Seuil: < 1</span></label><input type="number" step=".01" id="h_pb" placeholder="Ex: 0.8"></div>
+<div class="form-group"><label>Mercure (µg/g) — <span style="color:var(--danger)">Seuil: < 0.1</span></label><input type="number" step=".001" id="h_hg" placeholder="Ex: 0.05"></div>
+<div class="form-group"><label>Cadmium (µg/g) — <span style="color:var(--danger)">Seuil: < 0.05</span></label><input type="number" step=".001" id="h_cd" placeholder="Optionnel"></div>
+<div class="form-group"><label>Arsenic (µg/g) — <span style="color:var(--danger)">Seuil: < 0.5</span></label><input type="number" step=".01" id="h_as" placeholder="Optionnel"></div>
+</div>
+<div class="alert alert-i">💡 Le minéralogramme capillaire reflète le statut sur <strong>3 à 6 mois</strong>. Il est complémentaire de la prise de sang (statut immédiat). Les deux analyses ensemble donnent le bilan le plus fiable.</div>
+</div>
+
+<div id="aFormHepatic" style="display:none">
+<h3>Marqueurs Hépatiques (sang)</h3>
+<p style="font-size:.82em;color:var(--text2);margin-bottom:8px">Si vous avez aussi les marqueurs hépatiques de la prise de sang, renseignez-les ici :</p>
+<div class="form-grid">
+<div class="form-group"><label>GGT (UI/L) — <span style="color:var(--accent)">N: 5–25</span></label><input type="number" step="1" id="h_ggt" placeholder="Ex: 38"></div>
+<div class="form-group"><label>ASAT (UI/L) — <span style="color:var(--accent)">N: 150–400</span></label><input type="number" step="1" id="h_asat" placeholder="Ex: 520"></div>
+</div>
+</div>
+
+<button class="btn btn-p" style="margin-top:18px" onclick="runAnalysis()">🧬 Analyser & Générer Protocole Phyto</button>
+</div>
+</div>
+
+<!-- RATION -->
+<div class="panel" id="p-ration">
+<div class="card">
+<h2>⚗️ Complément Sur-Mesure</h2>
+<div id="ratOut"><div class="alert alert-i">⏳ Remplissez Profil + Check-up + Analyse puis cliquez "Analyser"</div></div>
+</div>
+</div>
+
+<!-- PLANTS -->
+<div class="panel" id="p-plants">
+<div class="card">
+<h2>🌿 Encyclopédie — 103 Plantes, Algues & Aliments</h2>
+<div class="sbox"><input id="pSrch" placeholder="Rechercher..." oninput="fP()"></div>
+<div class="pills" id="pills"></div>
+<div class="pgrid" id="pGrid"></div>
+</div>
+</div>
+
+<!-- MINERALS FULL DETAIL -->
+<div class="panel" id="p-minerals">
+<div class="card">
+<h2>⚙️ Guide Complet des Minéraux Équins</h2>
+<p style="color:var(--text2);margin-bottom:14px">Besoins journaliers pour cheval 500 kg — Données validées par la recherche vétérinaire internationale</p>
+
+<h3>Macrominéraux</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Minéral</th><th>Besoin/jour (500kg)</th><th>Ratio clé</th><th>Rôles principaux</th><th>Source Plante</th><th>Carence</th><th>Excès</th></tr>
+<tr><td><strong>Calcium</strong></td><td>20g entretien<br>36g gestation<br>56g lactation</td><td>Ca:P ≥ 1.2:1<br>Idéal 1.5:1</td><td>Os, dents, contraction musculaire, coagulation, enzymes</td><td>Lithothamne (35%), Luzerne, Sésame</td><td>Ostéomalacie, rachitisme, boiterie</td><td>Calculs urinaires, cystite sableuse. Max 2% MS</td></tr>
+<tr><td><strong>Phosphore</strong></td><td>14g entretien<br>26g gestation<br>36g lactation</td><td>Lié au Ca</td><td>Os, membranes cellulaires, ATP (énergie)</td><td>Son de riz (déshuilé), Luzerne, Graines</td><td>Faiblesse osseuse, retard croissance</td><td>Maladie de Miller ("grosse tête"). Max 1% MS</td></tr>
+<tr><td><strong>Magnésium</strong></td><td>7.5g entretien<br>10-15g travail/lact.</td><td>K/(Ca+Mg) < 2.2</td><td>300+ enzymes, relaxation musculaire, nerfs, ATP, os</td><td>Laitue de Mer (record), Fucus, Graines de Lin</td><td>Tétanie, nervosité, crampes, myopathie</td><td>Rare — excrété dans urine. Prudence si pb rénal</td></tr>
+<tr><td><strong>Potassium</strong></td><td>25g (1% MS)</td><td>Électrolyte</td><td>Équilibre fluides, contraction musculaire, nerfs</td><td>Ortie (22g/kg), Pissenlit, Dulse</td><td>Fatigue, faiblesse, résistance effort</td><td>Rare. HYPP chez Quarter Horse</td></tr>
+<tr><td><strong>Sodium</strong></td><td>Min 10g (sel 30g/j)</td><td>Avec Chlorure</td><td>Équilibre hydrique, soif, nerfs, absorption nutriments</td><td>Sel marin brut, Algues</td><td>Déshydratation, pica, léthargie, coup chaleur</td><td>Rare si eau à volonté</td></tr>
+<tr><td><strong>Chlorure</strong></td><td>Avec sodium (sel)</td><td>Avec Sodium</td><td>Équilibre acido-basique, digestion (HCl estomac)</td><td>Sel marin brut</td><td>Associé au sodium</td><td>Très rare</td></tr>
+<tr><td><strong>Soufre</strong></td><td>Via acides aminés</td><td>N:S < 10:1</td><td>Kératine (sabots/crins), glutathion, cartilage, biotine</td><td>Ail, Crucifères, MSM naturel</td><td>Jamais rapportée</td><td>Rare — léthargie si inorganique massif</td></tr>
+</table></div>
+
+<h3>Oligo-éléments (Microminéraux)</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Minéral</th><th>Besoin/jour</th><th>Ratio clé</th><th>Rôles</th><th>Source Plante</th><th>Carence</th><th>Toxicité</th></tr>
+<tr><td><strong>Zinc</strong></td><td>400-500 mg</td><td>Fe:Zn:Cu = 4:3:1</td><td>Kératine, insuline, croissance os, immunité, antioxydant, cicatrisation</td><td>Fucus (150mg/kg), Courge (85mg/kg), Levure bière</td><td>Poil terne, sabots fissurés, décoloration crinière</td><td>Max 5000mg — OCD, articulations élargies</td></tr>
+<tr><td><strong>Cuivre</strong></td><td>100-300 mg</td><td>Zn:Cu = 3:1</td><td>Collagène, élastine, mélanine, kératine, transferrine (fer), antioxydant (SOD)</td><td>Fucus (38mg/kg), Sésame (40mg/kg), Kelp</td><td>Robe délavée, sabots fendus, OCD poulain, rupture aorte</td><td>Max 2500mg — Rare. Sols contaminés fongicides</td></tr>
+<tr><td><strong>Sélénium</strong></td><td>1-3 mg (optimal 2-3)</td><td>Toujours avec Vit E</td><td>Antioxydant (glutathion peroxydase), thyroïde, muscles, immunité</td><td>Astragale (12mg/kg), Levure séléniée</td><td>Maladie muscle blanc (poulain), fatigue, faiblesse</td><td>Max 20mg/j — Perte crins/sabots, diarrhée. Organique plus sûr</td></tr>
+<tr><td><strong>Fer</strong></td><td>400 mg (souvent en excès)</td><td>Fe:Zn:Cu = 4:3:1</td><td>Hémoglobine (transport O₂), enzymes</td><td>Ortie (280mg/kg), Spiruline, Dulse — ⚠️ souvent excès</td><td>Anémie (rare adulte, possible poulain)</td><td>Résistance insuline, stress oxydatif, carence Cu/Zn secondaire</td></tr>
+<tr><td><strong>Manganèse</strong></td><td>400-500 mg</td><td>—</td><td>Formation os, sulfate chondroïtine (cartilage), métabolisme glucides/lipides</td><td>Fucus, Prêle, Levure de bière</td><td>Rare — malformation os chez poulain</td><td>Jamais rapportée</td></tr>
+<tr><td><strong>Iode</strong></td><td>3.5 mg</td><td>—</td><td>Hormones thyroïdiennes T3/T4, métabolisme basal, croissance</td><td>Kelp (600-800mg/kg) ⚠️ dosage précis, Fucus</td><td>Goitre, hypothyroïdie, poulain sans poil</td><td>Goitre aussi ! Sécrétions, fièvre. Max 50mg/j algue</td></tr>
+<tr><td><strong>Cobalt</strong></td><td>1 mg</td><td>—</td><td>Synthèse vitamine B12 (microflore intestin postérieur)</td><td>Algues, Spiruline</td><td>Jamais rapportée (→ carence B12)</td><td>Cardio, repro, thyroïde si massif</td></tr>
+<tr><td><strong>Chrome</strong></td><td>Non établi</td><td>—</td><td>Signalisation insuline, absorption glucose</td><td>Levure de chrome naturelle, Spiruline</td><td>Jamais rapportée</td><td>Max 50mg — Rare chez chevaux</td></tr>
+<tr><td><strong>Molybdène</strong></td><td>Non établi</td><td>Cu:Mo ≥ 4:1</td><td>Synthèse ADN/ARN, cofacteur enzymatique</td><td>Fourrages (suffisant)</td><td>Jamais rapportée</td><td>Bloque absorption cuivre</td></tr>
+<tr><td><strong>Fluorure</strong></td><td>Non établi</td><td>—</td><td>Dureté os et dents (fluorapatite)</td><td>Eau, sol (largement disponible)</td><td>Jamais rapportée</td><td>Fluorose — émail tacheté, boiterie. Max 40mg/kg MS</td></tr>
+</table></div>
+
+<h3>Vitamines Essentielles (Sources 100% Organiques)</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Vitamine</th><th>Besoin/jour</th><th>Source Plante</th><th>Absorption</th><th>Rôle clé</th></tr>
+<tr><td><strong>A (Rétinol)</strong></td><td>30 000–50 000 UI</td><td>Luzerne (bêta-carotène), Spiruline</td><td>65% conversion hépatique — Vecteur gras obligatoire</td><td>Vision, muqueuses, sabots, immunité</td></tr>
+<tr><td><strong>D3</strong></td><td>3 000–4 000 UI</td><td>Lichen d'Islande (source rare D3 végétale)</td><td>90% — supérieur D2</td><td>Fixation calcium/phosphore os</td></tr>
+<tr><td><strong>E (α-tocophérol)</strong></td><td>1 000–2 000 UI (sport: +50%)</td><td>Huile germe blé (record), Tournesol</td><td>95% forme RRR — TOUJOURS avec Sélénium</td><td>Antioxydant majeur, muscles, reproduction</td></tr>
+<tr><td><strong>K</strong></td><td>Via fourrage + flore</td><td>Feuilles vertes, synthèse intestinale</td><td>Endogène si fourrage qualité</td><td>Coagulation sanguine</td></tr>
+<tr><td><strong>B1 (Thiamine)</strong></td><td>30–50 mg</td><td>Levure bière, Fenugrec</td><td>Bonne</td><td>Métabolisme glucides, nerfs</td></tr>
+<tr><td><strong>B2 (Riboflavine)</strong></td><td>30–50 mg</td><td>Spiruline, Ortie</td><td>Bonne</td><td>Croissance tissulaire</td></tr>
+<tr><td><strong>B3 (Niacine)</strong></td><td>50–100 mg</td><td>Tournesol, Son de riz</td><td>Bonne</td><td>Énergie cellulaire</td></tr>
+<tr><td><strong>B5 (Pantothénique)</strong></td><td>40–60 mg</td><td>Levure bière</td><td>Bonne</td><td>Synthèse hormonale</td></tr>
+<tr><td><strong>B6 (Pyridoxine)</strong></td><td>30–50 mg</td><td>Lin, Levure bière</td><td>Bonne</td><td>Métabolisme protéines</td></tr>
+<tr><td><strong>B8 (Biotine)</strong></td><td>20 mg</td><td>Levure bière (0.4mg/g), Algues brunes</td><td>Excellente</td><td>Corne sabot, poil, kératine</td></tr>
+<tr><td><strong>B9 (Folates)</strong></td><td>15–20 mg</td><td>Luzerne, Épinard (feuille)</td><td>Bonne</td><td>Division cellulaire, gestation</td></tr>
+<tr><td><strong>B12 (Cobalamine)</strong></td><td>0.1–0.2 mg</td><td>Spiruline, Chlorelle (+ synthèse via cobalt intestinal)</td><td>Variable</td><td>Globules rouges, métabolisme</td></tr>
+<tr><td><strong>C (Ascorbique)</strong></td><td>Synthèse endogène + 15-30g cynorrhodon</td><td>Cynorrhodon (6000mg/kg), Cassis</td><td>Forme organique >> synthétique</td><td>Antioxydant, collagène, booste fer x3</td></tr>
+</table></div>
+
+<div class="alert alert-i">💡 <strong>Règle d'or :</strong> Les vitamines liposolubles (A, D, E, K) NÉCESSITENT un vecteur gras (huile de lin ou germe de blé) pour être absorbées.</div>
+<div class="alert alert-w">⚠️ <strong>Rapport Fe:Zn:Cu :</strong> Le fer est souvent en EXCÈS dans les fourrages et l'eau. L'excès de fer bloque l'absorption du zinc et du cuivre → carences secondaires même si apport total suffisant.</div>
+</div>
+</div>
+
+<!-- PATHO -->
+<div class="panel" id="p-patho">
+<div class="card">
+<h2>💊 Protocoles par Pathologie</h2>
+<div class="form-group" style="max-width:400px"><select id="patSel" onchange="showPat()"><option value="">-- Choisir --</option>
+<option value="sme">SME / Résistance à l'insuline</option><option value="cushing">PPID (Cushing)</option><option value="fourbure">Fourbure</option><option value="ulcers">Ulcères (EGUS)</option><option value="arthrose">Arthrose</option><option value="emphyseme">Emphysème / Asthme</option><option value="hepatique">Insuffisance hépatique</option><option value="anemie">Anémie</option><option value="dermite">Dermite / Peau</option><option value="sabots">Sabots fragiles</option><option value="parasites">Parasitisme</option><option value="stress_c">Stress / Nervosité</option><option value="myosite">Myosite</option><option value="coliques_sable">Coliques de sable</option><option value="metaux">Métaux lourds</option><option value="hypp">HYPP</option><option value="ocd">OCD (Ostéochondrose)</option><option value="uveite">Uvéite récurrente</option><option value="coliques_stress">Coliques de stress</option><option value="rhabdomyolyse">Rhabdomyolyse d'effort</option><option value="vieillissement">Vieillissement / Cheval Senior</option><option value="headshaking">Head shaking / Encensement</option>
+</select></div>
+<div id="patOut"></div>
+</div>
+</div>
+
+<!-- SAFETY -->
+<div class="panel" id="p-safety">
+<div class="card">
+<h2>🛡️ Sécurité & Toxicité</h2>
+<h3>🚫 BLACKLIST — Plantes Mortelles</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Plante</th><th>Risque</th><th>Dose Létale</th><th>Symptômes</th></tr>
+<tr><td>Séneçon de Jacob</td><td><span class="tag tag-danger">MORTEL</span></td><td>Cumulative</td><td>Destruction irréversible foie (alcaloïdes pyrrolizidiniques)</td></tr>
+<tr><td>If (Taxus)</td><td><span class="tag tag-danger">MORTEL</span></td><td>100-200g</td><td>Arrêt cardiaque foudroyant</td></tr>
+<tr><td>Laurier Rose</td><td><span class="tag tag-danger">MORTEL</span></td><td>30-60g feuilles</td><td>Cardiotoxicité</td></tr>
+<tr><td>Robinier (Faux-Acacia)</td><td><span class="tag tag-danger">GRAVE</span></td><td>150g écorce</td><td>Coliques violentes, neurologie</td></tr>
+<tr><td>Érable Syriaque / Negundo</td><td><span class="tag tag-danger">MORTEL</span></td><td>Quelques feuilles/samares</td><td>Myopathie atypique (Hypoglycine A)</td></tr>
+<tr><td>Arnica (voie interne)</td><td><span class="tag tag-danger">TOXIQUE</span></td><td>Toute dose orale</td><td>Gastro-entérite hémorragique</td></tr>
+<tr><td>Digitale</td><td><span class="tag tag-danger">MORTEL</span></td><td>100g</td><td>Arythmie cardiaque fatale</td></tr>
+<tr><td>Thuya</td><td><span class="tag tag-danger">TOXIQUE</span></td><td>Variable</td><td>Convulsions, avortement</td></tr>
+<tr><td>Jusquiame / Datura</td><td><span class="tag tag-danger">MORTEL</span></td><td>Faible</td><td>Mydriase, tachycardie, délire, mort</td></tr>
+</table></div>
+
+<h3>⚠️ Seuils de Toxicité Plantes Médicinales</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Plante</th><th>Max/jour (500kg)</th><th>Risque si excès</th></tr>
+<tr><td>Ail</td><td>20g</td><td>Anémie à corps de Heinz (destruction GR)</td></tr>
+<tr><td>Sélénium total</td><td>5mg TOTAL / 20mg toxique</td><td>Chute sabots, perte crins</td></tr>
+<tr><td>Fucus/Kelp (Iode)</td><td>100g algue / 50mg iode</td><td>Dysfonction thyroïdienne</td></tr>
+<tr><td>Réglisse</td><td>30g</td><td>Rétention d'eau, hypertension</td></tr>
+<tr><td>Prêle</td><td>30g</td><td>Irritation rénale</td></tr>
+<tr><td>Cannelle Cassia</td><td>INTERDITE</td><td>Hépatotoxique (coumarine) — Ceylan uniquement</td></tr>
+<tr><td>Eucalyptus</td><td>20g</td><td>Irritation muqueuse si surdosé</td></tr>
+</table></div>
+
+<h3>⛔ Interactions Dangereuses</h3>
+<div class="alert alert-d">🚨 <strong>Anticoagulants + Reine des Prés / Saule :</strong> Hémorragie !</div>
+<div class="alert alert-d">🚨 <strong>Diurétiques + Pissenlit / Artichaut :</strong> Déshydratation, perte potassium</div>
+<div class="alert alert-w">⚠️ <strong>Jument gestante :</strong> Harpago, Gattilier, Fenugrec, Valériane = INTERDITS</div>
+<div class="alert alert-w">⚠️ <strong>Cushing :</strong> Réglisse INTERDITE (rétention)</div>
+<div class="alert alert-w">⚠️ <strong>Pathologie rénale :</strong> Prêle, Genièvre contre-indiqués</div>
+<div class="alert alert-w">⚠️ <strong>Excès fer :</strong> Éviter Ortie, Spiruline, eau ferrugineuse — Le fer bloque Zn et Cu</div>
+<div class="alert alert-i">💡 <strong>Fluorure :</strong> Si eau > 4mg/L fluor → risque fluorose. Vérifier source eau</div>
+
+<h3>🏇 Substances Dopantes (FEI)</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Plante</th><th>Substance</th><th>Délai</th></tr>
+<tr><td>Harpagophytum</td><td>Harpagosides</td><td><span class="tag tag-doping">48-72h</span></td></tr>
+<tr><td>Valériane</td><td>Valépotriates</td><td><span class="tag tag-doping">48-72h</span></td></tr>
+<tr><td>Camomille</td><td>Apigénine</td><td><span class="tag tag-doping">48h</span></td></tr>
+<tr><td>Reine des Prés</td><td>Acide salicylique</td><td><span class="tag tag-doping">48h</span></td></tr>
+<tr><td>Saule Blanc</td><td>Salicine</td><td><span class="tag tag-doping">48h</span></td></tr>
+<tr><td>Houblon</td><td>Lupuline</td><td><span class="tag tag-doping">48h</span></td></tr>
+<tr><td>Lavande</td><td>Linalol</td><td><span class="tag tag-doping">48h</span></td></tr>
+</table></div>
+</div>
+</div>
+
+<!-- CHRONO -->
+<div class="panel" id="p-chrono">
+<div class="card">
+<h2>⏰ Chronobiologie d'Absorption</h2>
+<div class="tbl-wrap"><table>
+<tr><th>Nutriment A</th><th>Nutriment B</th><th>Règle</th><th>Raison</th></tr>
+<tr><td>Fer (Ortie)</td><td>Calcium (Lithothamne)</td><td><span class="tag tag-warn">Séparer 12h</span></td><td>Ca bloque Fe intestinal</td></tr>
+<tr><td>Zinc (Fucus)</td><td>Fer (Ortie/excès)</td><td><span class="tag tag-warn">Séparer 12h</span></td><td>Fe écrase Zn sur mêmes récepteurs</td></tr>
+<tr><td>Mg (Laitue Mer)</td><td>Ca (Lithothamne)</td><td><span class="tag tag-warn">Séparer 12h</span></td><td>Même canal d'entrée cellulaire</td></tr>
+<tr><td>Cu (Sésame)</td><td>Zn (Courge)</td><td><span class="tag tag-safe">Ensemble OK</span></td><td>Synergie si ratio 1:3</td></tr>
+<tr><td>Vit E (Germe blé)</td><td>Se (Astragale)</td><td><span class="tag tag-safe">Ensemble OBLIGATOIRE</span></td><td>Co-dépendants</td></tr>
+<tr><td>Vit C (Cynorrhodon)</td><td>Fer (Ortie)</td><td><span class="tag tag-safe">Ensemble OK</span></td><td>Vit C × 3 absorption Fe</td></tr>
+<tr><td>Vit D3 (Lichen)</td><td>Ca (Lithothamne)</td><td><span class="tag tag-safe">Ensemble OK</span></td><td>D3 ouvre la porte des os pour Ca</td></tr>
+<tr><td>K élevé (herbe printemps)</td><td>Mg + Ca</td><td><span class="tag tag-warn">K/(Ca+Mg) < 2.2</span></td><td>K élevé bloque absorption Mg</td></tr>
+</table></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px">
+<div class="card" style="border-left:4px solid var(--warn)">
+<h3>☀️ MATIN</h3><p style="color:var(--text2);font-size:.82em">Énergie, Zn, Cu, Fe, Vit C, Mn</p>
+<div class="tl">
+<div class="tli"><span class="tt">Fucus + Courge + Sésame</span><div class="tc">Zn/Cu/Mn ratio 3:1 + Iode</div></div>
+<div class="tli"><span class="tt">Ortie + Cynorrhodon</span><div class="tc">Fe + Vit C synergie ×3</div></div>
+<div class="tli"><span class="tt">Huile de Lin</span><div class="tc">Vecteur Vit A/D/E/K + Oméga-3</div></div>
+<div class="tli"><span class="tt">Levure de Bière</span><div class="tc">Vit B complètes + Biotine</div></div>
+</div>
+</div>
+<div class="card" style="border-left:4px solid var(--info)">
+<h3>🌙 SOIR</h3><p style="color:var(--text2);font-size:.82em">Ca, Mg, Se, Vit E, Vit D3</p>
+<div class="tl">
+<div class="tli"><span class="tt">Lithothamne + Lichen Islande</span><div class="tc">Ca marin + Vit D3 (fixation)</div></div>
+<div class="tli"><span class="tt">Laitue de Mer</span><div class="tc">Mg organique (relaxation)</div></div>
+<div class="tli"><span class="tt">Astragale + Huile Germe Blé</span><div class="tc">Se + Vit E (indissociables)</div></div>
+</div>
+</div>
+</div>
+<div class="alert alert-i" style="margin-top:14px">💡 <strong>Drainage :</strong> Ne jamais drainage + complémentation minérale en même temps. 10 jours de séparation minimum.</div>
+<div class="alert alert-w">⚠️ <strong>Sel :</strong> Minimum 30g/jour sel brut à volonté — Indépendant des plantes. Eau fraîche obligatoire.</div>
+</div>
+</div>
+
+<!-- CONVERT -->
+<div class="panel" id="p-convert">
+<div class="card">
+<h2>⚖️ Conversions</h2>
+<div class="form-grid" style="margin-bottom:16px">
+<div class="form-group"><label>Type</label><select id="cvT" onchange="cvt()"><option value="algue">Algues (poudre)</option><option value="coupe">Plantes coupées</option><option value="graine">Graines</option><option value="baie">Baies</option><option value="racine">Racines poudre</option><option value="huile">Huiles (ml)</option></select></div>
+<div class="form-group"><label>Quantité (g ou ml)</label><input type="number" id="cvA" value="50" min="1" oninput="cvt()"></div>
+</div>
+<div class="cvg" id="cvR"></div>
+<h3>Table de Référence</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Type</th><th>1 CàS rase</th><th>1 CàS bombée</th><th>1 Tasse 250ml</th></tr>
+<tr><td>Algues poudre</td><td>15g</td><td>20g</td><td>220g</td></tr>
+<tr><td>Plantes coupées</td><td>3g</td><td>5g</td><td>45g</td></tr>
+<tr><td>Graines</td><td>10g</td><td>14g</td><td>160g</td></tr>
+<tr><td>Baies</td><td>8g</td><td>12g</td><td>120g</td></tr>
+<tr><td>Racines poudre</td><td>10g</td><td>14g</td><td>150g</td></tr>
+<tr><td>Huiles</td><td>15ml</td><td>—</td><td>250ml</td></tr>
+</table></div>
+</div>
+</div>
+
+<div class="mo" id="pMo"><div class="md"><button class="mc" onclick="clMo()">✕</button><div id="pMoC"></div></div></div>
+</div>
+
+<script>
+// ===== MASSIVE PLANT DATABASE — 101 PLANTES =====
+// Sources: Mad Barn Academy, NRC 2007, INRA, Equi-transm'être, ESC Laboratoire, PhytoMaster
+// Nutriments en mg/kg MS sauf mention. WSC/ST en %. Dosages pour 500kg.
+const PDB=[
+// ══════════ ALGUES (8) ══════════
+{id:"A01",n:"Fucus Vesiculosus",lt:"Fucus vesiculosus",c:"algue",e:"🌊",d:"Algue brune — Zn+Cu organiques. Ratio naturel Zn/Cu ≈ 4:1",nt:{zn:150,cu:38,io:650,mg:8500,mn:35,wsc:1.8,st:0},th:["Carence Zn","Carence Cu","Thyroïde","Immunité"],ds:"50-80g",mx:100,tm:"Matin",dp:"Safe",ci:["Excès iode","Gestation avancée"],sy:"Courge (booster Zn)",ab:"Ratio Zn/Cu naturel ≈ 4:1. ⚠️ Cumul iode avec Kelp"},
+{id:"A02",n:"Lithothamne",lt:"Lithothamnium calcareum",c:"algue",e:"🌊",d:"35% calcium biodisponible. Tampon gastrique naturel",nt:{ca:340000,mg:30000,fe:1500,wsc:0,st:0},th:["Ulcères","Déminéralisation","Acidité","Ratio Ca/P"],ds:"20-40g",mx:50,tm:"Soir",dp:"Safe",ci:["Hypercalcémie"],sy:"Lichen Islande (D3 fixe Ca)",ab:"Bloque fer et zinc — séparer 12h"},
+{id:"A03",n:"Laitue de Mer",lt:"Ulva lactuca",c:"algue",e:"🌊",d:"Record mondial Mg organique — 25g/kg",nt:{mg:25000,fe:200,ca:1200,k:3500,wsc:1.5,st:0},th:["Nervosité","Myosites","Crampes","Stress"],ds:"20-40g",mx:60,tm:"Soir",dp:"Safe",ci:[],sy:"Vit B6 (Levure bière)",ab:"Séparer du calcium (même canal)"},
+{id:"A04",n:"Spiruline",lt:"Arthrospira platensis",c:"algue",e:"🌊",d:"60% protéines, B12, fer, bêta-carotène. Chrome naturel",nt:{fe:280,b12:3.5,prot:600,va:1400,cr:2,mn:25,wsc:2,st:0},th:["Anémie","Musculation","Vit B","Chrome naturel"],ds:"20-50g",mx:80,tm:"Matin",dp:"Safe",ci:["Hémochromatose/excès fer"],sy:"Cynorrhodon (Vit C booste Fe)",ab:"Vecteur gras améliore bêta-carotène"},
+{id:"A05",n:"Chlorelle",lt:"Chlorella vulgaris",c:"algue",e:"🌊",d:"Chélateur métaux lourds — membrane capte Al, Pb, Hg",nt:{fe:130,zn:70,chloro:3000,wsc:1,st:0},th:["Détox métaux lourds","Post-vaccin","Post-vermifuge"],ds:"10-20g",mx:30,tm:"Matin",dp:"Safe",ci:[],sy:"Chardon-Marie (drainage hépatique)",ab:"Paroi cellulaire doit être brisée (cracked cell)"},
+{id:"A06",n:"Kelp (Ascophyllum)",lt:"Ascophyllum nodosum",c:"algue",e:"🌊",d:"Très riche iode + oligo-éléments rares. Co, Mo",nt:{io:800,fe:150,zn:60,cu:15,co:0.3,mo:0.1,wsc:2,st:0},th:["Thyroïde","Cobalt","Oligo rares"],ds:"20-40g",mx:50,tm:"Matin",dp:"Safe",ci:["Hyperthyroïdie","Cumul iode Fucus"],sy:"Fucus",ab:"⚠️ Max 50mg iode/j total algues"},
+{id:"A07",n:"Dulse",lt:"Palmaria palmata",c:"algue",e:"🌊",d:"Potassium + fer — récupération post-effort",nt:{k:18000,fe:200,vc:250,wsc:3,st:0},th:["Récupération","Électrolytes","Fatigue"],ds:"15-30g",mx:50,tm:"Matin",dp:"Safe",ci:[],sy:"Laitue de Mer (Mg)",ab:"Bonne biodisponibilité"},
+{id:"A08",n:"Wakamé",lt:"Undaria pinnatifida",c:"algue",e:"🌊",d:"Fucoidane + calcium + magnésium. Anti-inflammatoire marin",nt:{ca:7800,mg:10700,fe:120,zn:16,mn:10,io:120,wsc:1.5,st:0},th:["Anti-inflammatoire","Reminéralisation","Immunité"],ds:"15-30g",mx:40,tm:"Matin",dp:"Safe",ci:["Excès iode (cumul algues)"],sy:"Lithothamne",ab:"Fucoidane = polysaccharide anti-inflammatoire unique"},
+// ══════════ DRAINAGE (13) ══════════
+{id:"D01",n:"Chardon-Marie",lt:"Silybum marianum",c:"drainage",e:"🔄",d:"Seul régénérateur hépatique certifié (Silymarine)",nt:{sily:20000,wsc:4,st:0},th:["Foie","Post-médication","GGT/ASAT élevés"],ds:"20-30g concassé",mx:40,tm:"Matin",dp:"Safe",ci:[],sy:"Artichaut + Desmodium",ab:"Graines DOIVENT être concassées/broyées"},
+{id:"D02",n:"Artichaut",lt:"Cynara scolymus",c:"drainage",e:"🔄",d:"Cynarine — stimule bile, détoxifie foie",nt:{cyn:500,k:4000,wsc:4.5,st:0},th:["Drainage biliaire","Détox"],ds:"15-25g feuilles",mx:30,tm:"Matin",dp:"Safe",ci:["Obstruction biliaire"],sy:"Chardon-Marie",ab:"Pas avec diurétiques chimiques"},
+{id:"D03",n:"Pissenlit",lt:"Taraxacum officinale",c:"drainage",e:"🔄",d:"Diurétique naturel — drainage hépato-rénal. Inuline",nt:{k:5000,fe:180,inul:4000,wsc:6,st:0},th:["Drainage rénal","Engorgements","Rétention","Fer excès (drainage)"],ds:"20-30g",mx:40,tm:"Matin",dp:"Safe",ci:["Insuffisance rénale sévère","Diurétiques chimiques"],sy:"Ortie",ab:"Max 20g/j (inuline fermentation)"},
+{id:"D04",n:"Desmodium",lt:"Desmodium adscendens",c:"drainage",e:"🔄",d:"Hépatoprotecteur puissant — post-chimie lourde",nt:{flav:800,wsc:3,st:0},th:["Hépatite","Post-antibiotiques"],ds:"15-20g",mx:25,tm:"Matin",dp:"Safe",ci:[],sy:"Chardon-Marie",ab:"Excellente biodisponibilité"},
+{id:"D05",n:"Aubier de Tilleul",lt:"Tilia sp.",c:"drainage",e:"🔄",d:"Dissout cristaux — calculs, raideurs",nt:{wsc:5,st:0},th:["Calculs rénaux","Raideurs"],ds:"20-30g",mx:40,tm:"Soir",dp:"Safe",ci:[],sy:"Pissenlit",ab:"Décoction ou poudre fine"},
+{id:"D06",n:"Solidage (Verge d'Or)",lt:"Solidago virgaurea",c:"drainage",e:"🔄",d:"Antiseptique rénal",nt:{flav:600,sap:400,wsc:4,st:0},th:["Infections urinaires","Drainage rénal"],ds:"15-25g",mx:30,tm:"Matin",dp:"Safe",ci:["Insuffisance rénale"],sy:"Pissenlit",ab:"Bonne en infusion ou poudre"},
+{id:"D07",n:"Bardane",lt:"Arctium lappa",c:"drainage",e:"🔄",d:"Dépuratif cutané majeur — peau reflet du foie",nt:{inul:3000,wsc:5,st:0},th:["Dermite","Eczéma","Dépuratif peau"],ds:"20-30g racine",mx:40,tm:"Matin",dp:"Safe",ci:[],sy:"Pensée Sauvage",ab:"Racine séchée en poudre"},
+{id:"D08",n:"Pensée Sauvage",lt:"Viola tricolor",c:"drainage",e:"🔄",d:"Anti-prurigineux — dermites, eczéma",nt:{flav:500,wsc:3,st:0},th:["Prurit","Dermite estivale","Peau"],ds:"15-20g",mx:25,tm:"Matin",dp:"Safe",ci:[],sy:"Bardane",ab:"Parties aériennes séchées"},
+{id:"D09",n:"Radis Noir",lt:"Raphanus sativus var. niger",c:"drainage",e:"🔄",d:"Draineur hépatique — stimule production et évacuation de la bile. Isothiocyanates",nt:{vc:300,k:2500,s:1200,wsc:4,st:0},th:["Drainage hépatique","Digestion graisses","Détox"],ds:"20-40g poudre racine",mx:50,tm:"Matin",dp:"Safe",ci:["Obstruction biliaire","Calculs biliaires"],sy:"Artichaut + Chardon-Marie",ab:"Peut provoquer brûlures si surdosé — progressif"},
+{id:"D10",n:"Piloselle",lt:"Hieracium pilosella",c:"drainage",e:"🔄",d:"Diurétique puissant — élimine urée et acide urique. Double diurèse",nt:{flav:600,ombel:300,wsc:3,st:0},th:["Drainage rénal","Rétention eau","Engorgements","Acide urique"],ds:"15-25g",mx:30,tm:"Matin",dp:"Safe",ci:["Insuffisance rénale sévère"],sy:"Orthosiphon + Pissenlit",ab:"Peut doubler le volume urinaire — surveiller hydratation"},
+{id:"D11",n:"Orthosiphon",lt:"Orthosiphon stamineus",c:"drainage",e:"🔄",d:"Drainage rénal — élimine acide urique, chlorures, urée. Thé de Java",nt:{flav:500,k:5000,wsc:3,st:0},th:["Drainage rénal","Calculs urinaires","Rétention"],ds:"15-25g feuilles",mx:30,tm:"Matin",dp:"Safe",ci:["Insuffisance rénale"],sy:"Piloselle + Pissenlit",ab:"Augmenter eau à volonté pendant cure"},
+{id:"D12",n:"Lespedeza",lt:"Lespedeza capitata",c:"drainage",e:"🔄",d:"Azoturique — élimine l'azote (urée, créatinine). Soutien rénal",nt:{flav:700,catechol:400,wsc:3,st:0},th:["Insuffisance rénale","Azotémie","Drainage azoturique"],ds:"15-25g",mx:30,tm:"Matin",dp:"Safe",ci:[],sy:"Orthosiphon",ab:"Excellent soutien rénal chez le cheval âgé"},
+{id:"D13",n:"Cardon",lt:"Cynara cardunculus",c:"drainage",e:"🔄",d:"Cholérétique puissant — proche de l'artichaut. Stimule bile",nt:{cyn:450,flav:600,wsc:5,st:0},th:["Drainage biliaire","Foie","Digestion"],ds:"15-20g feuilles",mx:25,tm:"Matin",dp:"Safe",ci:["Obstruction biliaire"],sy:"Artichaut + Chardon-Marie",ab:"Peut remplacer l'artichaut — effets similaires"},
+// ══════════ MÉTABOLISME & ADAPTOGÈNES (14) ══════════
+{id:"M01",n:"Gattilier",lt:"Vitex agnus-castus",c:"metab",e:"⚡",d:"Régulateur hypophysaire — Cushing (PPID). Dopaminergique",nt:{agn:500,wsc:4,st:0},th:["Cushing","Dérèglement hormonal"],ds:"15-20g baies",mx:25,tm:"Matin",dp:"Safe",ci:["Gestation","Lactation"],sy:"Chrysanthellum",ab:"Effet en 4-6 semaines"},
+{id:"M02",n:"Chrysanthellum",lt:"Chrysanthellum americanum",c:"metab",e:"⚡",d:"Vasodilatateur périphérique — circulation sabots",nt:{flav:800,sap:600,wsc:2.5,st:0},th:["SME","Fourbure","Circulation sabots"],ds:"20-30g",mx:40,tm:"Matin",dp:"Safe",ci:[],sy:"Ginkgo",ab:"Excellente"},
+{id:"M03",n:"Ginkgo Biloba",lt:"Ginkgo biloba",c:"metab",e:"⚡",d:"Oxygénation cérébrale — chevaux âgés",nt:{gink:400,flav:2000,wsc:3,st:0},th:["Vieillissement","Circulation","Naviculaire"],ds:"15-20g",mx:25,tm:"Matin",dp:"Safe",ci:["Anticoagulants"],sy:"Chrysanthellum",ab:"Feuilles standardisées"},
+{id:"M04",n:"Cannelle de Ceylan",lt:"Cinnamomum verum",c:"metab",e:"⚡",d:"Mime insuline — SME. ⚠️ Ceylan uniquement (pas Cassia!)",nt:{cinn:2000,cr:5,wsc:5,st:0},th:["SME","Insulino-résistance","Glycémie","Chrome naturel"],ds:"5-10g",mx:15,tm:"Matin",dp:"Safe",ci:["Ulcères actifs"],sy:"Olivier feuille + Chrome naturel",ab:"⚠️ Cassia = hépatotoxique (coumarine)"},
+{id:"M05",n:"Fenugrec",lt:"Trigonella foenum-graecum",c:"metab",e:"⚡",d:"Anabolisant naturel — reprise état. ⚠️ WSC 18%",nt:{prot:250,fe:330,mg:1900,wsc:18,st:2},th:["Maigreur","Appétit","Muqueuse intestinale"],ds:"20-40g",mx:50,tm:"Matin",dp:"Safe",ci:["SME","Cushing","Fourbure","Gestation fin"],sy:"Spiruline",ab:"⚠️ INTERDIT si SME/Cushing"},
+{id:"M06",n:"Olivier (Feuille)",lt:"Olea europaea",c:"metab",e:"⚡",d:"Hypoglycémiant — gestion glucose",nt:{oleur:1200,wsc:3,st:0},th:["SME","Hyperglycémie"],ds:"15-25g",mx:30,tm:"Matin",dp:"Safe",ci:[],sy:"Cannelle Ceylan",ab:"Excellente en poudre feuilles"},
+{id:"M07",n:"Ashwagandha",lt:"Withania somnifera",c:"metab",e:"⚡",d:"Adaptogène majeur (Ayurvéda) — aide l'organisme face aux stress physiques, environnementaux et émotionnels",nt:{witha:5000,fe:30,wsc:4,st:0},th:["Stress chronique","Adaptogène","Récupération","Cortisol"],ds:"15-25g racine",mx:30,tm:"Matin",dp:"Safe",ci:["Gestation","Hyperthyroïdie"],sy:"Maca + Spiruline",ab:"Racine séchée en poudre. Effet en 2-4 semaines. Médecine ayurvédique traditionnelle"},
+{id:"M08",n:"Maca",lt:"Lepidium meyenii",c:"metab",e:"⚡",d:"Tonique — vitalité, endurance, fertilité. Andes péruviennes",nt:{fe:15,ca:2500,k:2000,zn:12,prot:140,wsc:6,st:3},th:["Fatigue","Endurance","Fertilité","Tonic"],ds:"15-30g",mx:40,tm:"Matin",dp:"Safe",ci:[],sy:"Ashwagandha + Spiruline",ab:"Tubercule riche en glucosinolates. Bonne palatabilité"},
+{id:"M09",n:"Éleuthérocoque",lt:"Eleutherococcus senticosus",c:"metab",e:"⚡",d:"Ginseng sibérien — adaptogène, endurance, récupération",nt:{eleuth:3000,wsc:4,st:0},th:["Endurance","Récupération","Stress","Adaptogène"],ds:"15-20g racine",mx:25,tm:"Matin",dp:"Safe",ci:["Hypertension sévère","Compétition (vérifier fédération)"],sy:"Rhodiola",ab:"Cures 3-4 sem puis pause 1 sem. Racine en poudre"},
+{id:"M10",n:"Rhodiola",lt:"Rhodiola rosea",c:"metab",e:"⚡",d:"Adaptogène nordique — anti-fatigue, oxygénation musculaire",nt:{rosav:3000,salid:1000,wsc:3,st:0},th:["Fatigue","Altitude","Stress oxydatif","Endurance"],ds:"10-15g racine",mx:20,tm:"Matin",dp:"Safe",ci:["Trouble bipolaire"],sy:"Éleuthérocoque",ab:"Standardisée rosavines 3% + salidrosides 1%. Ne pas donner le soir"},
+{id:"M11",n:"Moringa",lt:"Moringa oleifera",c:"metab",e:"⚡",d:"Arbre de vie — 92 nutriments, 46 antioxydants. Profil minéral exceptionnel",nt:{ca:20000,mg:3680,fe:280,zn:32,cu:6,mn:56,k:13400,prot:270,va:18700,vc:510,ve:113,b1:26,b2:20,b3:82,wsc:5,st:0},th:["Multicarence","Malnutrition","Immunité","Vitalité"],ds:"20-40g feuilles",mx:60,tm:"Matin",dp:"Safe",ci:["SME si surdosé (WSC)"],sy:"Spiruline",ab:"Feuilles séchées. Profil amino-acides quasi complet. Afrique/Asie/Inde"},
+{id:"M12",n:"Vigne Rouge",lt:"Vitis vinifera",c:"metab",e:"⚡",d:"Veinotonique — insuffisance veineuse, engorgements, protection capillaire",nt:{anthoc:4000,flav:2500,wsc:4,st:0},th:["Circulation veineuse","Engorgements","Capillaires fragiles","Fourbure"],ds:"15-25g feuilles",mx:30,tm:"Matin",dp:"Safe",ci:[],sy:"Chrysanthellum + Ginkgo",ab:"Feuilles rouges riches en anthocyanes. Excellent pour les engorgements des membres"},
+{id:"M13",n:"Tribulus",lt:"Tribulus terrestris",c:"metab",e:"⚡",d:"Tonus musculaire — saponines stéroïdiennes naturelles. Fertilité étalon",nt:{sap:4500,wsc:3,st:0},th:["Muscle","Fertilité","Récupération","Vitalité"],ds:"10-20g",mx:25,tm:"Matin",dp:"Safe",ci:["Gestation","Vérifier réglementation compétition"],sy:"Maca + Fenugrec",ab:"Parties aériennes. Études chez chevaux de course"},
+// ══════════ LOCOMOTEUR (13) ══════════
+{id:"L01",n:"Harpagophytum",lt:"Harpagophytum procumbens",c:"loco",e:"🦴",d:"Anti-inflammatoire n°1 — arthrose. ⚠️ DOPANT",nt:{harp:3000,wsc:5,st:0},th:["Arthrose","Inflammation chronique"],ds:"20-30g",mx:40,tm:"Matin/Soir",dp:"DOPANT 48-72h",ci:["Gestation","Ulcères","Compétition"],sy:"Prêle (reminéralisation)",ab:"5% harpagosides minimum"},
+{id:"L02",n:"Boswellia Serrata",lt:"Boswellia serrata",c:"loco",e:"🦴",d:"Anti-inflammatoire NON dopant — alternative compétition",nt:{bosw:6000,wsc:2,st:0},th:["Arthrose","Inflammation"],ds:"10-15g",mx:20,tm:"Matin",dp:"Safe",ci:[],sy:"Curcuma + gras",ab:"Nécessite vecteur lipidique"},
+{id:"L03",n:"Reine des Prés",lt:"Filipendula ulmaria",c:"loco",e:"🦴",d:"Aspirine naturelle (salicylates). ⚠️ DOPANT",nt:{sal:1500,flav:800,wsc:5.5,st:0},th:["Fièvre","Raideurs","Fourbure aiguë"],ds:"20-30g",mx:35,tm:"Matin",dp:"DOPANT 48h",ci:["Anticoagulants","Compétition"],sy:"Cassis",ab:"Jamais avec AINS chimiques"},
+{id:"L04",n:"Cassis (Feuille)",lt:"Ribes nigrum",c:"loco",e:"🦴",d:"Cortisone-like naturelle",nt:{flav:1200,vc:2000,wsc:6,st:0},th:["Raideurs","Allergies","Inflammation"],ds:"20-30g",mx:40,tm:"Matin",dp:"Safe",ci:[],sy:"Boswellia",ab:"Excellente en feuilles"},
+{id:"L05",n:"Prêle des Champs",lt:"Equisetum arvense",c:"loco",e:"🦴",d:"Silice organique — os, tendons, sabots",nt:{sil:80000,k:3000,mn:25,wsc:3,st:0},th:["Os","Tendons","Sabots","Reminéralisation"],ds:"20-25g",mx:30,tm:"Matin",dp:"Safe",ci:["Pathologie rénale"],sy:"Bambou",ab:"Séchée basse T° obligatoire"},
+{id:"L06",n:"Bambou (Exsudat)",lt:"Bambusa arundinacea",c:"loco",e:"🦴",d:"Reminéralisation intense — tabashir silicium",nt:{sil:92000,wsc:2,st:0},th:["Fragilité tendineuse","Croissance"],ds:"10-20g",mx:25,tm:"Matin",dp:"Safe",ci:[],sy:"Prêle",ab:"Tabashir haute biodisponibilité"},
+{id:"L07",n:"Saule Blanc",lt:"Salix alba",c:"loco",e:"🦴",d:"Salicine — anti-douleur. ⚠️ DOPANT",nt:{sali:2500,wsc:4,st:0},th:["Douleurs","Fièvre"],ds:"15-25g écorce",mx:30,tm:"Matin",dp:"DOPANT 48h",ci:["Anticoagulants","Compétition"],sy:"Cassis",ab:"Effet prolongé (libération progressive)"},
+{id:"L08",n:"Curcuma",lt:"Curcuma longa",c:"loco",e:"🦴",d:"Curcuminoïdes anti-inflammatoires — nécessite poivre ou gras",nt:{curc:5000,wsc:3,st:0},th:["Arthrose","Inflammation","Antioxydant"],ds:"15-25g",mx:30,tm:"Matin",dp:"Safe",ci:["Obstruction biliaire"],sy:"Boswellia + huile",ab:"⚠️ Biodisponibilité faible sans pipérine/gras"},
+{id:"L09",n:"Consoude",lt:"Symphytum officinale",c:"loco",e:"🦴",d:"Allantoïne — régénération osseuse et tendineuse. ⚠️ Usage externe privilégié",nt:{allan:8000,ca:3000,sil:2000,wsc:4,st:0},th:["Fractures","Tendons","Cicatrisation osseuse"],ds:"10-15g poudre racine",mx:20,tm:"Matin",dp:"Safe",ci:["Usage interne prolongé >4 sem (alcaloïdes pyrrolizidiniques)","Gestation"],sy:"Prêle + Bambou",ab:"⚠️ Préférer usage externe (cataplasme). Voie orale: cures courtes max 3-4 sem. Allantoïne accélère division cellulaire"},
+{id:"L10",n:"Yucca",lt:"Yucca schidigera",c:"loco",e:"🦴",d:"Saponines stéroïdiennes — anti-inflammatoire, réduit ammoniaque",nt:{sap:6000,wsc:3,st:0},th:["Arthrose","Ammoniaque box","Articulations"],ds:"10-15g",mx:20,tm:"Matin",dp:"Safe",ci:["Gestation"],sy:"Boswellia + Curcuma",ab:"Réduit aussi NH3 dans les crottins — améliore air du box"},
+{id:"L11",n:"Griffe du Chat",lt:"Uncaria tomentosa",c:"loco",e:"🦴",d:"Anti-inflammatoire amazonien — alcaloïdes oxindoles immunomodulateurs",nt:{alcox:3000,flav:1500,wsc:2,st:0},th:["Arthrose","Inflammation chronique","Immunité"],ds:"10-15g écorce",mx:20,tm:"Matin",dp:"Safe",ci:["Gestation","Immunosuppresseurs"],sy:"Boswellia + Cassis",ab:"Écorce interne séchée. Médecine traditionnelle amazonienne. Cures 4-6 semaines"},
+{id:"L12",n:"Frêne",lt:"Fraxinus excelsior",c:"loco",e:"🦴",d:"Anti-inflammatoire et diurétique — rhumatismes, articulations. Anti-goutteux",nt:{flav:800,man:5000,k:3000,wsc:4,st:0},th:["Rhumatismes","Articulations","Rétention","Anti-goutteux"],ds:"15-25g feuilles",mx:30,tm:"Matin",dp:"Safe",ci:[],sy:"Reine des Prés + Cassis",ab:"Feuilles séchées. Contient du mannitol (diurétique doux)"},
+{id:"L13",n:"Gotu Kola (Centella)",lt:"Centella asiatica",c:"loco",e:"🦴",d:"Cicatrisation tissulaire — stimule collagène, circulation capillaire. Médecine ayurvédique",nt:{asiat:3000,madec:2000,wsc:3,st:0},th:["Cicatrisation","Tendons","Circulation capillaire","Plaies"],ds:"10-15g",mx:20,tm:"Matin",dp:"Safe",ci:["Gestation"],sy:"Vigne Rouge + Ginkgo",ab:"Stimule synthèse de collagène I et III. Très étudiée en médecine traditionnelle asiatique"},
+// ══════════ DIGESTIF (15) ══════════
+{id:"G01",n:"Guimauve",lt:"Althaea officinalis",c:"digestif",e:"🫃",d:"Mucilages — pansement gastrique naturel",nt:{mucil:25000,wsc:3,st:0},th:["Ulcères","Protection muqueuse"],ds:"25-35g racine",mx:40,tm:"Avant repas",dp:"Safe",ci:[],sy:"Lithothamne",ab:"Réhydrater 30min avant distribution"},
+{id:"G02",n:"Réglisse",lt:"Glycyrrhiza glabra",c:"digestif",e:"🫃",d:"Anti-acide puissant. ⚠️ Interdit Cushing",nt:{glyc:6000,wsc:7,st:0},th:["Ulcères","Acidité"],ds:"15-25g",mx:30,tm:"Avant repas",dp:"Safe",ci:["Cushing","Hypertension","Rétention"],sy:"Guimauve",ab:"Max 30g — rétention hydrique"},
+{id:"G03",n:"Mélisse",lt:"Melissa officinalis",c:"digestif",e:"🫃",d:"Antispasmodique — coliques de stress",nt:{ros:800,wsc:4,st:0},th:["Coliques nerveuses","Spasmes"],ds:"15-25g",mx:30,tm:"Soir",dp:"Safe",ci:[],sy:"Menthe Poivrée",ab:"Feuilles séchées"},
+{id:"G04",n:"Menthe Poivrée",lt:"Mentha piperita",c:"digestif",e:"🫃",d:"Carminatif — ballonnements",nt:{menth:3000,wsc:5,st:0},th:["Ballonnements","Transit"],ds:"10-20g",mx:25,tm:"Après repas",dp:"Safe",ci:["Ulcères actifs (menthol irritant)"],sy:"Mélisse",ab:"Ne pas surdoser"},
+{id:"G05",n:"Mauve",lt:"Malva sylvestris",c:"digestif",e:"🫃",d:"Laxatif doux",nt:{mucil:18000,wsc:3,st:0},th:["Constipation","Transit"],ds:"15-25g",mx:30,tm:"Soir",dp:"Safe",ci:[],sy:"Guimauve",ab:"Feuilles et fleurs"},
+{id:"G06",n:"Psyllium Blond",lt:"Plantago ovata",c:"digestif",e:"🫃",d:"Capte sable intestinal — cure 5j/mois",nt:{mucil:30000,fib:70000,wsc:1,st:0},th:["Coliques sable","Transit","Prébiotique"],ds:"50-100g cure",mx:120,tm:"Matin",dp:"Safe",ci:["Occlusion"],sy:"Eau abondante obligatoire",ab:"Tremper 20min OBLIGATOIRE"},
+{id:"G07",n:"Sainfoin",lt:"Onobrychis viciifolia",c:"digestif",e:"🌿",d:"Fourrage zéro amidon — tanins antiparasitaires",nt:{tan:5000,prot:160,ca:14000,wsc:6,st:0},th:["Parasitisme","Protéines","Fibres premium"],ds:"Fourrage ad lib",mx:5000,tm:"Journée",dp:"Safe",ci:[],sy:"Courge (antiparasitaire)",ab:"Fourrage de choix zéro amidon"},
+{id:"G08",n:"Luzerne",lt:"Medicago sativa",c:"digestif",e:"🌿",d:"Calcium+Lysine — correction Ca/P. Riche protéines. Vit A",nt:{ca:15000,prot:180,va:8000,b9:20,wsc:8,st:1},th:["Ratio Ca/P","Croissance","Lactation","Vit A"],ds:"1-2 kg/j max",mx:2000,tm:"Répartir",dp:"Safe",ci:["Cushing (excès prot)","Calculs"],sy:"Foin prairie",ab:"Brins > granulés. ⚠️ Ca élevé"},
+{id:"G09",n:"Pulpe de Betterave",lt:"Beta vulgaris",c:"digestif",e:"🌿",d:"Pectines — énergie sécurisée sans pic insuline",nt:{ca:8000,fib:20000,wsc:5,st:0},th:["Énergie","Prise état","SME-safe","HYPP (faible K)"],ds:"500g-1kg réhydratée",mx:1500,tm:"Matin/Soir",dp:"Safe",ci:[],sy:"Huile Lin (énergie lipidique)",ab:"Réhydrater 12h — JAMAIS sèche. Faible potassium = bon pour HYPP"},
+{id:"G10",n:"Chicorée (Racine)",lt:"Cichorium intybus",c:"digestif",e:"🫃",d:"Inuline prébiotique — flore intestinale",nt:{inul:6000,wsc:5,st:0},th:["Flore","Prébiotique"],ds:"15-20g",mx:25,tm:"Matin",dp:"Safe",ci:[],sy:"Topinambour",ab:"Max 20g/j (fermentation)"},
+{id:"G11",n:"Topinambour",lt:"Helianthus tuberosus",c:"digestif",e:"🫃",d:"Inuline — prébiotique naturel",nt:{inul:5000,k:3000,wsc:4,st:0},th:["Flore intestinale","Prébiotique"],ds:"50-100g frais",mx:150,tm:"Matin",dp:"Safe",ci:[],sy:"Chicorée",ab:"Max 100g/j frais (inuline fermentation)"},
+{id:"G12",n:"Fenouil",lt:"Foeniculum vulgare",c:"digestif",e:"🫃",d:"Carminatif puissant — gaz, ballonnements, coliques légères. Galactogène",nt:{aneth:3000,ca:1200,mg:380,fe:18,wsc:5,st:0},th:["Ballonnements","Coliques gazeuses","Lactation","Appétit"],ds:"15-25g graines",mx:30,tm:"Après repas",dp:"Safe",ci:["Gestation (utérotonique à fortes doses)"],sy:"Menthe + Mélisse",ab:"Graines broyées dans la ration. Stimule la lactation chez la poulinière"},
+{id:"G13",n:"Aloe Vera",lt:"Aloe barbadensis",c:"digestif",e:"🫃",d:"Gel apaisant — muqueuse digestive. Acemannan immunostimulant",nt:{aceman:5000,vc:100,wsc:2,st:0},th:["Ulcères","Muqueuses digestives","Cicatrisation interne","Usage externe plaies"],ds:"50-100ml gel pur",mx:150,tm:"Avant repas",dp:"Safe",ci:["Diarrhée (latex aloïne = laxatif violent)"],sy:"Guimauve + Lithothamne",ab:"⚠️ Utiliser GEL INTERNE uniquement (pas la feuille entière — latex aloïne toxique). Gel sans aloïne"},
+{id:"G14",n:"Romarin",lt:"Rosmarinus officinalis",c:"digestif",e:"🫃",d:"Hépatoprotecteur + antioxydant. Stimule digestion et circulation",nt:{ros:2500,carnos:3000,flav:1000,wsc:4,st:0},th:["Foie","Antioxydant","Digestion","Circulation"],ds:"10-15g feuilles",mx:20,tm:"Matin",dp:"Safe",ci:["Gestation (emménagogue)","Épilepsie"],sy:"Artichaut + Chardon-Marie",ab:"Feuilles séchées. Acide carnosique = antioxydant puissant. Ne pas surdoser"},
+{id:"G15",n:"Sauge",lt:"Salvia officinalis",c:"digestif",e:"🫃",d:"Antiseptique digestif — diarrhées, transpiration excessive. Régulateur hormonal",nt:{thujon:2000,flav:800,wsc:4,st:0},th:["Diarrhées","Transpiration","Régulation hormonale"],ds:"10-15g feuilles",mx:20,tm:"Matin",dp:"Safe",ci:["Gestation (abortif)","Lactation (coupe lait)","Épilepsie (thuyone)"],sy:"Romarin",ab:"⚠️ Thuyone = neurotoxique à forte dose. Cures courtes max 3 semaines. Coupe la lactation (sevrage)"},
+// ══════════ RESPIRATOIRE (8) ══════════
+{id:"R01",n:"Thym",lt:"Thymus vulgaris",c:"respi",e:"🫁",d:"Antiseptique respiratoire — toux grasse",nt:{thym:4000,carv:2000,wsc:5,st:0},th:["Toux grasse","Bronchite"],ds:"15-20g",mx:25,tm:"Matin",dp:"Safe",ci:[],sy:"Eucalyptus + Bouillon-blanc",ab:"Effet rapide"},
+{id:"R02",n:"Eucalyptus",lt:"Eucalyptus globulus",c:"respi",e:"🫁",d:"Expectorant — dégagement bronchique",nt:{euca:8000,wsc:3,st:0},th:["Bronchite","Encombrement"],ds:"10-15g feuilles",mx:20,tm:"Matin",dp:"Safe",ci:["Asthme sévère"],sy:"Thym",ab:"Ne pas surdoser (eucalyptol concentré)"},
+{id:"R03",n:"Bouillon-blanc",lt:"Verbascum thapsus",c:"respi",e:"🫁",d:"Adoucissant — toux sèche",nt:{mucil:15000,sap:800,wsc:4,st:0},th:["Toux sèche","Irritation"],ds:"15-25g",mx:30,tm:"Matin",dp:"Safe",ci:[],sy:"Thym + Plantain",ab:"Filtrer poils feuilles"},
+{id:"R04",n:"Plantain",lt:"Plantago lanceolata",c:"respi",e:"🫁",d:"Antihistaminique naturel — emphysème",nt:{auc:600,mucil:10000,wsc:4,st:0},th:["Emphysème","Allergies respiratoires"],ds:"20-30g",mx:40,tm:"Matin/Soir",dp:"Safe",ci:[],sy:"Nigelle",ab:"Excellente"},
+{id:"R05",n:"Nigelle (Cumin noir)",lt:"Nigella sativa",c:"respi",e:"🫁",d:"Immunomodulateur — asthme équin",nt:{thymoq:3000,wsc:3,st:0,fat:35},th:["Asthme","Immunité","Emphysème"],ds:"20-30g graines",mx:40,tm:"Matin",dp:"Safe",ci:["Gestation fortes doses"],sy:"Plantain + Thym",ab:"Graines moulues — vecteur lipidique"},
+{id:"R06",n:"Hysope",lt:"Hyssopus officinalis",c:"respi",e:"🫁",d:"Expectorant et antispasmodique bronchique — toux chronique",nt:{marrub:1500,flav:600,wsc:4,st:0},th:["Toux chronique","Bronchite","Asthme léger"],ds:"10-15g sommités",mx:20,tm:"Matin",dp:"Safe",ci:["Épilepsie (pinocamphone convulsivant)","Gestation"],sy:"Thym + Eucalyptus",ab:"Sommités fleuries séchées. ⚠️ Ne jamais surdoser (pinocamphone). Cures modérées"},
+{id:"R07",n:"Pin Sylvestre",lt:"Pinus sylvestris",c:"respi",e:"🫁",d:"Antiseptique respiratoire — bourgeons. Balsamique",nt:{pinen:5000,wsc:3,st:0},th:["Bronchite","Sinusite","Voies respiratoires"],ds:"10-15g bourgeons",mx:20,tm:"Matin",dp:"Safe",ci:[],sy:"Thym + Eucalyptus",ab:"Bourgeons séchés. Peut aussi être utilisé en inhalation"},
+{id:"R08",n:"Marrube Blanc",lt:"Marrubium vulgare",c:"respi",e:"🫁",d:"Mucolytique — fluidifie mucus épais. Toux productive",nt:{marrub:3000,flav:500,wsc:4,st:0},th:["Toux productive","Mucus","Bronches encombrées"],ds:"15-20g",mx:25,tm:"Matin",dp:"Safe",ci:[],sy:"Bouillon-blanc + Thym",ab:"Plante amère — mélanger dans la ration"},
+// ══════════ GRAINES & VITAMINES (14) ══════════
+{id:"S01",n:"Graine de Lin",lt:"Linum usitatissimum",c:"graine",e:"🌰",d:"Oméga-3 — transit, brillance, anti-inflammatoire",nt:{o3:230000,prot:180,mg:3900,wsc:2,st:0,fat:42},th:["Inflammation","Transit","Peau/Poil","Oméga-3"],ds:"50-100g moulues",mx:150,tm:"Matin",dp:"Safe",ci:[],sy:"Chia",ab:"Moudre ou cuire pour libérer oméga-3"},
+{id:"S02",n:"Graine de Chia",lt:"Salvia hispanica",c:"graine",e:"🌰",d:"Mucilages + Oméga-3 — SME-safe, transit",nt:{o3:180000,fib:340000,ca:6300,wsc:1.5,st:0},th:["SME","Transit","Régulation insuline"],ds:"30-60g",mx:80,tm:"Matin",dp:"Safe",ci:[],sy:"Lin",ab:"Tremper 20min"},
+{id:"S03",n:"Cynorrhodon",lt:"Rosa canina",c:"graine",e:"🌰",d:"Record Vit C — articulations. ⚠️ WSC 14.5%",nt:{vc:6000,va:4500,wsc:14.5,st:0},th:["Immunité","Collagène","Stress oxydatif"],ds:"15-30g poudre",mx:40,tm:"Matin",dp:"Safe",ci:["Limiter si SME/Cushing"],sy:"Ortie (Vit C booste Fe ×3)",ab:"Bêta-carotène nécessite huile"},
+{id:"S04",n:"Graine de Courge",lt:"Cucurbita pepo",c:"graine",e:"🌰",d:"Bombe Zinc organique — immunité, sabots",nt:{zn:85,mg:4500,ve:40,wsc:1.2,st:.5,fat:45},th:["Carence Zn","Parasites","Sabots"],ds:"100-150g",mx:200,tm:"Matin",dp:"Safe",ci:[],sy:"Fucus (ratio Zn/Cu)",ab:"Moulues ou entières"},
+{id:"S05",n:"Sésame Noir",lt:"Sesamum indicum",c:"graine",e:"🌰",d:"Booster Cuivre organique",nt:{cu:40,ca:9750,mg:3500,zn:50,wsc:2,st:0,fat:50},th:["Carence Cu","Structure osseuse"],ds:"30-50g",mx:80,tm:"Matin",dp:"Safe",ci:[],sy:"Fucus",ab:"Moulues libèrent cuivre"},
+{id:"S06",n:"Tournesol (Graine)",lt:"Helianthus annuus",c:"graine",e:"🌰",d:"Vit E naturelle (RRR) — protection muscles. Vit B3",nt:{ve:350,mg:3250,zn:50,b3:80,wsc:2,st:0,fat:52},th:["Carence Vit E","Muscles","Antioxydant"],ds:"50-100g",mx:150,tm:"Matin",dp:"Safe",ci:[],sy:"Astragale (Se)",ab:"Décortiquées — vecteur lipidique intégré"},
+{id:"S07",n:"Lichen d'Islande",lt:"Cetraria islandica",c:"graine",e:"🌰",d:"Source rare Vit D3 végétale — fixation calcium",nt:{vd3:800,mucil:8000,wsc:4,st:0},th:["Carence Vit D3","Fixation Ca","Hiver"],ds:"5-10g",mx:15,tm:"Soir",dp:"Safe",ci:[],sy:"Lithothamne (Ca) + Laitue Mer (Mg)",ab:"Indispensable hiver/box sans soleil"},
+{id:"S08",n:"Astragale",lt:"Astragalus membranaceus",c:"graine",e:"🌰",d:"Sélénométhionine organique — immunité, muscles",nt:{se:12,polys:8000,wsc:5,st:0},th:["Carence Se","Immunité","Muscles"],ds:"15-20g racine",mx:30,tm:"Soir",dp:"Safe",ci:["Gestation avancée"],sy:"OBLIGATOIRE avec Vit E",ab:"Sans Vit E, Se ne protège pas membranes"},
+{id:"S09",n:"Ortie Dioïque",lt:"Urtica dioica",c:"graine",e:"🌰",d:"Fer, silice, protéines, drainage, potassium record",nt:{fe:280,ca:18000,k:22000,vc:1500,sil:12000,prot:210,wsc:3.8,st:0},th:["Anémie","Drainage","Reminéralisation","Lactation"],ds:"30-50g",mx:60,tm:"Soir",dp:"Safe",ci:["Insuffisance cardiaque","Excès fer"],sy:"Cynorrhodon (Vit C ×3 Fe)",ab:"Séparer du Ca 12h. ⚠️ Vérifier fer sanguin"},
+{id:"S10",n:"Levure de Bière vivante",lt:"Saccharomyces cerevisiae",c:"graine",e:"🌰",d:"Vit B complètes + Biotine (B8) + Chrome naturel",nt:{b8:0.4,b1:100,b2:50,b6:40,b12:0.1,zn:30,cr:3,mn:8,wsc:3,st:0,prot:450},th:["Sabots","Poil","Flore","Vitamines B","Chrome"],ds:"30-50g",mx:80,tm:"Matin",dp:"Safe",ci:[],sy:"Tournesol (Vit E)",ab:"Vivante > inactive pour flore. Source Cr naturel"},
+{id:"S11",n:"Huile de Lin",lt:"Linum usitatissimum",c:"graine",e:"🫗",d:"Vecteur lipidique n°1 — Oméga-3, absorption Vit ADEK",nt:{o3:550000,o6:140000,ve:200,wsc:0,st:0,fat:100},th:["Vecteur vitaminique","Oméga-3","Peau/Poil"],ds:"30-100ml",mx:500,tm:"Matin",dp:"Safe",ci:["Rancissement garder frais"],sy:"Toutes vit liposolubles",ab:"Pressée à froid. 1 CàS = 15ml"},
+{id:"S12",n:"Huile Germe de Blé",lt:"Triticum aestivum",c:"graine",e:"🫗",d:"Record Vit E naturelle (RRR-alpha) — muscles",nt:{ve:2600,o6:55000,wsc:0,st:0,fat:100},th:["Carence Vit E","Muscles","Antioxydant","Myopathie"],ds:"30-50ml",mx:100,tm:"Soir (avec Astragale)",dp:"Safe",ci:["Rancissement rapide"],sy:"OBLIGATOIRE avec Astragale (Se)",ab:"Couple antioxydant majeur Vit E/Se"},
+{id:"S13",n:"Baobab (Fruit)",lt:"Adansonia digitata",c:"graine",e:"🌰",d:"Vitamines A, C, B1-6 — reminéralisant, articulations, muscles. Arbre africain",nt:{vc:2800,va:2000,ca:2900,mg:1700,k:22750,fe:97,b1:5,b6:25,prot:25,fib:440000,wsc:8,st:0},th:["Articulations","Muscles","Reminéralisant","Fatigue","Immunité"],ds:"20-40g poudre fruit",mx:50,tm:"Matin",dp:"Safe",ci:["HYPP (K élevé)"],sy:"Cynorrhodon + Spiruline",ab:"Pulpe de fruit séchée. Riche en fibres et prébiotiques. Bonne palatabilité"},
+{id:"S14",n:"Caroube",lt:"Ceratonia siliqua",c:"graine",e:"🌰",d:"Énergie douce sans pic glycémique — riche tanins, pectines. Antidiarrhéique",nt:{ca:3500,fe:30,mg:540,k:8270,fib:400000,tan:2000,wsc:7,st:0.5},th:["Diarrhées","Énergie","Transit","Prise état"],ds:"30-60g poudre",mx:80,tm:"Matin",dp:"Safe",ci:[],sy:"Pulpe betterave",ab:"Poudre de gousse. Très appétente. Alternative carottes pour SME (moins sucré)"},
+// ══════════ IMMUNITÉ (7) ══════════
+{id:"I01",n:"Échinacée",lt:"Echinacea purpurea",c:"immun",e:"🛡️",d:"Booster immunitaire — cures courtes 10-15j",nt:{echin:2000,polys:5000,wsc:4,st:0},th:["Immunité","Infections","Prévention hiver"],ds:"15-25g racine",mx:30,tm:"Matin",dp:"Safe",ci:["Auto-immun","Cure > 3 sem"],sy:"Cynorrhodon (Vit C)",ab:"Cures courtes puis pause"},
+{id:"I02",n:"Ail",lt:"Allium sativum",c:"immun",e:"🛡️",d:"Antiseptique, antiparasitaire. ⚠️ MAX 20g/j",nt:{alli:6000,s:3000,wsc:8,st:0},th:["Parasites","Immunité","Soufre naturel"],ds:"10-15g MAX",mx:20,tm:"Matin",dp:"Safe",ci:["Anémie","> 0.2g/kg PV = anémie Heinz"],sy:"Courge",ab:"⚠️ >20g/j = TOXIQUE (anémie corps Heinz)"},
+{id:"I03",n:"Sureau Noir",lt:"Sambucus nigra",c:"immun",e:"🛡️",d:"Antiviral — baies riches anthocyanes. Immunité hiver",nt:{anthoc:3000,vc:1800,va:600,flav:2000,wsc:8,st:0},th:["Immunité","Prévention hiver","Antiviral","Fièvre"],ds:"15-25g baies séchées",mx:30,tm:"Matin",dp:"Safe",ci:["Baies crues TOXIQUES (sambunigrine)","Toujours cuites/séchées"],sy:"Échinacée + Cynorrhodon",ab:"⚠️ UNIQUEMENT baies mûres cuites ou séchées. Feuilles, écorce et baies vertes = TOXIQUES (cyanure)"},
+{id:"I04",n:"Neem",lt:"Azadirachta indica",c:"immun",e:"🛡️",d:"Antiparasitaire puissant — insectifuge naturel. Arbre indien",nt:{azadir:4000,wsc:3,st:0},th:["Parasites externes","Insectifuge","Dermite estivale","Gale"],ds:"10-15g feuilles",mx:20,tm:"Matin",dp:"Safe",ci:["Gestation (abortif)","Usage interne prolongé"],sy:"Ail + Courge",ab:"Surtout usage externe (spray anti-mouches). Voie orale: cures courtes. Médecine ayurvédique"},
+{id:"I05",n:"Extrait Pépins Pamplemousse",lt:"Citrus paradisi",c:"immun",e:"🛡️",d:"Antimicrobien naturel large spectre — bactéries, champignons, virus",nt:{biofla:8000,vc:2000,wsc:2,st:0},th:["Infections","Antimicrobien","Champignons","Immunité"],ds:"15-30 gouttes (liquide)",mx:50,tm:"Matin",dp:"Safe",ci:[],sy:"Échinacée",ab:"Extrait liquide dilué dans la ration. Large spectre antimicrobien. Cure max 3 sem"},
+{id:"I06",n:"Calendula (Souci)",lt:"Calendula officinalis",c:"immun",e:"🛡️",d:"Cicatrisant — peau, muqueuses. Anti-inflammatoire local. Interne et externe",nt:{carot:3000,flav:1500,wsc:4,st:0},th:["Cicatrisation","Peau","Muqueuses","Plaies"],ds:"10-15g fleurs",mx:20,tm:"Matin",dp:"Safe",ci:[],sy:"Bardane (peau)",ab:"Fleurs séchées. Excellent en cataplasme externe ET en interne pour muqueuses digestives"},
+{id:"I07",n:"Noyer",lt:"Juglans regia",c:"immun",e:"🛡️",d:"Antiparasitaire intestinal — tanins astringents. Diarrhées",nt:{jug:2000,tan:6000,wsc:4,st:0},th:["Parasites intestinaux","Diarrhées","Astringent"],ds:"10-15g feuilles",mx:20,tm:"Matin",dp:"Safe",ci:["Usage prolongé"],sy:"Courge + Ail",ab:"Feuilles séchées. Brou de noix = usage externe (dermite). Cures courtes"},
+// ══════════ STRESS (10) ══════════
+{id:"T01",n:"Valériane",lt:"Valeriana officinalis",c:"stress",e:"🧠",d:"Apaisant puissant. ⚠️ DOPANT",nt:{valep:3000,wsc:5,st:0},th:["Stress intense","Transport"],ds:"15-25g",mx:30,tm:"Soir",dp:"DOPANT 48-72h",ci:["Compétition","Gestation"],sy:"Passiflore",ab:"Racine séchée odeur forte"},
+{id:"T02",n:"Passiflore",lt:"Passiflora incarnata",c:"stress",e:"🧠",d:"Anxiolytique doux — non dopant",nt:{flav:2000,chrys:500,wsc:3,st:0},th:["Anxiété","Nervosité"],ds:"15-25g",mx:30,tm:"Soir",dp:"Safe",ci:[],sy:"Mélisse",ab:"Parties aériennes"},
+{id:"T03",n:"Houblon",lt:"Humulus lupulus",c:"stress",e:"🧠",d:"Sédatif léger — juments pisseuses. ⚠️ DOPANT",nt:{lup:2000,wsc:4,st:0},th:["Juments pisseuses","Agitation"],ds:"10-20g",mx:25,tm:"Soir",dp:"DOPANT 48h",ci:["Compétition"],sy:"Valériane",ab:"Cônes séchés"},
+{id:"T04",n:"Camomille Matricaire",lt:"Matricaria chamomilla",c:"stress",e:"🧠",d:"Apaisement digestif et nerveux. ⚠️ DOPANT",nt:{apig:800,bisab:1200,wsc:4,st:0},th:["Tics","Stress digestif"],ds:"15-20g",mx:25,tm:"Soir",dp:"DOPANT 48h",ci:["Compétition"],sy:"Mélisse + Menthe",ab:"Fleurs séchées"},
+{id:"T05",n:"Lavande",lt:"Lavandula angustifolia",c:"stress",e:"🧠",d:"Relaxant léger — usage externe ou séché. ⚠️ DOPANT",nt:{linal:3000,wsc:3,st:0},th:["Apaisement","Aromathérapie"],ds:"10-15g",mx:20,tm:"Soir",dp:"DOPANT 48h",ci:["Compétition"],sy:"Camomille",ab:"Fleurs séchées dans ration ou inhalation"},
+{id:"T06",n:"Aubépine",lt:"Crataegus monogyna",c:"stress",e:"🧠",d:"Régulateur cardiaque doux — bradycardisant, anxiolytique. Utilisé depuis l'Antiquité",nt:{flav:3000,proc:2000,wsc:5,st:0},th:["Stress cardiaque","Anxiété","Cœur","Vieux chevaux"],ds:"15-25g baies/feuilles",mx:30,tm:"Soir",dp:"Safe",ci:["Traitements cardiaques (interaction)"],sy:"Passiflore + Mélisse",ab:"Baies + feuilles + fleurs. Cardioprotecteur reconnu. Non dopant. Effet en 2-3 semaines"},
+{id:"T07",n:"Millepertuis",lt:"Hypericum perforatum",c:"stress",e:"🧠",d:"Antidépresseur naturel — névralgies. ⚠️ DOPANT. Photosensibilisant",nt:{hyper:3000,flav:1500,wsc:4,st:0},th:["Dépression","Névralgies","Douleurs nerveuses"],ds:"10-15g sommités",mx:20,tm:"Soir",dp:"DOPANT 48-72h",ci:["Compétition","Photosensibilisation (robes claires)","Interactions médicamenteuses multiples"],sy:"Passiflore",ab:"⚠️ Photosensibilisant — chevaux à robe claire/peau rose = risque brûlure solaire. Interactions multiples"},
+{id:"T08",n:"Pavot de Californie",lt:"Eschscholzia californica",c:"stress",e:"🧠",d:"Sédatif léger + antispasmodique — anxiété, coliques nerveuses",nt:{protop:2000,flav:800,wsc:3,st:0},th:["Anxiété","Insomnie","Coliques nerveuses","Sevrage"],ds:"15-20g parties aériennes",mx:25,tm:"Soir",dp:"Safe",ci:["Gestation"],sy:"Passiflore + Mélisse",ab:"Non apparenté au pavot somnifère (pas d'opiacés). Sédatif doux non addictif"},
+{id:"T09",n:"Bacopa",lt:"Bacopa monnieri",c:"stress",e:"🧠",d:"Anxiolytique ayurvédique — améliore cognition, réduit cortisol",nt:{bacop:5000,sap:3000,wsc:3,st:0},th:["Anxiété","Cognition","Stress chronique","Adaptogène nerveux"],ds:"10-15g",mx:20,tm:"Soir",dp:"Safe",ci:[],sy:"Ashwagandha + Passiflore",ab:"Médecine ayurvédique millénaire. Effet en 4-6 semaines. Bacosides = principes actifs"},
+{id:"T10",n:"Myrtille",lt:"Vaccinium myrtillus",c:"stress",e:"🧠",d:"Antioxydant oculaire — protection rétine. Anthocyanes circulatoires",nt:{anthoc:5000,vc:180,ve:50,flav:3000,wsc:7,st:0},th:["Yeux","Uvéite","Antioxydant","Vision nocturne","Circulation"],ds:"15-25g baies séchées",mx:30,tm:"Matin",dp:"Safe",ci:[],sy:"Cynorrhodon (Vit C) + Ginkgo",ab:"Anthocyanes protègent rétine et capillaires. Excellent pour uvéite récurrente + chevaux âgés"},
+{id:"A01",n:"Pomme",lt:"Malus domestica",c:"aliment",e:"🍎",d:"Friandise classique — Vit C, pectine. ⚠️ WSC 12% — INTERDITE SME/Fourbure",nt:{vc:120,pect:800,wsc:12,st:2},th:["Friandise","Appétence","Pectine digestive","Hydratation"],ds:"1 à 2 pommes coupées en 4",mx:500,tm:"Matin ou Soir",dp:"Safe",ci:["SME / Résistance Insuline","Fourbure","Cushing avancé","Obésité (NEC ≥4)"],sy:"Carotte (alternative moins sucrée)",ab:"⚠️ TOUJOURS couper en quartiers — risque étouffement si donnée entière. Retirer les pépins (amygdaline → cyanure en grande quantité). WSC 12% = sucre élevé. Max 2/jour pour cheval sain. INTERDITE pour SME/fourbure/Cushing. Pectine bonne pour la flore intestinale. Préférer les variétés peu sucrées (Granny Smith)"},
+{id:"A02",n:"Carotte",lt:"Daucus carota",c:"aliment",e:"🥕",d:"Friandise n°1 — Bêta-carotène (Vit A). ⚠️ WSC 10% — Limiter si SME",nt:{bcar:8000,va:835,vc:60,wsc:10,st:1.5},th:["Friandise","Vitamine A","Bêta-carotène","Appétence","Peau","Vision"],ds:"2 à 4 carottes coupées en bâtonnets",mx:1000,tm:"Matin ou Soir",dp:"Safe",ci:["SME / Résistance Insuline (limiter à 1-2/j)","Fourbure active (0 carotte)"],sy:"Pomme (alternative fruitée)",ab:"⚠️ TOUJOURS couper en bâtonnets dans le sens de la longueur — risque étouffement si rondelles ou entière. WSC 10% = modérément sucré. Source majeure bêta-carotène → Vit A (conversion hépatique). Max 500g/jour cheval sain. Cheval SME: max 1-2 petites/jour. Fourbure active: ZÉRO. Bêta-carotène excellent pour peau, poil, vision, immunité et reproduction"}
+];
+
+const cats={all:"Toutes",algue:"🌊 Algues",drainage:"🔄 Drainage",metab:"⚡ Métabolisme",loco:"🦴 Locomoteur",digestif:"🫃 Digestif",respi:"🫁 Respiratoire",graine:"🌰 Graines/Huiles",immun:"🛡️ Immunité",stress:"🧠 Stress",aliment:"🍎 Aliments courants"};
+
+// ══════════ PATHOLOGIES — 22 PROTOCOLES ══════════
+const PAT={
+sme:{n:"SME / Résistance insuline",i:"⚡",p1:{t:"Phase 1: Drainage (10j)",pl:[{n:"Chardon-Marie",d:"25g",tm:"Matin",r:"Régénération hépatique"},{n:"Pissenlit",d:"20g",tm:"Matin",r:"Drainage rénal toxines"}]},p2:{t:"Phase 2: Correction (30j)",pl:[{n:"Cannelle Ceylan",d:"8g",tm:"Matin",r:"Mime insuline — sensibilité. Chrome naturel"},{n:"Olivier (Feuille)",d:"20g",tm:"Matin",r:"Hypoglycémiant"},{n:"Chrysanthellum",d:"25g",tm:"Matin",r:"Circulation sabots"},{n:"Chia",d:"50g",tm:"Matin",r:"Mucilages — ralentissent glucose"},{n:"Levure de Bière",d:"40g",tm:"Matin",r:"Chrome naturel + Vit B"}]},w:["INTERDITS: Fenugrec, Carottes, Pommes, tout WSC >10%","Foin WSC <10% (tremper 12h si doute)","Chrome naturel via Cannelle+Levure recommandé"]},
+cushing:{n:"PPID (Cushing)",i:"🧬",p1:{t:"Phase 1: Drainage (10j)",pl:[{n:"Chardon-Marie",d:"25g",tm:"Matin",r:"Foie surchargé hormones"},{n:"Artichaut",d:"20g",tm:"Matin",r:"Bile"}]},p2:{t:"Phase 2: Régulation (long)",pl:[{n:"Gattilier",d:"18g",tm:"Matin",r:"Régulation hypophyse (dopaminergique)"},{n:"Chrysanthellum",d:"20g",tm:"Matin",r:"Protection vasculaire sabots"},{n:"Cynorrhodon",d:"15g MAX",tm:"Matin",r:"Vit C antioxydant (dose limitée WSC)"}]},w:["Réglisse INTERDITE","Gattilier: effet en 4-6 semaines min"]},
+fourbure:{n:"Fourbure",i:"🔥",p1:{t:"Urgence circulatoire",pl:[{n:"Chrysanthellum",d:"30g",tm:"Matin+Soir",r:"Vasodilatation urgente"},{n:"Reine des Prés",d:"25g",tm:"Matin",r:"Anti-inflammatoire (DOPANT)"},{n:"Cassis",d:"25g",tm:"Matin",r:"Cortisone-like"},{n:"Vigne Rouge",d:"20g",tm:"Matin",r:"Veinotonique — circulation pieds"}]},p2:{t:"Reconstruction (30j)",pl:[{n:"Prêle",d:"20g",tm:"Matin",r:"Silice — corne"},{n:"Levure Bière",d:"40g",tm:"Matin",r:"Biotine sabot"},{n:"Huile Lin",d:"50ml",tm:"Matin",r:"Oméga-3"}]},w:["Foin trempé 12h OBLIGATOIRE","Zéro herbe, fruit, sucre"]},
+ulcers:{n:"Ulcères (EGUS)",i:"🫃",p1:{t:"Protection gastrique",pl:[{n:"Lithothamne",d:"30g",tm:"Avant repas",r:"Tampon acide (35% Ca)"},{n:"Guimauve",d:"30g",tm:"Avant repas",r:"Mucilages pansement"},{n:"Réglisse",d:"20g",tm:"Avant repas",r:"Anti-acide (⚠️ pas si Cushing)"},{n:"Aloe Vera (gel)",d:"80ml",tm:"Avant repas",r:"Acemannan — cicatrisant muqueuse"}]},p2:{t:"Régénération (30j)",pl:[{n:"Lin (cuites)",d:"80g",tm:"Matin",r:"Mucilages"},{n:"Psyllium",d:"80g trempé",tm:"Matin",r:"Gel protecteur"},{n:"Mélisse",d:"20g",tm:"Soir",r:"Antispasmodique"}]},w:["Foin à volonté OBLIGATOIRE","Jamais >4h sans fourrage","Fractionner repas"]},
+arthrose:{n:"Arthrose",i:"🦴",p1:{t:"Anti-inflammatoire",pl:[{n:"Harpagophytum",d:"25g",tm:"Matin",r:"n°1 arthrose (DOPANT)"},{n:"Cassis",d:"25g",tm:"Matin",r:"Cortisone-like"},{n:"Cynorrhodon",d:"20g",tm:"Matin",r:"Vit C collagène"},{n:"Curcuma",d:"20g + huile",tm:"Matin",r:"Curcuminoïdes (vecteur gras obligatoire)"}]},p2:{t:"Reminéralisation",pl:[{n:"Prêle",d:"20g",tm:"Matin",r:"Silice cartilage"},{n:"Bambou",d:"15g",tm:"Matin",r:"Reminéralisation"},{n:"Huile Lin",d:"60ml",tm:"Matin",r:"Oméga-3"}]},w:["Alternative non-dopante: Boswellia 15g + Yucca 10g","Manganèse via Fucus/Prêle soutient chondroïtine"]},
+emphyseme:{n:"Emphysème / Asthme",i:"🫁",p1:{t:"Respiratoire",pl:[{n:"Plantain",d:"25g",tm:"Matin",r:"Antihistaminique"},{n:"Nigelle",d:"25g",tm:"Matin",r:"Immunomodulateur"},{n:"Thym",d:"15g",tm:"Matin",r:"Antiseptique bronchique"},{n:"Bouillon-blanc",d:"20g",tm:"Matin",r:"Adoucissant toux sèche"},{n:"Hysope",d:"12g",tm:"Matin",r:"Antispasmodique bronchique"}]},p2:{t:"Soutien immunitaire",pl:[{n:"Échinacée",d:"20g (10j/mois)",tm:"Matin",r:"Booster"},{n:"Cynorrhodon",d:"20g",tm:"Matin",r:"Vit C"}]},w:["Foin trempé/vapeur OBLIGATOIRE","Litière dépoussiérée","Ventilation box max"]},
+hepatique:{n:"Insuffisance hépatique",i:"🔄",p1:{t:"Régénération (21j)",pl:[{n:"Chardon-Marie",d:"30g concassé",tm:"Matin",r:"Silymarine — seul régénérateur certifié"},{n:"Desmodium",d:"20g",tm:"Matin",r:"Hépatoprotecteur"},{n:"Artichaut",d:"20g",tm:"Matin",r:"Drainage biliaire"},{n:"Radis Noir",d:"25g",tm:"Matin",r:"Stimule bile — évacuation toxines"}]},p2:{t:"Soutien",pl:[{n:"Pissenlit",d:"20g",tm:"Matin",r:"Drainage hépato-rénal"},{n:"Romarin",d:"12g",tm:"Matin",r:"Hépatoprotecteur antioxydant"},{n:"Huile Lin",d:"40ml",tm:"Matin",r:"AG essentiels"}]},w:["Pas complémentation minérale pendant drainage","Contrôle GGT/ASAT à J21"]},
+anemie:{n:"Anémie",i:"🩸",p1:{t:"Correction fer + cofacteurs",pl:[{n:"Ortie",d:"40g",tm:"Matin",r:"Fer organique"},{n:"Cynorrhodon",d:"25g",tm:"Matin (avec Ortie)",r:"Vit C booste Fe ×3"},{n:"Spiruline",d:"30g",tm:"Matin",r:"Fe + B12 + protéines"},{n:"Levure Bière",d:"40g",tm:"Matin",r:"Vit B + Cobalt (→ B12)"}]},p2:{t:"Soutien",pl:[{n:"Moringa",d:"30g",tm:"Matin",r:"Fer + Vit A + multi-nutriments"},{n:"Huile Lin",d:"40ml",tm:"Matin",r:"Vecteur"}]},w:["Séparer du Lithothamne 12h","Vérifier parasites (cause fréquente)","⚠️ Anémie ferriprive inexistante chez adulte — chercher autre cause"]},
+dermite:{n:"Dermite / Peau",i:"🧴",p1:{t:"Protocole peau (6 sem)",pl:[{n:"Bardane",d:"20g",tm:"Matin",r:"Dépuratif cutané"},{n:"Pensée Sauvage",d:"15g",tm:"Matin",r:"Anti-prurigineux"},{n:"Lin (graines)",d:"80g",tm:"Matin",r:"Oméga-3 intégrité cutanée"},{n:"Huile Lin",d:"60ml",tm:"Matin",r:"Oméga-3"},{n:"Calendula",d:"12g",tm:"Matin",r:"Cicatrisant muqueuses + cataplasme externe"}]},p2:{t:"Drainage associé",pl:[{n:"Chardon-Marie",d:"20g",tm:"Matin",r:"Peau = reflet foie"},{n:"Pissenlit",d:"15g",tm:"Matin",r:"Élimination toxines"},{n:"Fucus",d:"50g",tm:"Matin",r:"Zinc/Cuivre — kératine peau"}]},w:["Peau = reflet du foie","4-6 semaines minimum pour résultats","Zinc (Fucus/Courge) souvent clé des problèmes cutanés"]},
+sabots:{n:"Sabots fragiles",i:"🐴",p1:{t:"Protocole corne (3-6 mois)",pl:[{n:"Levure Bière",d:"50g",tm:"Matin",r:"Biotine (B8)"},{n:"Prêle",d:"25g",tm:"Matin",r:"Silice organique"},{n:"Fucus",d:"60g",tm:"Matin",r:"Zinc + Cuivre kératinisation"}]},p2:{t:"Cofacteurs",pl:[{n:"Huile Germe Blé",d:"40ml",tm:"Soir",r:"Vit E"},{n:"Astragale",d:"15g",tm:"Soir",r:"Sélénium"},{n:"Lichen Islande",d:"8g",tm:"Soir",r:"Vit D3 fixation"},{n:"Sésame",d:"40g",tm:"Matin",r:"Cuivre organique"}]},w:["Repousse complète sabot = 6-12 mois","Zinc = minéral n°1 du sabot","Soufre (via acides aminés ail/crucifères) soutient kératine"]},
+parasites:{n:"Parasitisme",i:"🐛",p1:{t:"Antiparasitaire (5j/mois)",pl:[{n:"Ail",d:"15g MAX",tm:"Matin",r:"Antiseptique ⚠️ ne pas dépasser"},{n:"Courge",d:"100g",tm:"Matin",r:"Cucurbitine — paralysie vers"},{n:"Thym",d:"15g",tm:"Matin",r:"Antiseptique intestinal"},{n:"Noyer",d:"12g",tm:"Matin",r:"Tanins antiparasitaires"}]},p2:{t:"Entretien",pl:[{n:"Sainfoin",d:"Ad lib",tm:"Journée",r:"Tanins antiparasitaires"},{n:"Psyllium",d:"80g (5j/mois)",tm:"Matin",r:"Nettoyage intestinal"},{n:"Neem",d:"12g",tm:"Matin",r:"Insectifuge interne + externe"}]},w:["Coproscopie obligatoire","Ne remplace pas vermifuge si infestation massive"]},
+stress_c:{n:"Stress / Nervosité",i:"🧠",p1:{t:"Apaisement",pl:[{n:"Passiflore",d:"25g",tm:"Soir",r:"Anxiolytique non dopant"},{n:"Mélisse",d:"20g",tm:"Soir",r:"Antispasmodique nerveux"},{n:"Laitue de Mer",d:"30g",tm:"Soir",r:"Magnésium — clé du stress"},{n:"Aubépine",d:"20g",tm:"Soir",r:"Régulateur cardiaque — calme les palpitations"}]},p2:{t:"Soutien",pl:[{n:"Levure Bière",d:"40g",tm:"Matin",r:"Vit B — système nerveux"},{n:"Huile Lin",d:"40ml",tm:"Matin",r:"Oméga-3 anti-inflammatoire cérébral"},{n:"Ashwagandha",d:"20g",tm:"Matin",r:"Adaptogène — résistance au stress"}]},w:["Si compétition: Valériane, Houblon, Camomille, Millepertuis = DOPANTS","Magnésium souvent la clé","Vérifier rapport K/(Ca+Mg) < 2.2"]},
+myosite:{n:"Myosite / Coup de sang",i:"💪",p1:{t:"Phase aiguë",pl:[{n:"Huile Germe Blé",d:"50ml",tm:"Soir",r:"Vit E protection fibres musculaires"},{n:"Astragale",d:"20g",tm:"Soir",r:"Sélénium — couple antioxydant"},{n:"Laitue de Mer",d:"40g",tm:"Soir",r:"Mg décontraction"}]},p2:{t:"Prévention",pl:[{n:"Cassis",d:"20g",tm:"Matin",r:"Anti-inflammatoire"},{n:"Lin",d:"80g",tm:"Matin",r:"Oméga-3 membranes"},{n:"Spiruline",d:"30g",tm:"Matin",r:"Protéines + Fe régénération"}]},w:["Couple Vit E + Se INDISPENSABLE","Vérifier carence Se sur analyse","Échauffement progressif obligatoire"]},
+coliques_sable:{n:"Coliques de sable",i:"⏳",p1:{t:"Cure 5j/mois",pl:[{n:"Psyllium",d:"100g trempé 20min",tm:"Matin",r:"Gel capte sable"},{n:"Lin (cuites)",d:"80g",tm:"Matin",r:"Mucilages lubrifiant"}]},p2:{t:"Entretien",pl:[{n:"Guimauve",d:"25g",tm:"Avant repas",r:"Protection muqueuse"},{n:"Mélisse",d:"15g",tm:"Soir",r:"Antispasmodique"}]},w:["Psyllium TOUJOURS trempé 20min","Eau à volonté","Chevaux pré sableux = cure systématique"]},
+metaux:{n:"Métaux lourds",i:"☢️",p1:{t:"Chélation (30j)",pl:[{n:"Chlorelle",d:"20g",tm:"Matin",r:"Membrane capte Al, Pb, Hg"},{n:"Chardon-Marie",d:"25g",tm:"Matin",r:"Régénération foie (détox)"},{n:"Artichaut",d:"20g",tm:"Matin",r:"Drainage biliaire"}]},p2:{t:"Reminéralisation post-détox",pl:[{n:"Spiruline",d:"30g",tm:"Matin",r:"Apport minéral global"},{n:"Fucus",d:"50g",tm:"Matin",r:"Zn/Cu remplace bons minéraux"},{n:"Huile Lin",d:"40ml",tm:"Matin",r:"Oméga-3 membranes"}]},w:["Minéralogramme crin à 3 mois","Chercher source contamination (eau, sol, peinture)"]},
+hypp:{n:"HYPP (Quarter Horse)",i:"⚡",p1:{t:"Gestion potassium",pl:[{n:"Pulpe Betterave",d:"1kg réhydratée",tm:"Matin/Soir",r:"Faible potassium — base alimentation"},{n:"Laitue de Mer",d:"20g",tm:"Soir",r:"Magnésium (relaxation musculaire)"}]},p2:{t:"Soutien",pl:[{n:"Huile Lin",d:"50ml",tm:"Matin",r:"Énergie sans K"},{n:"Chia",d:"40g",tm:"Matin",r:"Fibres faible K"}]},w:["Tremper foin pour réduire K","Éviter Ortie, Pissenlit, Dulse, Baobab (K élevé)","Pâturage préférable (K dilué dans herbe vivante)","Sel à volonté + eau obligatoire"]},
+ocd:{n:"OCD (Ostéochondrose)",i:"🦴",p1:{t:"Soutien cartilage/os",pl:[{n:"Fucus",d:"60g",tm:"Matin",r:"Zinc + Cuivre — collagène, élastine"},{n:"Prêle",d:"25g",tm:"Matin",r:"Silice os"},{n:"Bambou",d:"15g",tm:"Matin",r:"Reminéralisation"},{n:"Sésame",d:"40g",tm:"Matin",r:"Cuivre — stabilise collagène osseux"}]},p2:{t:"Cofacteurs",pl:[{n:"Lichen Islande",d:"8g",tm:"Soir",r:"Vit D3 fixation Ca"},{n:"Lithothamne",d:"30g",tm:"Soir",r:"Calcium + Mg"},{n:"Huile Germe Blé",d:"40ml",tm:"Soir",r:"Vit E antioxydant"},{n:"Levure Bière",d:"40g",tm:"Matin",r:"Manganèse + Biotine + Zinc"}]},w:["Ratio Ca/P idéal 1.5:1 (pas excessif)","Cuivre CRUCIAL pour collagène os (300mg/j jument gestante)","Manganèse pour sulfate chondroïtine (cartilage)","Excès Ca peut CONTRIBUER à OCD — surveiller ratio"]},
+uveite:{n:"Uvéite récurrente",i:"👁️",p1:{t:"Anti-inflammatoire + antioxydant",pl:[{n:"Cynorrhodon",d:"25g",tm:"Matin",r:"Vit C antioxydant oculaire"},{n:"Cassis",d:"25g",tm:"Matin",r:"Anti-inflammatoire naturel"},{n:"Myrtille",d:"25g",tm:"Matin",r:"Anthocyanes — protection rétine et capillaires"},{n:"Huile Germe Blé",d:"50ml",tm:"Soir",r:"Vit E protection cellulaire"},{n:"Astragale",d:"15g",tm:"Soir",r:"Sélénium — antioxydant"}]},p2:{t:"Soutien immunitaire",pl:[{n:"Spiruline",d:"30g",tm:"Matin",r:"Bêta-carotène → Vit A (muqueuses oculaires)"},{n:"Huile Lin",d:"40ml",tm:"Matin",r:"Oméga-3 anti-inflammatoire + vecteur Vit A"},{n:"Ginkgo",d:"15g",tm:"Matin",r:"Circulation oculaire"}]},w:["Vit A (bêta-carotène) via Spiruline/Luzerne essentielle pour muqueuses oculaires","Couple Vit E/Se antioxydant protège tissu oculaire","Myrtille = plante clé pour les yeux (anthocyanes)"]},
+coliques_stress:{n:"Coliques de stress",i:"😰",p1:{t:"Prévention",pl:[{n:"Mélisse",d:"25g",tm:"Soir",r:"Antispasmodique digestif"},{n:"Passiflore",d:"20g",tm:"Soir",r:"Anxiolytique doux"},{n:"Guimauve",d:"25g",tm:"Avant repas",r:"Protection muqueuse"},{n:"Pavot de Californie",d:"15g",tm:"Soir",r:"Antispasmodique + sédatif doux (non opiacé)"}]},p2:{t:"Soutien digestif",pl:[{n:"Levure Bière",d:"40g",tm:"Matin",r:"Flore intestinale + Vit B"},{n:"Laitue de Mer",d:"30g",tm:"Soir",r:"Magnésium (relaxation)"},{n:"Huile Lin",d:"40ml",tm:"Matin",r:"Lubrifiant transit"}]},w:["Sel 30g/j minimum + eau à volonté = prévention n°1","Foin à volonté","Fractionner repas"]},
+rhabdomyolyse:{n:"Rhabdomyolyse d'effort",i:"🏃",p1:{t:"Phase aiguë + prévention",pl:[{n:"Huile Germe Blé",d:"50ml",tm:"Soir",r:"Vit E — protection fibres musculaires (2000+ UI)"},{n:"Astragale",d:"20g",tm:"Soir",r:"Sélénium (2-3mg/j)"},{n:"Laitue de Mer",d:"40g",tm:"Soir",r:"Magnésium relaxation"},{n:"Cassis",d:"25g",tm:"Matin",r:"Anti-inflammatoire"}]},p2:{t:"Récupération long terme",pl:[{n:"Spiruline",d:"40g",tm:"Matin",r:"Protéines récupération"},{n:"Lin",d:"100g",tm:"Matin",r:"Oméga-3 membranes"},{n:"Tournesol",d:"80g",tm:"Matin",r:"Vit E complémentaire"},{n:"Dulse",d:"20g",tm:"Matin",r:"Potassium + électrolytes récupération"}]},w:["Couple Vit E (2000 UI) + Se (2-3mg) INDISPENSABLE","Vérifier carence Se sanguin","Échauffement PROGRESSIF obligatoire","Électrolytes (sel) avant/après effort"]},
+vieillissement:{n:"Vieillissement / Cheval Senior",i:"🕰️",p1:{t:"Soutien global senior",pl:[{n:"Ginkgo",d:"18g",tm:"Matin",r:"Oxygénation cérébrale — cognition"},{n:"Aubépine",d:"20g",tm:"Soir",r:"Soutien cardiaque — cœur vieillissant"},{n:"Spiruline",d:"30g",tm:"Matin",r:"Protéines + B12 + fer (métabolisme)"},{n:"Ashwagandha",d:"18g",tm:"Matin",r:"Adaptogène — vitalité globale"}]},p2:{t:"Antioxydant + Articulations",pl:[{n:"Cynorrhodon",d:"20g",tm:"Matin",r:"Vit C antioxydant"},{n:"Huile Germe Blé",d:"40ml",tm:"Soir",r:"Vit E antioxydant"},{n:"Astragale",d:"15g",tm:"Soir",r:"Se + immunité"},{n:"Boswellia",d:"12g",tm:"Matin",r:"Confort articulaire non dopant"},{n:"Lespedeza",d:"15g",tm:"Matin",r:"Soutien rénal (fonction rénale déclinante)"}]},w:["Fractionner repas (digestion plus lente)","Foin de qualité coupé court si problèmes dentaires","Vermifugation adaptée (immunité réduite)","Contrôle sanguin biannuel recommandé"]},
+headshaking:{n:"Head shaking / Encensement",i:"🐴",p1:{t:"Apaisement nerveux",pl:[{n:"Passiflore",d:"25g",tm:"Soir",r:"Anxiolytique non dopant"},{n:"Laitue de Mer",d:"40g",tm:"Soir",r:"Magnésium — nerf trijumeau"},{n:"Aubépine",d:"20g",tm:"Soir",r:"Régulateur nerveux et cardiaque"},{n:"Myrtille",d:"20g",tm:"Matin",r:"Protection nerveuse — anthocyanes"}]},p2:{t:"Soutien neuro + circulatoire",pl:[{n:"Ginkgo",d:"15g",tm:"Matin",r:"Circulation cérébrale"},{n:"Vigne Rouge",d:"15g",tm:"Matin",r:"Capillaires fragiles"},{n:"Levure Bière",d:"50g",tm:"Matin",r:"Vit B — système nerveux"},{n:"Huile Lin",d:"50ml",tm:"Matin",r:"Oméga-3 — membranes nerveuses"}]},w:["Magnésium souvent la clé (nerf trijumeau hypersensible)","Masque anti-UV si photosensibilité","Vérifier rapport K/(Ca+Mg)","Exclure cause dentaire ou ORL"]}
+};
+let cFilt='all',hD={};
+
+// TABS
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+t.classList.add('active');
+document.getElementById('p-'+t.dataset.t).classList.add('active');
+}));
+
+// WEIGHT
+// FORAGE SOURCE SWITCH
+function switchFoSrc(t){
+document.getElementById('foSrc').value=t;
+['foSrcGeneric','foSrcLabFoin','foSrcLabPat','foSrcRegion'].forEach(id=>document.getElementById(id).style.display='none');
+const map={generic:'foSrcGeneric',labfoin:'foSrcLabFoin',labpat:'foSrcLabPat',region:'foSrcRegion'};
+document.getElementById(map[t]).style.display='block';
+['btnFoSrc0','btnFoSrc1','btnFoSrc2','btnFoSrc3'].forEach((id,i)=>{
+const btn=document.getElementById(id);
+const ids=['generic','labfoin','labpat','region'];
+const active=ids[i]===t;
+btn.className=active?'btn btn-p':'btn';
+btn.style.cssText=active?'flex:1;min-width:120px;font-size:.8em':'flex:1;min-width:120px;font-size:.8em;background:var(--surface2);color:var(--text)';
+});
+}
+
+// REGIONAL PASTURE PROFILES — Based on INRA/BRGM pedogeochemical data, veterinary forage studies
+// Values per kg DM (ppm = mg/kg), typical cool-season C3 grass pasture
+const REG_PROFILES={
+grand_est:{label:'Grand Est (Alsace, Lorraine, Champagne)',soil:'Loess, alluvions rhénanes, argilo-calcaire',
+ufc:.78,madc:70,ms:20,ca:4200,p:3200,mg:1800,k:24000,na:400,zn:25,cu:5.5,se:.03,mn:75,fe:220,io:.15,co:.04,
+notes:'Sols de loess bien pourvus en Ca/P. Alsace: alluvions rhénanes = Fe élevé. Se très bas (sols non volcaniques). Cu et Zn insuffisants. I moyen (éloigné des côtes). Risque K élevé au printemps.',risks:['Se très bas','Cu bas','Zn insuffisant','Fe souvent élevé','K élevé printemps']},
+normandie:{label:'Normandie',soil:'Argilo-calcaire, limoneux, côtier',
+ufc:.82,madc:80,ms:20,ca:5500,p:3500,mg:2200,k:22000,na:800,zn:28,cu:6,se:.05,mn:65,fe:180,io:.35,co:.06,
+notes:'Sols argilo-calcaires riches en Ca. Proximité côtière = meilleur I et Na. Se moyen (mieux que Centre). Cu/Zn restent insuffisants. Herbe riche au printemps (WSC élevé).',risks:['Cu insuffisant','Zn insuffisant','WSC élevé printemps']},
+bretagne:{label:'Bretagne',soil:'Granitique, schisteux, acide, côtier',
+ufc:.80,madc:78,ms:19,ca:3500,p:3000,mg:1600,k:26000,na:900,zn:22,cu:5,se:.03,mn:90,fe:280,io:.40,co:.04,
+notes:'Sols acides granitiques = Ca BAS, Fe et Mn ÉLEVÉS (oxydes solubles en sol acide). Fe excédentaire bloque Cu/Zn. I bon (côtier). Se très bas. K élevé (pluies abondantes).',risks:['Ca bas','Se très bas','Fe très élevé','Cu/Zn bloqués par Fe','K élevé']},
+nord:{label:'Nord / Hauts-de-France',soil:'Loess, craie, limoneux',
+ufc:.78,madc:72,ms:20,ca:5000,p:3200,mg:1900,k:23000,na:500,zn:26,cu:5.5,se:.04,mn:70,fe:200,io:.20,co:.05,
+notes:'Sols de loess sur craie = bon Ca. Se et Cu insuffisants. Fe modéré. I moyen. Sols fertiles mais oligo-éléments dilués par rendements élevés.',risks:['Se bas','Cu insuffisant','Zn insuffisant']},
+idf:{label:'Île-de-France',soil:'Limon des plateaux, calcaire',
+ufc:.76,madc:68,ms:20,ca:4800,p:3000,mg:1700,k:22000,na:350,zn:24,cu:5,se:.04,mn:65,fe:190,io:.15,co:.04,
+notes:'Sols limoneux profonds. Ca correct. Se, Cu, Zn insuffisants. I bas (très éloigné des côtes). Na bas (pas de sel marin).',risks:['Se bas','Cu bas','Zn bas','I bas','Na bas']},
+centre:{label:'Centre-Val de Loire',soil:'Calcaire, argile, sable (Sologne)',
+ufc:.75,madc:65,ms:20,ca:4500,p:2800,mg:1500,k:21000,na:300,zn:22,cu:4.5,se:.02,mn:60,fe:180,io:.12,co:.03,
+notes:'Sols très variables. SÉLÉNIUM LE PLUS BAS DE FRANCE. Cu/Zn bas. I très bas (centre du continent). Sologne: sols sableux acides = encore pire.',risks:['Se TRÈS BAS','Cu bas','Zn bas','I très bas','Co bas']},
+bourgogne:{label:'Bourgogne-Franche-Comté',soil:'Marno-calcaire, argileux',
+ufc:.76,madc:68,ms:20,ca:5200,p:3000,mg:2000,k:22000,na:350,zn:24,cu:5,se:.03,mn:70,fe:210,io:.15,co:.05,
+notes:'Sols calcaires bien pourvus en Ca/Mg. Se bas. Cu/Zn insuffisants. I moyen-bas. Fe peut être élevé sur marnes.',risks:['Se bas','Cu insuffisant','Zn insuffisant','I moyen-bas']},
+massif_central:{label:'Massif Central / Auvergne',soil:'Volcanique, acide, basaltique',
+ufc:.78,madc:72,ms:19,ca:3800,p:3200,mg:2500,k:25000,na:400,zn:28,cu:6,se:.02,mn:100,fe:320,io:.10,co:.06,
+notes:'Sols volcaniques = TRÈS RICHE en Mg (basalte), Fe et Mn ÉLEVÉS. Se TRÈS BAS. Ca modéré (sols acides). I très bas (montagne intérieure). Cu dilué par Fe élevé. K élevé en altitude.',risks:['Se TRÈS BAS','Fe TRÈS élevé','Mn élevé','I très bas','Ca modéré','Cu bloqué par Fe']},
+nouvelle_aquitaine:{label:'Nouvelle-Aquitaine',soil:'Calcaire (Charentes), sableux (Landes), argile',
+ufc:.77,madc:70,ms:20,ca:5000,p:3000,mg:1800,k:22000,na:500,zn:24,cu:5,se:.04,mn:65,fe:190,io:.20,co:.04,
+notes:'Très variable : Charentes calcaires (bon Ca), Landes sableuses acides (tout bas). Se moyen. Cu/Zn insuffisants. I correct sur côte atlantique.',risks:['Cu insuffisant','Zn insuffisant','Se moyen-bas','Variable selon sous-région']},
+occitanie:{label:'Occitanie',soil:'Calcaire, schiste, garrigue',
+ufc:.74,madc:65,ms:22,ca:5500,p:2800,mg:1600,k:20000,na:350,zn:22,cu:5,se:.04,mn:55,fe:170,io:.18,co:.04,
+notes:'Sols calcaires secs. Ca élevé. Herbe moins productive (sécheresse). Se moyen. Cu/Zn bas. Risque WSC élevé en automne post-sécheresse.',risks:['Cu bas','Zn bas','Sécheresse = WSC élevé','Mg moyen']},
+paca:{label:'PACA / Méditerranée',soil:'Calcaire sec, marneux',
+ufc:.72,madc:60,ms:25,ca:6000,p:2500,mg:1400,k:18000,na:400,zn:20,cu:4.5,se:.04,mn:50,fe:160,io:.25,co:.04,
+notes:'Sols calcaires secs. Ca ÉLEVÉ mais Mg BAS. Herbe peu productive. Se moyen. Cu/Zn BAS (dilution calcaire). I correct (côtier). MS élevée (herbe sèche). Foin de Crau = exception remarquable.',risks:['Cu bas','Zn bas','Mg bas','Herbe peu nutritive','Sécheresse']},
+rhone_alpes:{label:'Rhône-Alpes / Savoie',soil:'Alpin, alluvial, morainique',
+ufc:.78,madc:72,ms:19,ca:4500,p:3200,mg:2200,k:24000,na:400,zn:26,cu:5.5,se:.03,mn:80,fe:250,io:.12,co:.05,
+notes:'Sols alpins très variables. Mg bon (roches métamorphiques). Se bas. Cu/Zn insuffisants. I bas (montagne). Fe peut être élevé en vallées. Prairies d\'altitude riches en diversité.',risks:['Se bas','I bas','Cu insuffisant','Fe variable']},
+pays_loire:{label:'Pays de la Loire',soil:'Schiste, argile, bocage',
+ufc:.79,madc:74,ms:20,ca:4000,p:3200,mg:1800,k:24000,na:600,zn:25,cu:5.5,se:.04,mn:75,fe:220,io:.25,co:.05,
+notes:'Sols de bocage variables. Ca modéré. Se moyen-bas. Cu/Zn insuffisants. I correct (côtier). K élevé au printemps.',risks:['Cu insuffisant','Zn insuffisant','Se moyen-bas','K élevé printemps']},
+corse:{label:'Corse',soil:'Granitique, schisteux, maquis',
+ufc:.74,madc:65,ms:22,ca:3200,p:2800,mg:1500,k:22000,na:700,zn:20,cu:4.5,se:.03,mn:85,fe:260,io:.35,co:.04,
+notes:'Sols granitiques acides. Ca BAS. Fe et Mn élevés. Se bas. Cu/Zn bas. I et Na corrects (insulaire). Herbe de maquis riche en tanins naturels.',risks:['Ca bas','Se bas','Cu bas','Zn bas','Fe élevé']}
+};
+
+function fillRegion(){
+const sel=document.getElementById('regSel').value;
+const info=document.getElementById('regInfo');
+if(!sel){info.innerHTML='';return;}
+const r=REG_PROFILES[sel];
+if(!r){info.innerHTML='';return;}
+let h=`<div style="background:var(--surface2);border-radius:10px;padding:12px;margin-bottom:8px">
+<p style="margin:0 0 4px"><strong>📍 ${r.label}</strong></p>
+<p style="font-size:.82em;color:var(--text2);margin:0 0 8px"><em>Sol : ${r.soil}</em></p>
+<p style="font-size:.82em;margin:0 0 6px">${r.notes}</p>
+<p style="font-size:.82em;margin:0"><strong>⚠️ Risques principaux :</strong> ${r.risks.join(' · ')}</p>
+</div>
+<div style="font-size:.82em;line-height:1.6">
+<strong>Valeurs estimées /kg MS :</strong> Ca ${r.ca} · P ${r.p} · Mg ${r.mg} · K ${r.k} · Na ${r.na} | 
+Zn ${r.zn} · Cu ${r.cu} · Se ${r.se} · Mn ${r.mn} · Fe ${r.fe} · I ${r.io} · Co ${r.co} ppm |
+UFC ${r.ufc} · MADC ${r.madc}g · MS ${r.ms}%
+</div>
+<div class="alert alert-w" style="margin-top:8px">⚠️ Ces valeurs sont des <strong>estimations régionales moyennes</strong>. Pour un bilan de précision, faites analyser votre pâture en laboratoire.</div>`;
+info.innerHTML=h;
+}
+
+function calcW(){
+const kw=+document.getElementById('kW').value,pt=+document.getElementById('pt').value,hg=+document.getElementById('hg').value;
+let w=kw>0?kw:Math.max(50,Math.min(1200,Math.round(4.3*pt+3*hg-785)));
+document.getElementById('cW').value=w+' kg';
+hD.w=w;hD.name=document.getElementById('hName').value||'Mon Cheval';hD.age=+document.getElementById('hAge').value;hD.act=document.getElementById('act').value;
+const bcs=parseFloat(document.getElementById('bcs').value);
+const adLib=document.getElementById('foinVol').checked;
+const foType=document.getElementById('forage').value;
+const foSrc=document.getElementById('foSrc').value; // 'generic','labfoin','labpat','region'
+
+// INRA/NRC forage profiles per kg DM
+const FP={
+prairie:{ufc:.55,madc:40,ca:4500,p:2500,mg:1500,k:15000,na:300,zn:25,cu:5,se:.05,mn:80,fe:200,io:.2,co:.05,ve:15,va:0,ms:88,label:'Foin de prairie'},
+crau:{ufc:.65,madc:55,ca:6000,p:3000,mg:2000,k:12000,na:500,zn:30,cu:7,se:.08,mn:60,fe:150,io:.3,co:.08,ve:20,va:0,ms:88,label:'Foin de Crau AOP'},
+luzerne:{ufc:.70,madc:95,ca:15000,p:2500,mg:2500,k:20000,na:600,zn:25,cu:8,se:.10,mn:40,fe:250,io:.3,co:.10,ve:25,va:30,ms:88,label:'Foin de luzerne'},
+enrub:{ufc:.70,madc:60,ca:5000,p:3000,mg:2000,k:18000,na:400,zn:28,cu:6,se:.06,mn:70,fe:300,io:.2,co:.06,ve:30,va:10,ms:55,label:'Enrubanné'},
+herbe:{ufc:.80,madc:75,ca:4000,p:3500,mg:2000,k:25000,na:500,zn:30,cu:7,se:.04,mn:80,fe:200,io:.15,co:.05,ve:80,va:80,ms:20,label:'Herbe (pâturage)'}
+};
+
+// Build effective forage profile based on source
+let fp;
+let foLabel='';
+function gv(id){const el=document.getElementById(id);if(!el)return null;const x=parseFloat(el.value);return isNaN(x)?null:x;}
+
+if(foSrc==='labfoin'){
+// Lab hay analysis — use entered values, fallback to generic profile
+const base=FP[foType];
+fp={
+ufc:gv('lf_ufc')||base.ufc, madc:gv('lf_madc')||base.madc, ms:gv('lf_ms')||base.ms,
+ca:gv('lf_ca')!=null?gv('lf_ca'):base.ca, p:gv('lf_p')!=null?gv('lf_p'):base.p,
+mg:gv('lf_mg')!=null?gv('lf_mg'):base.mg, k:gv('lf_k')!=null?gv('lf_k'):base.k,
+na:gv('lf_na')!=null?gv('lf_na'):base.na, zn:gv('lf_zn')!=null?gv('lf_zn'):base.zn,
+cu:gv('lf_cu')!=null?gv('lf_cu'):base.cu, se:gv('lf_se')!=null?gv('lf_se'):base.se,
+mn:gv('lf_mn')!=null?gv('lf_mn'):base.mn, fe:gv('lf_fe')!=null?gv('lf_fe'):base.fe,
+io:gv('lf_io')!=null?gv('lf_io'):base.io, co:gv('lf_co')!=null?gv('lf_co'):base.co,
+ve:base.ve, va:base.va,
+label:'🧪 Analyse labo foin'
+};
+const wsc=gv('lf_wsc'),esc=gv('lf_esc'),amid=gv('lf_amidon');
+if(wsc!=null)fp.wsc=wsc;if(esc!=null)fp.esc=esc;if(amid!=null)fp.amidon=amid;
+foLabel='🧪 Analyse labo foin';
+}else if(foSrc==='labpat'){
+// Lab pasture analysis
+const base=FP.herbe;
+fp={
+ufc:gv('lp_ufc')||base.ufc, madc:gv('lp_madc')||base.madc, ms:gv('lp_ms')||base.ms,
+ca:gv('lp_ca')!=null?gv('lp_ca'):base.ca, p:gv('lp_p')!=null?gv('lp_p'):base.p,
+mg:gv('lp_mg')!=null?gv('lp_mg'):base.mg, k:gv('lp_k')!=null?gv('lp_k'):base.k,
+na:gv('lp_na')!=null?gv('lp_na'):base.na, zn:gv('lp_zn')!=null?gv('lp_zn'):base.zn,
+cu:gv('lp_cu')!=null?gv('lp_cu'):base.cu, se:gv('lp_se')!=null?gv('lp_se'):base.se,
+mn:gv('lp_mn')!=null?gv('lp_mn'):base.mn, fe:gv('lp_fe')!=null?gv('lp_fe'):base.fe,
+io:gv('lp_io')!=null?gv('lp_io'):base.io, co:gv('lp_co')!=null?gv('lp_co'):base.co,
+ve:80, va:80,
+label:'🌱 Analyse labo pâture'
+};
+const wsc=gv('lp_wsc'),esc=gv('lp_esc'),escst=gv('lp_escst');
+if(wsc!=null)fp.wsc=wsc;if(esc!=null)fp.esc=esc;if(escst!=null)fp.escst=escst;
+foLabel='🌱 Analyse labo pâture';
+}else if(foSrc==='region'){
+// Regional pasture profile
+const regSel=document.getElementById('regSel').value;
+if(!regSel){alert('Sélectionnez une région pour la pâture.');return;}
+const r=REG_PROFILES[regSel];
+fp={
+ufc:r.ufc, madc:r.madc, ms:r.ms,
+ca:r.ca, p:r.p, mg:r.mg, k:r.k, na:r.na,
+zn:r.zn, cu:r.cu, se:r.se, mn:r.mn, fe:r.fe, io:r.io, co:r.co,
+ve:80, va:80,
+label:'📍 Pâture '+r.label
+};
+foLabel='📍 Pâture régionale — '+r.label;
+}else{
+// Generic INRA profile
+fp=FP[foType];
+foLabel='📊 '+fp.label;
+}
+
+// Forage intake (kg DM/day) — NRC/INRA: minimum 1.5% BW DM, ad libitum 2-2.5%
+const pctBW=adLib?2.5:1.5;
+const fDM=Math.round(w*pctBW/100*10)/10; // kg DM
+const fBrut=Math.round(fDM/(fp.ms/100)*10)/10; // kg brut (frais)
+
+// BCS energy correction: NRC recommends ±10-20% energy for weight management
+const bcsCorr=bcs<=2?1.2:bcs<=2.5?1.1:bcs>=4.5?0.8:bcs>=4?0.85:1.0;
+
+// UFC & MADC — INRA formule entretien: 0.0383 × PV^0.75
+const p75=Math.pow(w,.75);
+const ufcBase=Math.round(0.0383*p75*100)/100;
+const am={rest:1,light:1.25,mod:1.5,intense:1.8,breed:1.6};
+const ufc=Math.round(ufcBase*am[hD.act]*bcsCorr*100)/100;
+const madc=Math.round(ufc*65);
+
+// NRC 2007 mineral needs BASE (entretien 500kg, scaled to actual weight)
+const wR=w/500; // ratio vs 500kg reference
+const BASE={
+ca:Math.round(20000*wR),p:Math.round(14000*wR),mg:Math.round(7500*wR),
+k:Math.round(25000*wR),na:Math.round(10000*wR),
+zn:Math.round(400*wR),cu:Math.round(133*wR),se:Math.round(2*wR*1000)/1000,
+mn:Math.round(400*wR),fe:Math.round(400*wR),io:Math.round(3.5*wR*10)/10,co:Math.round(0.5*wR*10)/10,
+ve:Math.round(1500*wR),va:Math.round(40000*wR)
+};
+// NRC activity multipliers (Ca/P/Mg/K/Na/Zn/Cu/Se/Ve adjusted by work & sweat losses)
+const AM={
+rest:{ca:1,p:1,mg:1,k:1,na:1,zn:1,cu:1,se:1,mn:1,fe:1,io:1,co:1,ve:1,va:1},
+light:{ca:1.04,p:1.04,mg:1.05,k:1.1,na:1.5,zn:1,cu:1,se:1,mn:1,fe:1,io:1,co:1,ve:1,va:1},
+mod:{ca:1.1,p:1.1,mg:1.2,k:1.4,na:2,zn:1.1,cu:1,se:1.2,mn:1,fe:1,io:1,co:1,ve:1.3,va:1},
+intense:{ca:1.2,p:1.2,mg:1.5,k:1.8,na:3,zn:1.2,cu:1,se:1.5,mn:1,fe:1,io:1,co:1,ve:1.5,va:1},
+breed:{ca:2,p:1.8,mg:1.5,k:1.3,na:1.2,zn:1.2,cu:1.5,se:1.5,mn:1.2,fe:1,io:1.2,co:1,ve:2,va:1.5}
+};
+const aM=AM[hD.act];
+// Final NRC needs
+const N={};
+for(const k of Object.keys(BASE)){N[k]=Math.round(BASE[k]*(aM[k]||1));}
+
+// Forage coverage (what the forage provides)
+const FC={
+ca:Math.round(fp.ca*fDM),p:Math.round(fp.p*fDM),mg:Math.round(fp.mg*fDM),
+k:Math.round(fp.k*fDM),na:Math.round(fp.na*fDM),
+zn:Math.round(fp.zn*fDM),cu:Math.round(fp.cu*fDM),se:Math.round(fp.se*fDM*1000)/1000,
+mn:Math.round(fp.mn*fDM),fe:Math.round(fp.fe*fDM),io:Math.round(fp.io*fDM*10)/10,co:Math.round(fp.co*fDM*100)/100,
+ve:Math.round(fp.ve*fDM),va:Math.round(fp.va*fDM)
+};
+
+// UFC & MADC from forage
+const ufcFo=Math.round(fp.ufc*fDM*100)/100;
+const madcFo=Math.round(fp.madc*fDM);
+
+hD.n={ufc,madc,fDM,fBrut,N,FC,foLabel,foSrc,fp};
+
+// BUILD OUTPUT
+function fmt(v,u){return v>=1000?(v/1000).toFixed(1)+'g':v+'mg';}
+function fmtG(v){return v>=1000?(v/1000).toFixed(1)+'g':v+'mg';}
+function bal(apport,besoin,unit){
+const diff=apport-besoin;const pct=Math.round(apport/besoin*100);
+const cls=pct>=90?'pok':pct>=60?'pwarn':'pdng';
+const sym=diff>=0?'✅':'❌';
+let dStr='';
+if(unit==='mg'){
+dStr=Math.abs(diff)>=1000?(diff>=0?'+':'')+((diff/1000).toFixed(1))+'g':(diff>=0?'+':'')+diff+'mg';
+}else{
+dStr=(diff>=0?'+':'')+diff.toFixed(2)+unit;
+}
+return`<td style="text-align:center">${fmtG(apport)}</td><td style="text-align:center;font-weight:700">${fmtG(besoin)}</td><td><div class="pbar" style="height:8px"><div class="pfill ${cls}" style="width:${Math.min(100,pct)}%"></div></div></td><td style="text-align:center;font-weight:600;color:${diff>=0?'var(--accent)':'var(--danger)'}">${sym} ${dStr}</td>`;
+}
+
+let h=`<div class="rbox"><h2>📊 Besoins — ${hD.name} (${w}kg)</h2>
+<p style="text-align:center;color:var(--text2);font-size:.85em">NEC: ${bcs}/5 | Activité: ${document.getElementById('act').selectedOptions[0].text} | Correction énergie: ${bcsCorr!==1?((bcsCorr>1?'+':'')+Math.round((bcsCorr-1)*100)+'%'):'Aucune'}</p>
+
+<h3>⚡ Énergie & Protéines</h3>
+<div class="cvg">
+<div class="cvc"><div class="v">${ufc}</div><div class="u">UFC/jour (besoin)</div></div>
+<div class="cvc"><div class="v">${ufcFo}</div><div class="u">UFC fourrage</div></div>
+<div class="cvc"><div class="v" style="color:${ufcFo>=ufc?'var(--accent)':'var(--danger)'}">${ufcFo>=ufc?'✅':'❌'} ${(ufcFo-ufc).toFixed(2)}</div><div class="u">Bilan UFC</div></div>
+</div>
+<div class="cvg">
+<div class="cvc"><div class="v">${madc}g</div><div class="u">MADC besoin</div></div>
+<div class="cvc"><div class="v">${madcFo}g</div><div class="u">MADC fourrage</div></div>
+<div class="cvc"><div class="v" style="color:${madcFo>=madc?'var(--accent)':'var(--danger)'}">${madcFo>=madc?'✅':'❌'} ${madcFo>=madc?'+':''}${madcFo-madc}g</div><div class="u">Bilan MADC</div></div>
+</div>
+
+<h3>🌾 Fourrage — ${foLabel}</h3>
+<div class="cvg">
+<div class="cvc"><div class="v">${fDM} kg</div><div class="u">MS/jour</div></div>
+<div class="cvc"><div class="v">${fBrut} kg</div><div class="u">Foin brut/jour</div></div>
+<div class="cvc"><div class="v">${(pctBW).toFixed(1)}%</div><div class="u">du PV en MS</div></div>
+<div class="cvc"><div class="v">${adLib?'✅ Ad libitum':'⚠️ Rationné'}</div><div class="u">${adLib?'Recommandé':'Min. 1.5% PV'}</div></div>
+</div>
+${fp.wsc?`<div class="alert ${fp.wsc>12?'alert-w':'alert-i'}">📊 WSC: ${fp.wsc}% MS${fp.esc?' · ESC: '+fp.esc+'% MS':''}${fp.amidon?' · Amidon: '+fp.amidon+'% MS':''}${fp.escst?' · ESC+Amidon: '+fp.escst+'% MS':''}${fp.esc&&fp.amidon?' · ESC+Amidon: '+(fp.esc+fp.amidon).toFixed(1)+'% MS':''}${(fp.escst&&fp.escst>10)||(fp.esc&&fp.amidon&&(fp.esc+fp.amidon)>10)?` — 🔴 <strong>>10% = DANGER pour chevaux SME/Fourbure</strong>`:(fp.wsc>10?` — 🟡 WSC >10%, surveiller si SME`:'')}</div>`:''}
+${!adLib?'<div class="alert alert-w">⚠️ Foin rationné → Risque ulcères gastriques (estomac vide >4h), stéréotypies, coliques. Minimum absolu: 1.5% PV en MS</div>':''}
+${(hD.ck&&(hD.ck.sme||hD.ck.fourb))?'<div class="alert alert-w">🔶 SME/Fourbure → Foin à tremper 12h (élimine 30-50% WSC). Peser le foin pour contrôler l\'apport</div>':''}
+
+<h3>⚖️ Bilan Minéral — Fourrage vs Besoins</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Minéral</th><th>Apport fourrage</th><th>Besoin NRC</th><th>Couverture</th><th>Bilan</th></tr>
+<tr><td><strong>Calcium</strong></td>${bal(FC.ca,N.ca,'mg')}</tr>
+<tr><td><strong>Phosphore</strong></td>${bal(FC.p,N.p,'mg')}</tr>
+<tr><td><strong>Magnésium</strong></td>${bal(FC.mg,N.mg,'mg')}</tr>
+<tr><td><strong>Potassium</strong></td>${bal(FC.k,N.k,'mg')}</tr>
+<tr><td><strong>Sodium</strong></td>${bal(FC.na,N.na,'mg')}</tr>
+<tr><td><strong>Zinc</strong></td>${bal(FC.zn,N.zn,'mg')}</tr>
+<tr><td><strong>Cuivre</strong></td>${bal(FC.cu,N.cu,'mg')}</tr>
+<tr><td><strong>Sélénium</strong></td>${bal(FC.se,N.se,'mg')}</tr>
+<tr><td><strong>Manganèse</strong></td>${bal(FC.mn,N.mn,'mg')}</tr>
+<tr><td><strong>Fer</strong></td>${bal(FC.fe,N.fe,'mg')}</tr>
+<tr><td><strong>Iode</strong></td>${bal(FC.io,N.io,'mg')}</tr>
+<tr><td><strong>Cobalt</strong></td>${bal(FC.co,N.co,'mg')}</tr>
+<tr><td><strong>Vit E</strong></td>${bal(FC.ve,N.ve,'mg')}</tr>
+</table></div>`;
+
+// Alerts
+let alerts=[];
+if(FC.ca>0&&FC.p>0){const ratio=(FC.ca/FC.p).toFixed(1);if(ratio<1.2)alerts.push('🔴 Ratio Ca:P fourrage = '+ratio+':1 — TROP BAS (<1.2:1). Risque ostéomalacie. Ajouter Lithothamne');else if(ratio>6)alerts.push('⚠️ Ratio Ca:P fourrage = '+ratio+':1 — Élevé (luzerne). Équilibrer avec Son de riz');else alerts.push('✅ Ratio Ca:P fourrage = '+ratio+':1 — '+(ratio>=1.5?'Excellent':'Correct'));}
+if(FC.fe>0&&FC.zn>0){const feZn=(FC.fe/FC.zn).toFixed(1);if(feZn>6)alerts.push('⚠️ Fe:Zn fourrage = '+feZn+':1 — Fer en excès bloque Zinc. Augmenter Zn (Fucus, Courge)');}
+if(FC.na<N.na)alerts.push('🧂 Sodium déficitaire → Sel brut 30g/j MINIMUM + pierre à sel à volonté. Indispensable !');
+if(FC.zn<N.zn)alerts.push('🔶 Zinc déficitaire → Carence n°1 en France. Fucus + Courge moulues recommandés');
+if(FC.cu<N.cu)alerts.push('🔶 Cuivre déficitaire → Sésame noir + Fucus. Ne pas donner avec Ca (séparer 12h)');
+if(FC.se<N.se)alerts.push('🔶 Sélénium déficitaire → Sols français pauvres en Se. Astragale + Germe de Blé (Vit E obligatoire avec Se)');
+if(FC.ve<N.ve)alerts.push('🔶 Vitamine E déficitaire → Foin perd 80% Vit E au séchage. Huile Germe de Blé indispensable');
+if(FC.fe>N.fe*2)alerts.push('⚠️ Fer en LARGE excès via fourrage — Ne pas supplémenter en fer ! Risque blocage Zn/Cu');
+
+if(alerts.length){h+='<h3>🔎 Analyse du fourrage</h3>';alerts.forEach(a=>h+='<div class="alert alert-'+(a.startsWith('✅')?'s':a.startsWith('🔴')?'d':'w')+'">'+a+'</div>');}
+
+h+='<div class="alert alert-i" style="margin-top:12px">💡 <strong>À retenir :</strong> Le fourrage couvre une partie des besoins mais les sols français sont carencés en Zn, Cu, Se. La phyto-complémentation corrige ces déficits. Faites analyser votre foin pour un bilan précis.</div>';
+h+='</div>';
+document.getElementById('nR').innerHTML=h;
+}
+document.getElementById('bcs').addEventListener('input',e=>{
+const v=parseFloat(e.target.value);
+document.getElementById('bcsV').textContent=v;
+const desc={
+1:{e:'🚨',l:'Émacié — Urgence',t:'Os très saillants (côtes, hanches, colonne bien visibles). Aucune graisse perceptible. Le cheval a besoin d\'une prise en charge vétérinaire immédiate.',c:'var(--danger)'},
+1.5:{e:'⚠️',l:'Très maigre',t:'Les côtes, les hanches et la colonne sont bien visibles. Très peu de muscle. Alimentation à rééquilibrer en urgence avec un suivi vétérinaire.',c:'var(--danger)'},
+2:{e:'⚠️',l:'Maigre',t:'Les côtes se voient facilement. La croupe est anguleuse, la colonne est saillante. Un apport calorique et nutritionnel doit être augmenté.',c:'var(--warn)'},
+2.5:{e:'🔶',l:'Un peu maigre',t:'Les côtes se devinent à l\'œil. La base de l\'encolure est fine. Légère sous-nutrition ou travail trop intense par rapport à la ration.',c:'var(--warn)'},
+3:{e:'✅',l:'Correct — Poids idéal',t:'Les côtes se sentent facilement sous une fine couche. Le dos est plat, la croupe arrondie sans excès. C\'est l\'état optimal pour la santé du cheval.',c:'var(--accent)'},
+3.5:{e:'✅',l:'Bon état',t:'Les côtes se sentent avec une légère pression. Encolure et croupe bien garnies. Très bon état pour un cheval au travail.',c:'var(--accent)'},
+4:{e:'🔶',l:'Un peu gras',t:'Les côtes se sentent difficilement, il faut appuyer. Début de dépôt graisseux sur l\'encolure et la croupe. Surveiller la ration et l\'exercice.',c:'var(--warn)'},
+4.5:{e:'⚠️',l:'Gras — Risque métabolique',t:'Les côtes ne se sentent presque plus. Renflement visible sur l\'encolure et derrière l\'épaule. Risque de SME et fourbure. Réduire la ration.',c:'var(--warn)'},
+5:{e:'🚨',l:'Obèse — Danger',t:'Les côtes sont impossibles à sentir. Encolure très épaisse (cresty neck), croupe et ventre très ronds. Risque élevé de fourbure, SME et Cushing. Régime urgent.',c:'var(--danger)'}
+};
+const d=desc[v]||desc[3];
+document.getElementById('bcsEmoji').textContent=d.e;
+document.getElementById('bcsLabel').textContent=d.l;
+document.getElementById('bcsLabel').style.color=d.c;
+document.getElementById('bcsText').textContent=d.t;
+});
+
+// CHECKUP
+function saveCk(){
+hD.ck={sme:$('c_sme'),cush:$('c_cush'),fourb:$('c_fourb'),ulc:$('c_ulc'),crot:document.getElementById('crot').value,drain:document.getElementById('drain').value,chim:$('c_chim'),arth:$('c_arth'),tend:$('c_tend'),emph:$('c_emph'),gest:$('c_gest'),lact:$('c_lact'),comp:$('c_comp'),derm:$('c_derm'),sab:$('c_sab'),para:$('c_para'),stress:$('c_stress'),myo:$('c_myo'),hypp:$('c_hypp')};
+// Extended chim details
+if(hD.ck.chim){
+hD.ck.ch_atb=$('ch_atb');hD.ck.ch_ains=$('ch_ains');hD.ck.ch_corti=$('ch_corti');hD.ck.ch_seda=$('ch_seda');hD.ck.ch_verm=$('ch_verm');hD.ck.ch_vacc=$('ch_vacc');hD.ck.ch_gastro=$('ch_gastro');hD.ck.ch_autre=$('ch_autre');hD.ck.ch_notes=document.getElementById('ch_notes').value;
+}
+// Extended para details
+if(hD.ck.para){
+hD.ck.pa_last=document.getElementById('pa_last').value;hD.ck.pa_prod=document.getElementById('pa_prod').value;hD.ck.pa_copro=document.getElementById('pa_copro').value;hD.ck.pa_gast=$('pa_gast');hD.ck.pa_ext=$('pa_ext');hD.ck.pa_notes=document.getElementById('pa_notes').value;
+}
+let a=[];const c=hD.ck;
+if(c.sme)a.push({t:'w',m:'🔶 SME → plantes >10% WSC bloquées. Chrome naturel recommandé'});
+if(c.cush)a.push({t:'w',m:'🔶 Cushing → Réglisse interdite. Gattilier recommandé'});
+if(c.fourb)a.push({t:'d',m:'🔴 Fourbure → Chrysanthellum. Foin trempé 12h'});
+if(c.ulc)a.push({t:'w',m:'🔶 Ulcères → Lithothamne + Guimauve prioritaires'});
+if(c.drain==='never'||c.drain==='old')a.push({t:'i',m:'ℹ️ Drainage nécessaire → 10j Chardon-Marie avant complémentation'});
+// Detailed chim alerts
+if(c.chim){
+a.push({t:'w',m:'🔶 Post-chimie → Drainage hépatique prioritaire (Chardon-Marie + Desmodium)'});
+if(c.ch_atb)a.push({t:'w',m:'💉 Post-Antibiotiques → Flore intestinale détruite. Levure de Bière vivante 50g/j + Chicorée 15g/j (prébiotique). Drainage foie 10j après arrêt ATB'});
+if(c.ch_ains)a.push({t:'w',m:'💊 Post-AINS (Bute/Finadyne/Métacam) → Muqueuse gastrique fragilisée. Guimauve 30g + Lithothamne 25g avant repas. Risque ulcères si traitement prolongé'});
+if(c.ch_corti)a.push({t:'d',m:'🔴 Post-Corticoïdes → Foie très sollicité + risque fourbure. Drainage hépatique URGENT. Gattilier si Cushing iatrogène. Surveiller pieds'});
+if(c.ch_seda)a.push({t:'i',m:'💤 Post-Sédation/Anesthésie → Drainage foie+reins recommandé. Desmodium 20g + Pissenlit 20g pendant 10j'});
+if(c.ch_verm)a.push({t:'w',m:'🐛 Post-Vermifuge chimique → Drainage hépatique 10j après. Chlorelle 15g/j (détox résidus). Levure bière pour restaurer flore'});
+if(c.ch_vacc)a.push({t:'i',m:'🛡️ Post-Vaccin → Échinacée 20g 10j (soutien immunitaire). Chlorelle 10g/j 5j (drainage adjuvants). Repos 48h post-vaccin'});
+if(c.ch_gastro)a.push({t:'i',m:'🫃 Post-Oméprazole → Arrêt PROGRESSIF (rebond acide si arrêt brutal). Relais Lithothamne + Guimauve. Foin à volonté'});
+if(c.ch_notes)a.push({t:'i',m:'📋 Notes traitement: '+c.ch_notes});
+}
+if(c.arth)a.push({t:'i',m:'ℹ️ Arthrose → Harpagophytum (DOPANT) ou Boswellia (safe compétition)'});
+if(c.gest){a.push({t:'d',m:'🔴 Gestante → Harpago, Gattilier, Fenugrec, Valériane, Sauge INTERDITS. Cu 300mg/j recommandé'});}
+if(c.lact)a.push({t:'i',m:'ℹ️ Lactation → Besoins Ca×2.8, P×2.5, Mg×2, Se doublé'});
+if(c.comp)a.push({t:'i',m:'ℹ️ Compétition → 8 plantes DOPANTES (voir onglet Sécurité)'});
+if(c.hypp)a.push({t:'w',m:'🔶 HYPP → Éviter K élevé (Ortie, Pissenlit, Dulse). Pulpe betterave recommandée'});
+// Detailed para alerts
+if(c.para){
+a.push({t:'i',m:'🐛 Parasitisme détecté → Protocole antiparasitaire naturel recommandé'});
+if(c.pa_copro==='none')a.push({t:'w',m:'⚠️ Coproscopie non faite → INDISPENSABLE avant tout vermifuge. Vermifuger à l\'aveugle = résistances. Demandez à votre vétérinaire'});
+if(c.pa_copro==='high')a.push({t:'d',m:'🔴 Infestation forte (>500 OPG) → Vermifuge chimique probablement nécessaire. Le naturel seul ne suffit pas. Consulter vétérinaire puis drainage post-vermifuge'});
+if(c.pa_copro==='mod')a.push({t:'w',m:'🔶 Infestation modérée (200-500 OPG) → Protocole naturel possible: Ail 15g + Courge 100g + Thym 15g (5j/mois). Recoproscopie à 4-6 semaines'});
+if(c.pa_copro==='low')a.push({t:'i',m:'ℹ️ Faible charge (<200 OPG) → Entretien naturel: Ail 10g + Courge 80g + Sainfoin ad lib. Coproscopie tous les 3-4 mois'});
+if(c.pa_copro==='tape')a.push({t:'d',m:'🔴 Ténia détecté → Praziquantel obligatoire (Eqvalan Duo ou Equest Pramox). Noyer 12g + Courge 100g en complément'});
+if(c.pa_gast)a.push({t:'w',m:'🔶 Gastérophiles → Ivermectine nécessaire (fin automne/début hiver). Retirer les œufs jaunes sur poils avec couteau de chaleur'});
+if(c.pa_ext)a.push({t:'w',m:'🪳 Parasites externes → Neem (spray + 12g oral). Vérifier environnement (litière, box, couvertures). Traiter tout le groupe'});
+if(c.pa_last==='none'||c.pa_last==='plus')a.push({t:'w',m:'⚠️ Vermifuge >12 mois ou jamais → Coproscopie URGENTE. Ne pas vermifuger sans analyse préalable'});
+if(c.pa_prod==='moxi'||c.pa_prod==='moxi_prazi')a.push({t:'i',m:'ℹ️ Moxidectine (Equest) → Vermifuge le plus puissant. Max 2×/an. Drainage foie recommandé après'});
+if(c.pa_notes)a.push({t:'i',m:'📋 Notes parasitisme: '+c.pa_notes});
+}
+document.getElementById('ckA').innerHTML=a.map(x=>`<div class="alert alert-${x.t}">${x.m}</div>`).join('')+'<div class="alert alert-s">✅ Check-up enregistré</div>';
+}
+function $(id){return document.getElementById(id).checked}
+
+// ANALYSIS
+// SWITCH ANALYSIS TYPE
+function switchAType(t){
+document.getElementById('aType').value=t;
+document.getElementById('aFormBlood').style.display=t==='blood'?'block':'none';
+document.getElementById('aFormHair').style.display=t==='hair'?'block':'none';
+document.getElementById('aFormHepatic').style.display=t==='hair'?'block':'none';
+document.getElementById('aFormNolab').style.display=t==='nolab'?'block':'none';
+['btnNolab','btnBlood','btnHair'].forEach(id=>{
+const btn=document.getElementById(id);
+const isActive=(id==='btnNolab'&&t==='nolab')||(id==='btnBlood'&&t==='blood')||(id==='btnHair'&&t==='hair');
+btn.className=isActive?'btn btn-p':'btn';
+btn.style.cssText=isActive?'flex:1;min-width:140px':'flex:1;min-width:140px;background:var(--surface2);color:var(--text)';
+});
+const infos={
+blood:'<p style="font-size:.82em;color:var(--text2);margin:0">🩸 <strong>Prise de sang</strong> — Reflète le statut <strong>actuel</strong> du cheval (instantané). Idéal pour urgences et bilans ponctuels. Demandez à votre vétérinaire les paramètres oligo-éléments + vitamines + hépatiques.</p>',
+hair:'<p style="font-size:.82em;color:var(--text2);margin:0">💇 <strong>Minéralogramme capillaire (crin)</strong> — Reflète le statut sur <strong>3 à 6 mois</strong>. Plus fiable pour les carences chroniques. Valeurs en µg/g (ppm). Couper 3-4cm à la base de la crinière côté encolure. Labo: environ 80-120€.</p>',
+nolab:'<p style="font-size:.82em;color:var(--text2);margin:0">🌿 <strong>Sans analyse</strong> — Créez votre complément plantes personnalisé à partir du <strong>bilan fourrage</strong> et de vos <strong>objectifs</strong>. Calculez d\'abord le poids dans l\'onglet Profil et cochez les pathologies dans le Check-up.</p>'
+};
+document.getElementById('aTypeInfo').innerHTML=infos[t]||infos.blood;
+}
+
+function runAnalysis(){
+if(!hD.w){alert('Calculez le poids d\'abord (onglet Profil)');return}
+if(!hD.ck)hD.ck={};
+const c=hD.ck,w=hD.w;
+const mode=document.getElementById('aType').value; // 'blood', 'hair', or 'nolab'
+function g(id){const el=document.getElementById(id);if(!el)return null;const x=+el.value;return x||null}
+function $(id){const el=document.getElementById(id);return el?el.checked:false}
+
+let v={},REF={};
+let def=[],exc=[],ph1=[],rxM=[],rxS=[],wrn=[];
+let srcLabel='';
+
+// ============================================================
+// MODE NOLAB — Sans analyse : protocole terrain + fourrage
+// ============================================================
+if(mode==='nolab'){
+srcLabel='🌿 Sans analyse — Protocole terrain';
+
+// Check calcW was run with forage data
+if(!hD.n||!hD.n.FC){alert('Calculez d\'abord le poids et les besoins dans l\'onglet Profil.');return;}
+const FC=hD.n.FC, N=hD.n.N;
+
+// Read nolab objectives
+const nlBase=$('nl_base'),nlSabots=$('nl_sabots'),nlPeau=$('nl_peau'),nlMuscle=$('nl_muscle');
+const nlArticu=$('nl_articu'),nlCalme=$('nl_calme'),nlImmun=$('nl_immun'),nlDigest=$('nl_digest');
+const nlRespi=$('nl_respi'),nlSenior=$('nl_senior'),nlDetox=$('nl_detox');
+const nlSme=$('nl_sme'),nlGest=$('nl_gest'),nlComp=$('nl_comp');
+
+// Merge check-up pathologies with nolab precautions
+if(nlSme){c.sme=true;c.fourb=true;}
+if(nlGest)c.gest=true;
+if(nlComp)c.comp=true;
+
+// ---- PHASE 1: Drainage terrain toujours ----
+if(nlBase||nlDetox||nlSenior){
+ph1.push({n:'Chardon-Marie (concassé)',d:'20g',r:'Drainage hépatique — base de tout protocole',t:'Matin'});
+ph1.push({n:'Artichaut',d:'15g',r:'Drainage biliaire — prépare l\'assimilation',t:'Matin'});
+wrn.push('ℹ️ Phase 1 (10j) : drainage AVANT complémentation. Pas de minéraux pendant le drainage');
+}
+if(nlDetox){
+ph1.push({n:'Pissenlit',d:'25g',r:'Drainage rein + foie — diurétique doux',t:'Matin'});
+ph1.push({n:'Chlorelle',d:'15g',r:'Chélation toxines + métaux lourds',t:'Matin'});
+}
+if(nlSenior){
+ph1.push({n:'Desmodium',d:'20g',r:'Hépatoprotection senior — foie fatigué',t:'Matin'});
+wrn.push('👴 Senior: foie, reins et flore intestinale moins efficaces → drainage doux régulier conseillé');
+}
+
+// ---- PHASE 2: Compléments basés sur déficits fourrage ----
+if(nlBase){
+// AUTO-DETECT: what the forage doesn't cover → add phyto
+if(FC.zn<N.zn){
+const deficit=Math.round((1-FC.zn/N.zn)*100);
+rxM.push({n:'Fucus',d:Math.min(80,Math.round(40+deficit*.4))+'g',r:`Zinc organique (fourrage couvre ${100-deficit}% des besoins)`,t:'Matin'});
+rxM.push({n:'Courge (moulues)',d:Math.min(150,Math.round(80+deficit*.5))+'g',r:'Booster Zn — ratio Zn:Cu 3:1',t:'Matin'});
+def.push({n:'Zinc',v:FC.zn+'mg fourrage',nr:N.zn+'mg besoin NRC'});
+}
+if(FC.cu<N.cu){
+rxM.push({n:'Sésame Noir',d:'40g',r:'Cuivre organique — kératine, mélanine, collagène',t:'Matin'});
+def.push({n:'Cuivre',v:FC.cu+'mg fourrage',nr:N.cu+'mg besoin NRC'});
+}
+if(FC.se<N.se){
+rxS.push({n:'Astragale',d:'20g',r:'Sélénométhionine organique — sols français carencés',t:'Soir'});
+rxS.push({n:'Huile Germe Blé',d:'40ml',r:'Vit E OBLIGATOIRE avec Sélénium',t:'Soir'});
+def.push({n:'Sélénium',v:FC.se+'mg fourrage',nr:N.se+'mg besoin NRC'});
+}
+if(FC.na<N.na){
+wrn.push('🧂 Sodium: le fourrage ne couvre que '+Math.round(FC.na/N.na*100)+'% → Sel brut 30g/j MINIMUM + pierre à sel');
+def.push({n:'Sodium',v:FC.na+'mg fourrage',nr:N.na+'mg besoin NRC'});
+}
+if(FC.ve<N.ve){
+rxS.push({n:'Huile Germe Blé',d:'50ml',r:'Vitamine E — le foin perd 80% au séchage',t:'Soir'});
+def.push({n:'Vitamine E',v:FC.ve+'UI fourrage',nr:N.ve+'UI besoin NRC'});
+}
+if(FC.mg<N.mg){
+rxS.push({n:'Laitue de Mer',d:'30g',r:'Magnésium organique record',t:'Soir'});
+def.push({n:'Magnésium',v:FC.mg+'mg fourrage',nr:N.mg+'mg besoin NRC'});
+}
+if(FC.fe>N.fe*1.5){
+wrn.push('⚠️ Fer en excès via fourrage ('+FC.fe+'mg vs besoin '+N.fe+'mg) — NE PAS supplémenter en fer. Risque blocage Zn/Cu');
+}
+// Vecteur lipidique
+const hasOil=rxM.some(r=>r.n.includes('Huile'))||rxS.some(r=>r.n.includes('Huile'));
+if(!hasOil)rxM.push({n:'Huile de Lin',d:'40ml',r:'Vecteur lipidique (Vit ADEK) + Oméga-3 anti-inflammatoire',t:'Matin'});
+}
+
+// ---- OBJECTIFS SPÉCIFIQUES ----
+if(nlSabots){
+rxM.push({n:'Levure Bière',d:'50g',r:'Biotine (B8) + Mn + Cr + Zn — kératine sabot',t:'Matin'});
+rxM.push({n:'Prêle',d:'25g',r:'Silice — durcit la corne',t:'Matin'});
+wrn.push('🦶 Sabots: résultats visibles en 6-9 mois (renouvellement complet corne)');
+}
+if(nlPeau){
+ph1.push({n:'Bardane',d:'20g',r:'Dépuratif cutané — peau = miroir du foie',t:'Matin'});
+ph1.push({n:'Pensée Sauvage',d:'15g',r:'Anti-prurigineux naturel',t:'Matin'});
+rxM.push({n:'Huile Bourrache',d:'30ml',r:'GLA — acides gras essentiels peau',t:'Matin'});
+}
+if(nlMuscle){
+rxS.push({n:'Huile Germe Blé',d:'50ml',r:'Vit E — protection fibres musculaires',t:'Soir'});
+rxS.push({n:'Astragale',d:'20g',r:'Sélénium — couple antioxydant E/Se',t:'Soir'});
+rxS.push({n:'Laitue de Mer',d:'40g',r:'Magnésium — décontraction musculaire',t:'Soir'});
+rxM.push({n:'Spiruline',d:'30g',r:'Protéines + Fe organique + B12 — récupération',t:'Matin'});
+}
+if(nlArticu){
+if(!nlComp)rxM.push({n:'Harpagophytum',d:'25g',r:'Anti-inflammatoire n°1 arthrose (⚠️ DOPANT)',t:'Matin'});
+else rxM.push({n:'Boswellia',d:'15g',r:'Anti-inflammatoire NON dopant — compétition OK',t:'Matin'});
+rxM.push({n:'Prêle',d:'20g',r:'Silice cartilage + Manganèse',t:'Matin'});
+rxM.push({n:'Curcuma + huile',d:'20g',r:'Curcuminoïdes (vecteur gras obligatoire)',t:'Matin'});
+wrn.push('🦴 Articulations: Manganèse (Prêle/Fucus) soutient la synthèse de chondroïtine');
+}
+if(nlCalme){
+rxS.push({n:'Passiflore',d:'25g',r:'Anxiolytique non dopant',t:'Soir'});
+rxS.push({n:'Mélisse',d:'20g',r:'Antispasmodique nerveux + digestif',t:'Soir'});
+rxS.push({n:'Laitue de Mer',d:'30g',r:'Magnésium — clé de la gestion du stress',t:'Soir'});
+rxS.push({n:'Aubépine',d:'20g',r:'Régulateur cardiaque — calme les palpitations',t:'Soir'});
+wrn.push('🧘 Calme: vérifier le rapport K/(Ca+Mg) du fourrage — un K élevé crée de la nervosité');
+}
+if(nlImmun){
+rxM.push({n:'Échinacée',d:'20g',r:'Stimulant immunitaire — cures de 3 semaines max',t:'Matin'});
+rxM.push({n:'Cynorrhodon',d:'20g',r:'Vitamine C record (6000mg/kg) — antioxydant',t:'Matin'});
+rxM.push({n:'Spiruline',d:'25g',r:'Protéines + pigments + immunostimulant',t:'Matin'});
+wrn.push('🛡️ Immunité: alterner Échinacée (3 sem ON / 1 sem OFF). Ne pas donner en continu');
+}
+if(nlDigest){
+rxM.push({n:'Levure de Bière vivante',d:'50g',r:'Probiotique — restauration flore intestinale',t:'Matin'});
+rxM.push({n:'Chicorée (racine)',d:'15g',r:'Prébiotique — nourrit les bonnes bactéries',t:'Matin'});
+ph1.push({n:'Guimauve',d:'25g',r:'Mucilages — protection muqueuse digestive',t:'Avant repas'});
+wrn.push('🫃 Digestion: foin à volonté = base d\'une bonne flore. Éviter les repas concentrés');
+}
+if(nlRespi){
+rxM.push({n:'Plantain',d:'25g',r:'Antihistaminique — muqueuse respiratoire',t:'Matin'});
+rxM.push({n:'Nigelle',d:'25g',r:'Thymoquinone — immunomodulateur respiratoire',t:'Matin'});
+rxM.push({n:'Thym',d:'15g',r:'Antiseptique bronchique — expectorant',t:'Matin'});
+wrn.push('🫁 Respiratoire: foin mouillé/steamer + litière dépoussiérée. Éviter paille');
+}
+if(nlSenior){
+rxM.push({n:'Spiruline',d:'30g',r:'Protéines digestibles — maintien masse musculaire',t:'Matin'});
+rxM.push({n:'Cynorrhodon',d:'25g',r:'Vit C — antioxydant senior',t:'Matin'});
+rxS.push({n:'Huile Germe Blé',d:'50ml',r:'Vit E — protection cellulaire anti-âge',t:'Soir'});
+if(!nlArticu)rxM.push({n:'Curcuma + huile',d:'15g',r:'Anti-inflammatoire doux — confort quotidien',t:'Matin'});
+wrn.push('👴 Senior: contrôle dentaire 2×/an. Augmenter foin haché si mastication difficile');
+}
+
+// ---- PRECAUTIONS ----
+if(nlSme){
+const bl=['Fenugrec','Carotte','Pomme'];
+rxM=rxM.filter(r=>!bl.some(b=>r.n.includes(b)));rxS=rxS.filter(r=>!bl.some(b=>r.n.includes(b)));
+rxM.forEach(r=>{if(r.n.includes('Cynorrhodon')){r.d='15g MAX';r.r+=' ⚠️ WSC 14.5%';}});
+rxS.forEach(r=>{if(r.n.includes('Cynorrhodon')){r.d='15g MAX';r.r+=' ⚠️ WSC 14.5%';}});
+if(!rxM.some(r=>r.n.includes('Cannelle')))rxM.push({n:'Cannelle Ceylan',d:'8g',r:'Mime insuline + Chrome naturel (SME)',t:'Matin'});
+wrn.push('🔶 SME/Fourbure: foin trempé 12h. Plantes >10% WSC limitées/exclues');
+}
+if(nlGest){
+const ban=['Harpago','Gattilier','Fenugrec','Valériane','Sauge','Romarin','Millepertuis'];
+rxM=rxM.filter(r=>!ban.some(b=>r.n.includes(b)));rxS=rxS.filter(r=>!ban.some(b=>r.n.includes(b)));
+wrn.push('🔴 Gestante — 7 plantes INTERDITES retirées automatiquement. Cu 300mg/j recommandé');
+}
+if(nlComp){
+const dp=['Harpago','Valériane','Camomille','Reine','Saule','Houblon','Lavande','Millepertuis'];
+rxM.forEach(r=>{if(dp.some(d=>r.n.includes(d)))r.r+=' ⚠️ DOPANT 48-72h';});
+rxS.forEach(r=>{if(dp.some(d=>r.n.includes(d)))r.r+=' ⚠️ DOPANT 48-72h';});
+wrn.push('🏇 Compétition: 8 plantes dopantes marquées. Arrêt 72h minimum avant épreuve');
+}
+
+// Salt reminder
+wrn.push('🧂 Rappel: Sel brut minimum 30g/jour + sel à volonté. Eau fraîche 24h/24');
+
+// DEDUP
+const dd=a=>{const s=new Set();return a.filter(r=>{if(s.has(r.n))return false;s.add(r.n);return true;});};
+ph1=dd(ph1);rxM=dd(rxM);rxS=dd(rxS);
+
+// Detect overweight for muzzle guide
+const bcsNow=parseFloat(document.getElementById('bcs').value)||3;
+const needMuzzle=nlSme||c.sme||c.fourb||c.cush||bcsNow>=4;
+
+// BUILD NOLAB OUTPUT
+let h=`<div class="rbox"><h2>📄 Protocole — ${hD.name||'Cheval'} (${w}kg)</h2><p style="text-align:center;color:var(--text2)">${new Date().toLocaleDateString('fr-FR')} | ${srcLabel} | Zéro Céréale · Zéro Amidon · 100% Organique</p>`;
+if(def.length){h+=`<h3>📊 Carences fourrage estimées</h3>`;def.forEach(d=>{h+=`<div class="alert alert-w">🔶 ${d.n}: ${d.v} / ${d.nr}</div>`;});}
+if(ph1.length){h+=`<div class="rxs"><h3>🔄 PHASE 1 — Terrain (10j)</h3>`;ph1.forEach(r=>h+=`<div class="rx"><div><div class="pn">🌿 ${r.n}</div><div class="tm">${r.t} — ${r.r}</div></div><div class="dose">${r.d}</div></div>`);h+=`</div>`;}
+if(rxM.length){h+=`<div class="rxs"><h3>☀️ PHASE 2 — MATIN</h3>`;rxM.forEach(r=>h+=`<div class="rx"><div><div class="pn">🌿 ${r.n}</div><div class="tm">${r.r}</div></div><div class="dose">${r.d}</div></div>`);h+=`</div>`;}
+if(rxS.length){h+=`<div class="rxs"><h3>🌙 PHASE 2 — SOIR</h3>`;rxS.forEach(r=>h+=`<div class="rx"><div><div class="pn">🌿 ${r.n}</div><div class="tm">${r.r}</div></div><div class="dose">${r.d}</div></div>`);h+=`</div>`;}
+if(needMuzzle)h+=getMuzzleGuide();
+if(wrn.length){h+=`<h3>🛡️ Conseils & Alertes</h3>`;wrn.forEach(w=>h+=`<div class="alert alert-w">${w}</div>`);}
+h+=`<div class="alert alert-i" style="margin-top:14px">📅 Cure de 30 jours recommandée. Renouveler après 1 semaine de pause. Prise de sang conseillée pour affiner le protocole.</div>`;
+h+=`<div style="text-align:center;margin-top:16px;display:flex;gap:10px;justify-content:center"><button class="btn btn-p" onclick="printProtocol()">🖨️ Imprimer le protocole</button></div></div>`;
+document.getElementById('ratOut').innerHTML=h;
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+document.querySelector('[data-t="ration"]').classList.add('active');
+document.getElementById('p-ration').classList.add('active');
+return;
+}
+
+// ============================================================
+// MODE BLOOD / HAIR — Analyse labo
+// ============================================================
+srcLabel=mode==='blood'?'🩸 Prise de sang':'💇 Minéralogramme crin';
+
+if(mode==='blood'){
+v={zn:g('a_zn'),cu:g('a_cu'),se:g('a_se'),fe:g('a_fe'),ca:g('a_ca'),p:g('a_p'),mg:g('a_mg'),k:g('a_k'),na:g('a_na'),mn:g('a_mn'),io:g('a_io'),co:g('a_co'),cr:g('a_cr'),ve:g('a_ve'),va:g('a_va'),vd:g('a_vd'),ggt:g('a_ggt'),asat:g('a_asat'),al:g('a_al'),pb:g('a_pb'),hg:g('a_hg')};
+}else{
+v={zn:g('h_zn'),cu:g('h_cu'),se:g('h_se'),fe:g('h_fe'),ca:g('h_ca'),p:g('h_p'),mg:g('h_mg'),k:g('h_k'),na:g('h_na'),mn:g('h_mn'),io:g('h_io'),co:g('h_co'),cr:g('h_cr'),ve:null,va:null,vd:null,ggt:g('h_ggt'),asat:g('h_asat'),al:g('h_al'),pb:g('h_pb'),hg:g('h_hg'),cd:g('h_cd'),as:g('h_as')};
+}
+
+REF=mode==='blood'?{
+zn:{lo:.6,hi:1.2,nr:'0.6–1.2 mg/L',u:'mg/L'},cu:{lo:.5,hi:1.5,nr:'0.5–1.5 mg/L',u:'mg/L'},
+se:{lo:80,hi:200,nr:'80–200 µg/L',u:'µg/L'},fe:{lo:15,hi:35,nr:'15–35 µmol/L',u:'µmol/L'},
+ca:{lo:110,hi:135,nr:'110–135 mg/L',u:'mg/L'},p:{lo:25,hi:55,nr:'25–55 mg/L',u:'mg/L'},
+mg:{lo:18,hi:28,nr:'18–28 mg/L',u:'mg/L'},k:{lo:2.5,hi:5,nr:'2.5–5 mmol/L',u:'mmol/L'},
+na:{lo:132,hi:146,nr:'132–146 mmol/L',u:'mmol/L'},mn:{lo:1,hi:3,nr:'1–3 µg/L',u:'µg/L'},
+io:{lo:50,hi:200,nr:'50–200 µg/L',u:'µg/L'},co:{lo:.5,hi:2,nr:'0.5–2 µg/L',u:'µg/L'},
+cr:{lo:1,hi:5,nr:'1–5 µg/L',u:'µg/L'},ve:{lo:2,hi:5,nr:'2–5 mg/L',u:'mg/L'},
+va:{lo:200,hi:500,nr:'200–500 µg/L',u:'µg/L'},vd:{lo:20,hi:50,nr:'20–50 nmol/L',u:'nmol/L'}
+}:{
+zn:{lo:120,hi:200,nr:'120–200 µg/g',u:'µg/g'},cu:{lo:8,hi:16,nr:'8–16 µg/g',u:'µg/g'},
+se:{lo:.5,hi:1.2,nr:'0.5–1.2 µg/g',u:'µg/g'},fe:{lo:8,hi:30,nr:'8–30 µg/g',u:'µg/g'},
+ca:{lo:500,hi:2000,nr:'500–2000 µg/g',u:'µg/g'},p:{lo:100,hi:200,nr:'100–200 µg/g',u:'µg/g'},
+mg:{lo:200,hi:800,nr:'200–800 µg/g',u:'µg/g'},k:{lo:200,hi:2000,nr:'200–2000 µg/g',u:'µg/g'},
+na:{lo:100,hi:800,nr:'100–800 µg/g',u:'µg/g'},mn:{lo:2,hi:10,nr:'2–10 µg/g',u:'µg/g'},
+io:{lo:.2,hi:2,nr:'0.2–2 µg/g',u:'µg/g'},co:{lo:.02,hi:.1,nr:'0.02–0.1 µg/g',u:'µg/g'},
+cr:{lo:.1,hi:.5,nr:'0.1–0.5 µg/g',u:'µg/g'}
+};
+
+// Check any values entered
+const hasValues=Object.values(v).some(x=>x!==null);
+if(!hasValues&&!c.fourb&&!c.derm&&!c.arth&&!c.emph&&!c.myo&&!c.para&&!c.stress&&!c.chim&&!c.ulc){
+alert('Saisissez au moins une valeur d\'analyse ou cochez des pathologies dans le Check-up.');return;
+}
+
+// LIVER P1
+let needDr=false;
+if((v.ggt&&v.ggt>25)||(v.asat&&v.asat>400)||c.chim||c.drain==='never'||c.drain==='old'){
+needDr=true;
+ph1.push({n:'Chardon-Marie (concassé)',d:'25g',r:'Régénération hépatique',t:'Matin'});
+if((v.ggt&&v.ggt>40)||c.ch_corti)ph1.push({n:'Desmodium',d:'20g',r:'Hépatoprotection renforcée',t:'Matin'});
+ph1.push({n:'Artichaut',d:'20g',r:'Drainage biliaire',t:'Matin'});
+}
+// PATHO DRAINAGE: si pathologie lourde cochée → drainage toujours recommandé même sans marqueurs hépatiques
+if(!needDr&&(c.fourb||c.derm||c.arth||c.emph||c.myo||c.para||c.stress)){
+needDr=true;
+ph1.push({n:'Chardon-Marie (concassé)',d:'20g',r:'Drainage terrain — indispensable avant complémentation',t:'Matin'});
+ph1.push({n:'Artichaut',d:'15g',r:'Drainage biliaire — prépare l\'assimilation',t:'Matin'});
+wrn.push('ℹ️ Phase 1 drainage systématique: toujours drainer AVANT de complémenter (10j sans minéraux)');
+}
+// FOURBURE P1 urgence circulatoire
+if(c.fourb){
+ph1.push({n:'Chrysanthellum',d:'30g',r:'Vasodilatation urgente — circulation sabots',t:'Matin+Soir'});
+ph1.push({n:'Cassis (Feuille)',d:'25g',r:'Cortisone-like naturelle anti-inflammatoire',t:'Matin'});
+}
+// DERMITE P1 dépuratif
+if(c.derm){
+ph1.push({n:'Bardane',d:'20g',r:'Dépuratif cutané — peau = reflet du foie',t:'Matin'});
+ph1.push({n:'Pensée Sauvage',d:'15g',r:'Anti-prurigineux — dermite estivale',t:'Matin'});
+}
+// Post-chim specific additions
+if(c.chim){
+if(c.ch_atb){rxM.push({n:'Levure de Bière vivante',d:'50g',r:'Restauration flore post-antibiotiques',t:'Matin'});rxM.push({n:'Chicorée (racine)',d:'15g',r:'Prébiotique — nourrit la flore',t:'Matin'});}
+if(c.ch_ains&&!c.ulc){ph1.push({n:'Lithothamne',d:'25g',r:'Protection gastrique post-AINS',t:'Avant repas'});ph1.push({n:'Guimauve',d:'25g',r:'Mucilages — pansement muqueuse fragilisée',t:'Avant repas'});}
+if(c.ch_verm){ph1.push({n:'Chlorelle',d:'15g',r:'Détox résidus vermifuge',t:'Matin'});rxM.push({n:'Levure de Bière vivante',d:'40g',r:'Restauration flore post-vermifuge',t:'Matin'});}
+if(c.ch_vacc){rxM.push({n:'Échinacée',d:'20g (10j)',r:'Soutien immunitaire post-vaccin',t:'Matin'});}
+}
+// ULCERS P1 protection gastrique
+if(c.ulc){ph1.push({n:'Lithothamne',d:'30g',r:'Tampon gastrique (35% Ca)',t:'Avant repas'});ph1.push({n:'Guimauve',d:'30g',r:'Mucilages pansement',t:'Avant repas'});ph1.push({n:'Aloe Vera (gel)',d:'80ml',r:'Acemannan cicatrisant muqueuse',t:'Avant repas'});}
+// PARASITES P1
+if(c.para){
+ph1.push({n:'Ail',d:'15g MAX',r:'Antiseptique intestinal ⚠️ ne pas dépasser',t:'Matin'});
+ph1.push({n:'Courge (moulues)',d:'100g',r:'Cucurbitine — paralysie vers',t:'Matin'});
+ph1.push({n:'Thym',d:'15g',r:'Antiseptique intestinal',t:'Matin'});
+}
+// STRESS P1 apaisement
+if(c.stress){
+ph1.push({n:'Passiflore',d:'25g',r:'Anxiolytique non dopant — apaisement immédiat',t:'Soir'});
+ph1.push({n:'Laitue de Mer',d:'30g',r:'Magnésium — clé de la gestion du stress',t:'Soir'});
+}
+// MYOSITE P1 urgence
+if(c.myo){
+ph1.push({n:'Huile Germe Blé',d:'50ml',r:'Vit E — protection fibres musculaires urgente',t:'Soir'});
+ph1.push({n:'Astragale',d:'20g',r:'Sélénium — couple antioxydant E/Se',t:'Soir'});
+ph1.push({n:'Laitue de Mer',d:'40g',r:'Mg décontraction musculaire',t:'Soir'});
+}
+// METALS (both modes)
+if((v.al&&v.al>10)||(v.pb&&v.pb>.5)||(v.hg&&v.hg>.05)){ph1.push({n:'Chlorelle',d:'20g',r:'Chélation métaux lourds',t:'Matin'});wrn.push('☢️ Métaux lourds détectés — Chercher source contamination');}
+if(mode==='hair'){
+if(v.cd&&v.cd>.05){ph1.push({n:'Chlorelle',d:'15g',r:'Chélation cadmium',t:'Matin'});wrn.push('☢️ Cadmium élevé — Source: eau, peintures anciennes, proximité route');}
+if(v.as&&v.as>.5){ph1.push({n:'Chlorelle',d:'15g',r:'Chélation arsenic',t:'Matin'});wrn.push('☢️ Arsenic élevé — Source: pesticides, eau de forage, bois traité');}
+}
+
+// Helper: deficit percentage
+function defPct(val,lo){return Math.round(val/lo*100);}
+
+// MG
+if(v.mg&&REF.mg&&v.mg<REF.mg.lo){def.push({n:'Magnésium',v:v.mg,nr:REF.mg.nr});
+const severity=defPct(v.mg,REF.mg.lo);
+rxS.push({n:'Laitue de Mer',d:Math.round(30*(1+(100-severity)/100))+'g',r:'Mg organique record (couverture '+severity+'%)',t:'Soir'});}
+// K
+if(v.k&&REF.k&&v.k<REF.k.lo){def.push({n:'Potassium',v:v.k,nr:REF.k.nr});rxM.push({n:'Dulse',d:'25g',r:'Potassium organique + électrolytes',t:'Matin'});wrn.push('💡 Potassium bas — Vérifier apport sel (Na+Cl) et électrolytes');}
+// NA
+if(v.na&&REF.na&&v.na<REF.na.lo){def.push({n:'Sodium',v:v.na,nr:REF.na.nr});wrn.push('⚠️ Sodium bas — Ajouter 30g sel brut minimum/jour + sel à volonté. Vérifier hydratation chronique');}
+
+// ZN/CU
+if(v.zn&&REF.zn&&v.zn<REF.zn.lo){
+def.push({n:'Zinc',v:v.zn,nr:REF.zn.nr});
+const dp=100-defPct(v.zn,REF.zn.lo);
+rxM.push({n:'Fucus',d:Math.min(100,Math.round(50+dp*.5))+'g',r:`Zinc organique (déficit ${dp}%)`,t:'Matin'});
+rxM.push({n:'Courge (moulues)',d:Math.min(200,Math.round(100+dp))+'g',r:'Booster Zn ratio 3:1',t:'Matin'});
+}
+if(v.cu&&REF.cu&&v.cu<REF.cu.lo){def.push({n:'Cuivre',v:v.cu,nr:REF.cu.nr});rxM.push({n:'Sésame Noir',d:'40g',r:'Cu organique — collagène, mélanine, kératine',t:'Matin'});}
+// FE
+if(v.fe&&REF.fe){
+if(v.fe<REF.fe.lo){def.push({n:'Fer',v:v.fe,nr:REF.fe.nr});rxS.push({n:'Ortie',d:'40g',r:'Fer organique + chlorophylle',t:'Soir (séparé Ca)'});rxS.push({n:'Cynorrhodon',d:'20g',r:'Vit C booste Fe ×3',t:'Soir (avec Ortie)'});}
+else if(v.fe>REF.fe.hi){exc.push({n:'Fer',v:v.fe,nr:REF.fe.nr});rxM.push({n:'Pissenlit',d:'25g',r:'Drainage fer excédentaire',t:'Matin'});wrn.push('⚠️ Fer EXCÈS — Ortie/Spiruline INTERDITES. Fe bloque Zn+Cu. Vérifier eau ferrugineuse');}
+}
+// SE
+if(v.se&&REF.se&&v.se<REF.se.lo){def.push({n:'Sélénium',v:v.se,nr:REF.se.nr});
+const seSeverity=defPct(v.se,REF.se.lo);
+rxS.push({n:'Astragale',d:Math.min(30,Math.round(15+((100-seSeverity)/10)))+'g',r:'Sélénométhionine organique',t:'Soir'});rxS.push({n:'Huile Germe Blé',d:'40ml',r:'Vit E OBLIGATOIRE avec Se',t:'Soir (avec Astragale)'});}
+// MN
+if(v.mn&&REF.mn&&v.mn<REF.mn.lo){def.push({n:'Manganèse',v:v.mn,nr:REF.mn.nr});rxM.push({n:'Levure de Bière',d:'50g',r:'Manganèse + Biotine + Chrome + Vit B',t:'Matin'});wrn.push('💡 Manganèse bas — Important pour chondroïtine (cartilage)');}
+// IO
+if(v.io&&REF.io&&v.io<REF.io.lo){def.push({n:'Iode',v:v.io,nr:REF.io.nr});wrn.push('💡 Iode bas — Le Fucus/Kelp dans la ration corrige. Vérifier thyroïde');}
+// CO
+if(v.co&&REF.co&&v.co<REF.co.lo){def.push({n:'Cobalt',v:v.co,nr:REF.co.nr});wrn.push('💡 Cobalt bas — Kelp + flore intestinale synthétisent B12 via cobalt');}
+// CR
+if(v.cr&&REF.cr&&v.cr<REF.cr.lo&&(c.sme||c.cush)){wrn.push('💡 Chrome bas + SME/Cushing — Cannelle Ceylan + Levure Bière = sources chrome naturel');}
+// CA/P
+if(v.ca&&REF.ca&&v.ca<REF.ca.lo){def.push({n:'Calcium',v:v.ca,nr:REF.ca.nr});rxS.push({n:'Lithothamne',d:'30g',r:'Ca marin organique (35%)',t:'Soir'});rxS.push({n:'Lichen Islande',d:'8g',r:'Vit D3 fixe Ca sur os',t:'Soir'});}
+if(v.p&&REF.p&&v.p>REF.p.hi){exc.push({n:'Phosphore',v:v.p,nr:REF.p.nr});wrn.push('⚠️ Phosphore élevé — Ratio Ca:P doit être ≥1.5:1. Réduire son de riz. Risque ostéomalacie');}
+if(v.ca&&v.p&&v.ca>0&&v.p>0){
+const ratio=(v.ca/v.p).toFixed(1);
+if(mode==='blood'&&ratio<1)wrn.push(`🔴 ALERTE: Ratio Ca:P = ${ratio}:1 — DANGEREUX (<1:1). Risque hyperparathyroïdie`);
+if(mode==='hair'&&ratio<2)wrn.push(`🔶 Ratio Ca:P crin = ${ratio}:1 — Idéal >2.5:1 dans le crin`);
+}
+// VE (blood only)
+if(v.ve&&REF.ve&&v.ve<REF.ve.lo){def.push({n:'Vitamine E',v:v.ve,nr:REF.ve.nr});rxS.push({n:'Huile Germe Blé',d:'50ml',r:'Vit E naturelle (RRR-alpha)',t:'Soir'});rxM.push({n:'Tournesol',d:'80g',r:'Vit E organique + Vit B3',t:'Matin'});}
+// VA (blood only)
+if(v.va&&REF.va&&v.va<REF.va.lo){def.push({n:'Vitamine A',v:v.va,nr:REF.va.nr});wrn.push('💡 Vit A basse — Augmenter Luzerne (bêta-carotène) + Spiruline. Vecteur gras obligatoire');}
+// VD (blood only)
+if(v.vd&&REF.vd&&v.vd<REF.vd.lo){def.push({n:'Vitamine D',v:v.vd,nr:REF.vd.nr});rxS.push({n:'Lichen Islande',d:'10g',r:'Vit D3 végétale (fixation Ca)',t:'Soir'});wrn.push('💡 Vit D basse — Sortie au soleil recommandée. Lichen d\'Islande = source rare D3 végétale');}
+// HAIR-specific: no vitamin values but warn
+if(mode==='hair'){wrn.push('ℹ️ Vitamines non dosées sur crin — Compléter par prise de sang si besoin (Vit E, A, D)');}
+
+// LIPID VECTOR
+const hasOil=rxM.some(r=>r.n.includes('Huile'))||rxS.some(r=>r.n.includes('Huile'));
+if(!hasOil&&def.length>0)rxM.push({n:'Huile de Lin',d:'40ml',r:'Vecteur lipidique Vit ADEK + Oméga-3',t:'Matin'});
+
+// SME FILTER
+if(c.sme||c.fourb){
+const bl=['Fenugrec','Carotte','Pomme'];
+rxM=rxM.filter(r=>!bl.some(b=>r.n.includes(b)));rxS=rxS.filter(r=>!bl.some(b=>r.n.includes(b)));
+rxM.forEach(r=>{if(r.n.includes('Cynorrhodon')){r.d='15g MAX';r.r+=' ⚠️ WSC 14.5%';}});
+rxS.forEach(r=>{if(r.n.includes('Cynorrhodon')){r.d='15g MAX';r.r+=' ⚠️ WSC 14.5%';}});
+wrn.push('🔶 SME/Fourbure: plantes >10% WSC limitées/exclues');
+if(!rxM.some(r=>r.n.includes('Cannelle')))rxM.push({n:'Cannelle Ceylan',d:'8g',r:'Mime insuline + Chrome naturel (SME)',t:'Matin'});
+}
+// CUSHING
+if(c.cush){rxM=rxM.filter(r=>!r.n.includes('Réglisse'));rxS=rxS.filter(r=>!r.n.includes('Réglisse'));rxM.push({n:'Gattilier',d:'18g',r:'Régulation hypophyse (PPID)',t:'Matin'});}
+// GEST
+if(c.gest){const ban=['Harpago','Gattilier','Fenugrec','Valériane','Sauge','Romarin','Millepertuis'];rxM=rxM.filter(r=>!ban.some(b=>r.n.includes(b)));rxS=rxS.filter(r=>!ban.some(b=>r.n.includes(b)));wrn.push('🔴 Gestante — Harpago, Gattilier, Fenugrec, Valériane, Sauge, Romarin, Millepertuis INTERDITS. Cu 300mg/j recommandé');}
+// LACT
+if(c.lact){wrn.push('ℹ️ Lactation — Ca 56g/j, P 36g/j, Mg 15g/j nécessaires. Luzerne recommandée');}
+// COMP
+if(c.comp){const dp=['Harpago','Valériane','Camomille','Reine','Saule','Houblon','Lavande','Millepertuis'];rxM.forEach(r=>{if(dp.some(d=>r.n.includes(d)))r.r+=' ⚠️ DOPANT 48-72h';});rxS.forEach(r=>{if(dp.some(d=>r.n.includes(d)))r.r+=' ⚠️ DOPANT 48-72h';});}
+// ARTH
+if(c.arth){if(!c.comp)rxM.push({n:'Harpagophytum',d:'25g',r:'Anti-inflammatoire n°1 (DOPANT)',t:'Matin'});else rxM.push({n:'Boswellia',d:'15g',r:'Anti-inflammatoire NON dopant',t:'Matin'});rxM.push({n:'Prêle',d:'20g',r:'Silice cartilage + Manganèse',t:'Matin'});rxM.push({n:'Curcuma + huile',d:'20g',r:'Curcuminoïdes (vecteur gras obligatoire)',t:'Matin'});}
+// EMPH
+if(c.emph){rxM.push({n:'Plantain',d:'25g',r:'Antihistaminique',t:'Matin'});rxM.push({n:'Nigelle',d:'25g',r:'Immunomodulateur respi',t:'Matin'});rxM.push({n:'Thym',d:'15g',r:'Antiseptique bronchique',t:'Matin'});}
+// FOURB P2 — circulation long terme (P1 déjà ajouté)
+if(c.fourb){if(!rxM.some(r=>r.n.includes('Vigne')))rxM.push({n:'Vigne Rouge',d:'20g',r:'Veinotonique — soutien circulation pieds',t:'Matin'});wrn.push('🔴 Fourbure → Foin trempé 12h OBLIGATOIRE. Zéro herbe/fruit/sucre');}
+// DERM P2 — soutien long terme (Bardane+Pensée déjà en P1)
+if(c.derm){rxM.push({n:'Huile Bourrache',d:'30ml',r:'GLA — acides gras peau + anti-inflammatoire',t:'Matin'});rxM.push({n:'Cassis (Feuille)',d:'20g',r:'Cortisone-like naturelle — allergie cutanée',t:'Matin'});}
+// SAB
+if(c.sab){if(!rxM.some(r=>r.n.includes('Levure')))rxM.push({n:'Levure Bière',d:'50g',r:'Biotine (B8) + Mn + Cr + Zn',t:'Matin'});if(!rxM.some(r=>r.n.includes('Prêle')))rxM.push({n:'Prêle',d:'25g',r:'Silice sabots',t:'Matin'});}
+// STRESS P2 — soutien long terme (Passiflore+Laitue de Mer déjà en P1)
+if(c.stress){rxS.push({n:'Mélisse',d:'20g',r:'Antispasmodique digestif — stress chronique',t:'Soir'});rxS.push({n:'Aubépine',d:'20g',r:'Régulateur cardiaque — anxiété',t:'Soir'});}
+// MYO P2 — soutien long terme (Germe Blé+Astragale+Laitue déjà en P1)
+if(c.myo){rxM.push({n:'Spiruline',d:'30g',r:'Protéines + Fe + B12 — reconstruction musculaire',t:'Matin'});wrn.push('⚠️ Myosite → Repos TOTAL. Eau à volonté. Surveiller couleur urine (myoglobine)');}
+// HYPP
+if(c.hypp){rxM=rxM.filter(r=>!['Ortie','Pissenlit','Dulse'].some(b=>r.n.includes(b)));rxS=rxS.filter(r=>!['Ortie','Pissenlit','Dulse'].some(b=>r.n.includes(b)));wrn.push('🔶 HYPP — Ortie, Pissenlit, Dulse retirés (K élevé). Pulpe betterave recommandée');}
+// SALT reminder
+wrn.push('🧂 Rappel: Sel brut minimum 30g/jour + sel à volonté. Eau fraîche 24h/24');
+
+// DEDUP
+const dd=a=>{const s=new Set();return a.filter(r=>{if(s.has(r.n))return false;s.add(r.n);return true;});};
+ph1=dd(ph1);rxM=dd(rxM);rxS=dd(rxS);
+
+// Detect overweight/metabolic for muzzle guide
+const bcsNow2=parseFloat(document.getElementById('bcs').value)||3;
+const needMuzzle2=c.sme||c.fourb||c.cush||bcsNow2>=4;
+
+// BUILD OUTPUT
+const nameToKey={Zinc:'zn',Cuivre:'cu',Sélénium:'se',Fer:'fe',Calcium:'ca',Phosphore:'p',Magnésium:'mg',Potassium:'k',Sodium:'na',Manganèse:'mn',Iode:'io',Cobalt:'co',Chrome:'cr','Vitamine E':'ve','Vitamine A':'va','Vitamine D':'vd'};
+let h=`<div class="rbox"><h2>📄 Protocole — ${hD.name||'Cheval'} (${w}kg)</h2><p style="text-align:center;color:var(--text2)">${new Date().toLocaleDateString('fr-FR')} | ${srcLabel} | Zéro Céréale · Zéro Amidon · 100% Organique</p>`;
+if(def.length){h+=`<h3>🔬 Carences détectées (${srcLabel})</h3>`;def.forEach(d=>{const rk=nameToKey[d.n];const ref=rk&&REF[rk]?REF[rk]:null;const p=ref?Math.round(d.v/ref.lo*100):50;h+=`<div style="margin:6px 0"><div style="display:flex;justify-content:space-between;font-size:.88em"><span>${d.n}: <strong>${d.v}</strong> ${ref?ref.u:''} (N: ${d.nr})</span><span class="tag tag-danger">${p}%</span></div><div class="pbar"><div class="pfill ${p<50?'pdng':p<80?'pwarn':'pok'}" style="width:${Math.min(100,p)}%"></div></div></div>`;});}
+if(exc.length){h+=`<h3>⚠️ Excès détectés</h3>`;exc.forEach(e=>{const rk=nameToKey[e.n];const ref=rk&&REF[rk]?REF[rk]:null;h+=`<div class="alert alert-w">⚠️ ${e.n}: <strong>${e.v}</strong> ${ref?ref.u:''} (N: ${e.nr})</div>`;});}
+if(ph1.length){h+=`<div class="rxs"><h3>🔄 PHASE 1 — Terrain (10j)</h3>`;ph1.forEach(r=>h+=`<div class="rx"><div><div class="pn">🌿 ${r.n}</div><div class="tm">${r.t} — ${r.r}</div></div><div class="dose">${r.d}</div></div>`);h+=`</div>`;}
+if(rxM.length){h+=`<div class="rxs"><h3>☀️ PHASE 2 — MATIN</h3>`;rxM.forEach(r=>h+=`<div class="rx"><div><div class="pn">🌿 ${r.n}</div><div class="tm">${r.r}</div></div><div class="dose">${r.d}</div></div>`);h+=`</div>`;}
+if(rxS.length){h+=`<div class="rxs"><h3>🌙 PHASE 2 — SOIR</h3>`;rxS.forEach(r=>h+=`<div class="rx"><div><div class="pn">🌿 ${r.n}</div><div class="tm">${r.r}</div></div><div class="dose">${r.d}</div></div>`);h+=`</div>`;}
+if(needMuzzle2)h+=getMuzzleGuide();
+if(wrn.length){h+=`<h3>🛡️ Alertes</h3>`;wrn.forEach(w=>h+=`<div class="alert alert-w">${w}</div>`);}
+h+=`<div class="alert alert-i" style="margin-top:14px">📅 Contrôle recommandé: nouvelle analyse dans 3 mois</div>`;
+h+=`<div style="text-align:center;margin-top:16px;display:flex;gap:10px;justify-content:center"><button class="btn btn-p" onclick="printProtocol()">🖨️ Imprimer le protocole</button></div></div>`;
+document.getElementById('ratOut').innerHTML=h;
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+document.querySelector('[data-t="ration"]').classList.add('active');
+document.getElementById('p-ration').classList.add('active');
+}
+
+// PLANTS ENCYCLOPEDIA
+function rP(){
+const g=document.getElementById('pGrid'),s=(document.getElementById('pSrch').value||'').toLowerCase();
+const f=PDB.filter(p=>{const ms=!s||p.n.toLowerCase().includes(s)||p.lt.toLowerCase().includes(s)||p.th.join(' ').toLowerCase().includes(s);const mf=cFilt==='all'||p.c===cFilt;return ms&&mf;});
+g.innerHTML=f.map(p=>{const dt=p.dp!=='Safe'?`<span class="tag tag-doping">${p.dp}</span>`:'';const wt=p.nt.wsc>10?`<span class="tag tag-warn">WSC ${p.nt.wsc}%</span>`:`<span class="tag tag-safe">WSC ${p.nt.wsc}%</span>`;return`<div class="pc" onclick="sP('${p.id}')"><h4>${p.e} ${p.n}</h4><div class="lt">${p.lt}</div><div class="us">${p.d}</div><div class="pr">${wt}${dt}<span class="tag tag-info">${p.ds}</span></div></div>`;}).join('');
+}
+function fP(){rP()}
+function sF(f,el){cFilt=f;document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');rP();}
+
+function sP(id){
+const p=PDB.find(x=>x.id===id);if(!p)return;const n=p.nt;
+let h='<tr><th>Nutriment</th><th>Valeur/kg MS</th></tr>';
+const show=(l,v,u)=>{if(v)h+=`<tr><td>${l}</td><td>${v} ${u||'mg'}</td></tr>`;};
+show('Zinc',n.zn);show('Cuivre',n.cu);show('Fer',n.fe);show('Calcium',n.ca);show('Magnésium',n.mg);show('Potassium',n.k);show('Sélénium',n.se);show('Iode',n.io);show('Manganèse',n.mn);show('Cobalt',n.co);show('Chrome',n.cr);show('Soufre',n.s);show('Silice',n.sil);show('Vit C',n.vc);show('Vit E',n.ve,'UI');show('Vit A',n.va,'µg');show('Vit D3',n.vd3,'UI');show('Vit B12',n.b12);show('Biotine',n.b8);show('Vit B1',n.b1);show('Vit B2',n.b2);show('Vit B3',n.b3);show('Vit B6',n.b6);show('Vit B9',n.b9);show('Oméga-3',n.o3);show('Protéines',n.prot,'g');show('Matières grasses',n.fat,'%');
+h+=`<tr style="background:var(--surface3)"><td><strong>WSC (Sucres)</strong></td><td><strong>${n.wsc}%</strong></td></tr><tr><td>Amidon</td><td>${n.st}%</td></tr>`;
+document.getElementById('pMoC').innerHTML=`<h2>${p.e} ${p.n}</h2><p style="color:var(--text3);font-style:italic">${p.lt}</p><p style="margin:10px 0;color:var(--text2)">${p.d}</p>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0">${p.dp!=='Safe'?`<span class="tag tag-doping">${p.dp}</span>`:'<span class="tag tag-safe">Non dopant</span>'}${n.wsc>10?`<span class="tag tag-warn">WSC ${n.wsc}%</span>`:`<span class="tag tag-safe">WSC ${n.wsc}%</span>`}</div>
+<h3>📊 Composition</h3><div class="tbl-wrap"><table>${h}</table></div>
+<h3>🎯 Usages</h3><div style="display:flex;gap:5px;flex-wrap:wrap">${p.th.map(t=>`<span class="tag tag-info">${t}</span>`).join('')}</div>
+<h3>💊 Dosage (500kg)</h3><p><strong>Dose:</strong> ${p.ds} | <strong>Max:</strong> ${p.mx}${p.id.includes('S11')||p.id.includes('S12')?'ml':'g'}/j | <strong>Moment:</strong> <span class="tag tag-info">${p.tm}</span></p>
+<h3>🔗 Synergie</h3><p style="color:var(--accent3)">${p.sy}</p>
+<h3>📝 Absorption</h3><p style="color:var(--text2)">${p.ab}</p>
+${p.ci.length?`<h3>⛔ Contre-indications</h3><ul style="color:var(--danger)">${p.ci.map(c=>`<li>${c}</li>`).join('')}</ul>`:''}`;
+document.getElementById('pMo').classList.add('show');
+}
+function clMo(){document.getElementById('pMo').classList.remove('show');}
+document.getElementById('pMo').addEventListener('click',e=>{if(e.target===e.currentTarget)clMo();});
+
+// PATHO
+function showPat(){
+const k=document.getElementById('patSel').value;if(!k){document.getElementById('patOut').innerHTML='';return;}
+const p=PAT[k];if(!p)return;
+let h=`<div class="rbox" style="margin-top:16px"><h2>${p.i} ${p.n}</h2>`;
+[p.p1,p.p2].forEach(ph=>{if(!ph)return;h+=`<div class="rxs"><h3>${ph.t}</h3>`;ph.pl.forEach(r=>h+=`<div class="rx"><div><div class="pn">🌿 ${r.n}</div><div class="tm">${r.tm} — ${r.r}</div></div><div class="dose">${r.d}</div></div>`);h+=`</div>`;});
+if(p.w&&p.w.length)p.w.forEach(w=>h+=`<div class="alert alert-w">${w}</div>`);
+h+=`</div>`;document.getElementById('patOut').innerHTML=h;
+}
+
+// CONVERT
+function cvt(){
+const t=document.getElementById('cvT').value,a=+document.getElementById('cvA').value||50;
+const d={algue:{r:15,b:20,t:220},coupe:{r:3,b:5,t:45},graine:{r:10,b:14,t:160},baie:{r:8,b:12,t:120},racine:{r:10,b:14,t:150},huile:{r:15,b:15,t:250}};
+const x=d[t];
+document.getElementById('cvR').innerHTML=`
+<div class="cvc"><div class="v">${(a/x.r).toFixed(1)}</div><div class="u">CàS rases</div></div>
+<div class="cvc"><div class="v">${(a/x.b).toFixed(1)}</div><div class="u">CàS bombées</div></div>
+<div class="cvc"><div class="v">${(a/x.t).toFixed(2)}</div><div class="u">Tasses 250ml</div></div>
+<div class="cvc"><div class="v">${a}</div><div class="u">${t==='huile'?'ml':'g'}</div></div>`;
+}
+
+// PRINT PROTOCOL
+// GRAZING MUZZLE SCHEDULE — Based on veterinary data (Mad Barn, SPILLERS, Virbac, EEG 2022, KPP, Equine Medical)
+function getMuzzleGuide(){
+const m=new Date().getMonth(); // 0-11
+const season=m>=2&&m<=5?'spring':m>=6&&m<=8?'summer':m>=9&&m<=10?'autumn':'winter';
+const seasonFR={spring:'Printemps (Mars–Juin)',summer:'Été (Juil–Août)',autumn:'Automne (Sept–Nov)',winter:'Hiver (Déc–Fév)'};
+const risk={spring:'🔴 ÉLEVÉ',summer:'🟡 MODÉRÉ',autumn:'🔴 ÉLEVÉ',winter:'🟡 VARIABLE'};
+
+let h=`<div style="border:2px solid var(--warn);border-radius:12px;padding:14px;margin:12px 0;background:rgba(255,180,0,.06)">
+<h3 style="margin:0 0 8px;color:var(--warn)">🧺 GUIDE PANIER (Grazing Muzzle) — Horaires selon météo & saison</h3>
+<p style="font-size:.82em;color:var(--text2);margin-bottom:10px">Données validées par la recherche vétérinaire mondiale — Dr Kellon, Dr Harman, Dr Getty, Dr Pollitt</p>
+
+<div style="background:var(--surface2);border-radius:8px;padding:10px;margin-bottom:10px">
+<p style="margin:0 0 6px"><strong>Saison actuelle : ${seasonFR[season]}</strong> — Risque WSC herbage : ${risk[season]}</p>
+</div>
+
+<h4 style="margin:10px 0 6px;font-size:.95em">⏰ Cycle journalier du sucre dans l'herbe</h4>
+<table style="width:100%;font-size:.82em;border-collapse:collapse;margin-bottom:10px">
+<tr style="background:var(--surface2)"><th style="padding:4px 8px;text-align:left">Heure</th><th>Niveau WSC</th><th>Pâturage</th></tr>
+<tr><td style="padding:4px 8px">🌅 5h – 9h</td><td style="color:green;font-weight:700">⬇️ BAS</td><td>✅ Pâturage le plus sûr (si nuit > 5°C)</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:4px 8px">☀️ 10h – 11h</td><td style="color:orange;font-weight:700">↗️ MONTE</td><td>🟡 Avec panier uniquement</td></tr>
+<tr><td style="padding:4px 8px">🌞 12h – 17h</td><td style="color:red;font-weight:700">⬆️ MAXIMUM</td><td>🔴 INTERDIT — Pic photosynthèse</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:4px 8px">🌆 18h – 19h</td><td style="color:orange;font-weight:700">↘️ DESCEND</td><td>🟡 Avec panier uniquement</td></tr>
+<tr><td style="padding:4px 8px">🌙 20h – 4h</td><td style="color:green;font-weight:700">⬇️ BAS</td><td>✅ Pâturage nocturne OK avec panier</td></tr>
+</table>
+
+<h4 style="margin:10px 0 6px;font-size:.95em">🌡️ Règles selon la température</h4>
+<table style="width:100%;font-size:.82em;border-collapse:collapse;margin-bottom:10px">
+<tr style="background:var(--surface2)"><th style="padding:4px 8px;text-align:left">Température nuit</th><th>Effet sur l'herbe</th><th>Conduite</th></tr>
+<tr><td style="padding:4px 8px">❄️ < 5°C (gel)</td><td style="color:red;font-weight:700">DANGER : fructanes ×3 !</td><td>🔴 Zéro herbe ! Dry-lot + foin trempé uniquement</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:4px 8px">🧊 5 – 10°C</td><td style="color:orange;font-weight:700">WSC élevé</td><td>🟡 Max 2h matin (6h–8h) avec panier</td></tr>
+<tr><td style="padding:4px 8px">🌤️ 10 – 15°C</td><td style="color:#cc8800;font-weight:700">WSC modéré</td><td>🟡 Max 3-4h matin avec panier</td></tr>
+<tr style="background:var(--surface2)"><td style="padding:4px 8px">☀️ 15 – 25°C</td><td style="color:green;font-weight:700">WSC le plus bas</td><td>✅ Période la plus sûre — panier recommandé</td></tr>
+<tr><td style="padding:4px 8px">🔥 > 25°C + sécheresse</td><td style="color:orange;font-weight:700">Stress = WSC monte</td><td>🟡 Herbe stressée = danger. Surveiller</td></tr>
+</table>
+
+<h4 style="margin:10px 0 6px;font-size:.95em">🗓️ Planning saisonnier recommandé</h4>
+<table style="width:100%;font-size:.82em;border-collapse:collapse;margin-bottom:10px">
+<tr style="background:${season==='spring'?'rgba(255,0,0,.1)':'var(--surface2)'}"><td style="padding:4px 8px;font-weight:700">🌸 Printemps</td><td style="color:red;font-weight:700">RISQUE MAXIMAL</td><td>Panier OBLIGATOIRE. Sortie 5h→9h max. Acclimatation progressive : 30min/j puis +10min/j. Foin trempé 12h avant sortie.</td></tr>
+<tr style="background:${season==='summer'?'rgba(255,180,0,.1)':''}"><td style="padding:4px 8px;font-weight:700">☀️ Été</td><td style="color:green;font-weight:700">Plus sûr si nuits chaudes</td><td>Panier recommandé. Sortie matin (5h→10h) ou nuit (20h→5h). Éviter 12h–17h. Si sécheresse : restreindre.</td></tr>
+<tr style="background:${season==='autumn'?'rgba(255,0,0,.1)':'var(--surface2)'}"><td style="padding:4px 8px;font-weight:700">🍂 Automne</td><td style="color:red;font-weight:700">RISQUE ÉLEVÉ</td><td>Panier OBLIGATOIRE. Nuits froides reviennent. Sortie matin tôt ou nuit. Repousse post-sécheresse = DANGER.</td></tr>
+<tr style="background:${season==='winter'?'rgba(255,180,0,.1)':''}"><td style="padding:4px 8px;font-weight:700">❄️ Hiver</td><td style="color:orange;font-weight:700">Variable</td><td>Herbe dormante = moins risqué. MAIS gel+soleil = DANGER ABSOLU (×3 fructanes en quelques heures). Dry-lot si gel.</td></tr>
+</table>
+
+<h4 style="margin:10px 0 6px;font-size:.95em">🚨 Situations ZÉRO herbe (dry-lot obligatoire)</h4>
+<div style="font-size:.82em;line-height:1.6">
+• <strong>Gel + soleil le matin</strong> — Combo le plus dangereux : fructanes ×3. Attendre dégel complet (après-midi)<br>
+• <strong>Fourbure active</strong> — Zéro herbe jusqu'à résolution complète + insuline normalisée<br>
+• <strong>Herbe rase stressée</strong> — Fructanes concentrés dans les 5cm du bas. Pire que l'herbe haute<br>
+• <strong>Sécheresse + soleil</strong> — Pas de croissance mais photosynthèse continue = sucre s'accumule<br>
+• <strong>NEC ≥ 4.5</strong> — Obésité sévère = dry-lot + exercice + foin trempé uniquement
+</div>
+
+<h4 style="margin:10px 0 6px;font-size:.95em">✅ Bonnes pratiques panier</h4>
+<div style="font-size:.82em;line-height:1.6">
+• <strong>Réduction ingestion</strong> : le panier réduit l'ingestion de 30 à 80% selon le modèle<br>
+• <strong>Durée max</strong> : 10-12h/jour de port — retirer la nuit si au box<br>
+• <strong>Foin AVANT sortie</strong> : donner du foin trempé (30min eau tiède ou 8h eau froide = -30 à 50% WSC) AVANT le pré pour éviter le gavage<br>
+• <strong>Vérifier l'ajustement</strong> : 2 doigts entre muserolle et chanfrein. Contrôler usure dentaire<br>
+• <strong>Eau</strong> : vérifier que le cheval peut boire avec le panier<br>
+• <strong>Paddock paradise / track system</strong> : encourage le mouvement + limite l'accès herbe<br>
+• <strong>Acclimatation printemps</strong> : commencer 30min/jour, augmenter de 5-10min/jour jusqu'à 3-4h
+</div>
+</div>`;
+return h;
+}
+
+function printProtocol(){
+const ratOut=document.getElementById('ratOut');
+if(!ratOut||!ratOut.innerHTML.trim()){alert('Aucun protocole à imprimer. Lancez d\'abord l\'analyse.');return;}
+// Switch to ration panel
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+document.querySelector('[data-t="ration"]').classList.add('active');
+document.getElementById('p-ration').classList.add('active');
+const fwLogo='https://www.fwpodologue-equin.fr/logo.png';
+// Add watermark (filigrane)
+const wm=document.createElement('img');
+wm.className='print-watermark';wm.id='_wm';wm.src=fwLogo;wm.alt='';
+ratOut.prepend(wm);
+// Add print header with logo + signature
+const ph=document.createElement('div');
+ph.className='print-header';ph.id='_ph';
+ph.innerHTML=`<img class="print-logo" src="${fwLogo}" alt="Fabien Walter">
+<h1>EquiPhyto Pro</h1>
+<p class="print-sub">Protocole Phytothérapeutique Personnalisé</p>
+<p class="print-sub">103 Plantes · 22 Protocoles · Étudié par Dr Kellon, Dr Harman, Dr Getty, Dr Pollitt, Dr Bowker</p>
+<p class="print-sig">Développé par Fabien Walter — Podologue Équin · www.fwpodologue-equin.fr</p>
+<p class="print-sub">Imprimé le ${new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'})} à ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</p>`;
+ratOut.prepend(ph);
+// Add print footer with copyright
+const yr=new Date().getFullYear();
+const pf=document.createElement('div');
+pf.className='print-footer';pf.id='_pf';
+pf.innerHTML=`<div class="pf-copy">© ${yr} Fabien Walter — Podologue Équin · Tous droits réservés</div>
+<div class="pf-disc">Ce protocole phytothérapeutique est fourni à titre informatif et ne remplace en aucun cas l'avis d'un vétérinaire.</div>
+<div class="pf-contact">www.fwpodologue-equin.fr · fwpodologue.equin@gmail.com · 06.48.15.70.44</div>
+<div class="pf-copy" style="margin-top:6px;font-size:7.5pt;color:#999">EquiPhyto Pro — Application professionnelle de phyto-nutrition équine · SIRET 827 695 016 000 36</div>`;
+ratOut.append(pf);
+// Print
+setTimeout(()=>{window.print();setTimeout(()=>{const el=['_ph','_pf','_wm'];el.forEach(id=>{const e=document.getElementById(id);if(e)e.remove();});},500);},300);
+}
+
+// INIT PILLS
+document.getElementById('pills').innerHTML=Object.entries(cats).map(([k,v])=>`<div class="pill${k==='all'?' active':''}" onclick="sF('${k}',this)">${v}</div>`).join('');
+rP();cvt();calcW();
+</script>
+</body>
+</html>
